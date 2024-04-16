@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "top_losers",
+  "info": {
+    "singularName": "top-loser",
+    "pluralName": "top-losers",
+    "displayName": "TopLoser"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "value": {
+      "type": "float"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    }
+  }
+}

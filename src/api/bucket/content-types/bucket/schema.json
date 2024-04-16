@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "buckets",
+  "info": {
+    "singularName": "bucket",
+    "pluralName": "buckets",
+    "displayName": "Bucket",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "capsuleplus": {
+      "type": "boolean",
+      "default": false
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "buckets"
+    },
+    "tag": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tag.tag",
+      "inversedBy": "buckets"
+    },
+    "companies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::company.company",
+      "mappedBy": "bucket"
+    }
+  }
+}

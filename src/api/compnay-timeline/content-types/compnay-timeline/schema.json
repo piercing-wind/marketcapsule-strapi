@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "compnay_timelines",
+  "info": {
+    "singularName": "compnay-timeline",
+    "pluralName": "compnay-timelines",
+    "displayName": "CompnayTimeline"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "date"
+    },
+    "description": {
+      "type": "text"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company",
+      "inversedBy": "compnay_timeline"
+    }
+  }
+}

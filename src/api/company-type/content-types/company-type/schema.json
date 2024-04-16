@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_types",
+  "info": {
+    "singularName": "company-type",
+    "pluralName": "company-types",
+    "displayName": "CompanyType"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "description": {
+      "type": "text"
+    },
+    "metaTitle": {
+      "type": "text"
+    }
+  }
+}

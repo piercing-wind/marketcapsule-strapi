@@ -742,27 +742,14 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
-    username: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 3;
-      }>;
     email: Attribute.Email &
       Attribute.Required &
       Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
     provider: Attribute.String;
-    password: Attribute.Password &
-      Attribute.Private &
-      Attribute.SetMinMaxLength<{
-        minLength: 6;
-      }>;
-    resetPasswordToken: Attribute.String & Attribute.Private;
     confirmationToken: Attribute.String & Attribute.Private;
     confirmed: Attribute.Boolean & Attribute.DefaultTo<false>;
     blocked: Attribute.Boolean & Attribute.DefaultTo<false>;
@@ -771,6 +758,20 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    image: Attribute.String;
+    gender: Attribute.Enumeration<['male', 'female', 'prefer no to say']>;
+    fullName: Attribute.String;
+    dob: Attribute.Date;
+    profession: Attribute.String;
+    subscriptions: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::subscription.subscription'
+    >;
+    googleId: Attribute.String;
+    facebookId: Attribute.String;
+    linkdinId: Attribute.String;
+    profileStatus: Attribute.String & Attribute.DefaultTo<'pending'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -781,6 +782,896 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'plugin::users-permissions.user',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiBucketBucket extends Schema.CollectionType {
+  collectionName: 'buckets';
+  info: {
+    singularName: 'bucket';
+    pluralName: 'buckets';
+    displayName: 'Bucket';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    slug: Attribute.UID<'api::bucket.bucket', 'name'>;
+    image: Attribute.Media;
+    capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    description: Attribute.Text;
+    category: Attribute.Relation<
+      'api::bucket.bucket',
+      'manyToOne',
+      'api::category.category'
+    >;
+    tag: Attribute.Relation<'api::bucket.bucket', 'manyToOne', 'api::tag.tag'>;
+    companies: Attribute.Relation<
+      'api::bucket.bucket',
+      'oneToMany',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::bucket.bucket',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::bucket.bucket',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiBusinessSegmentBusinessSegment
+  extends Schema.CollectionType {
+  collectionName: 'business_segments';
+  info: {
+    singularName: 'business-segment';
+    pluralName: 'business-segments';
+    displayName: 'businessSegment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    image: Attribute.Media;
+    company: Attribute.Relation<
+      'api::business-segment.business-segment',
+      'manyToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::business-segment.business-segment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::business-segment.business-segment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::category.category', 'name'>;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    buckets: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::bucket.bucket'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCompanyCompany extends Schema.CollectionType {
+  collectionName: 'companies';
+  info: {
+    singularName: 'company';
+    pluralName: 'companies';
+    displayName: 'Company';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    about: Attribute.Text;
+    sector: Attribute.Relation<
+      'api::company.company',
+      'manyToOne',
+      'api::sector.sector'
+    >;
+    industry: Attribute.Relation<
+      'api::company.company',
+      'manyToOne',
+      'api::industry.industry'
+    >;
+    company_type: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::company-type.company-type'
+    >;
+    featuredImage: Attribute.Media;
+    logo: Attribute.Media;
+    title: Attribute.String;
+    productDetail: Attribute.Text;
+    websiteUrl: Attribute.String;
+    aboutTheCompany: Attribute.Blocks;
+    capsuleView: Attribute.Blocks;
+    businessDetail: Attribute.Blocks;
+    otherDetails: Attribute.JSON;
+    bucket: Attribute.Relation<
+      'api::company.company',
+      'manyToOne',
+      'api::bucket.bucket'
+    >;
+    slug: Attribute.UID<'api::company.company', 'name'>;
+    capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    business_segments: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::business-segment.business-segment'
+    >;
+    compnay_timeline: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::compnay-timeline.compnay-timeline'
+    >;
+    financial_highlight: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::financial-highlight.financial-highlight'
+    >;
+    operation_detail: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::operation-detail.operation-detail'
+    >;
+    share_holding: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::share-holding.share-holding'
+    >;
+    keyHighlights: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCompanyShareDetailCompanyShareDetail
+  extends Schema.CollectionType {
+  collectionName: 'company_share_details';
+  info: {
+    singularName: 'company-share-detail';
+    pluralName: 'company-share-details';
+    displayName: 'companyShareDetail';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    marketCap: Attribute.String;
+    peRatio: Attribute.Float;
+    rocePercent: Attribute.Float;
+    rociPercent: Attribute.Float;
+    roePercent: Attribute.Float;
+    currentPrice: Attribute.Float;
+    deRatio: Attribute.Float;
+    cwip: Attribute.String;
+    cashConversionCycle: Attribute.String;
+    pegRatio: Attribute.Float;
+    ltp: Attribute.Float;
+    prevClosePrice: Attribute.Float;
+    changeInPercent: Attribute.Float;
+    dayHigh: Attribute.Float;
+    dayLow: Attribute.Float;
+    sectoralPERange: Attribute.String;
+    BSE: Attribute.Integer;
+    NSE: Attribute.Integer;
+    ttpmPE: Attribute.String;
+    peRemark: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::company-share-detail.company-share-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::company-share-detail.company-share-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCompanySharePriceCompanySharePrice
+  extends Schema.CollectionType {
+  collectionName: 'company_share_prices';
+  info: {
+    singularName: 'company-share-price';
+    pluralName: 'company-share-prices';
+    displayName: 'companySharePrice';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    companyId: Attribute.Relation<
+      'api::company-share-price.company-share-price',
+      'oneToOne',
+      'api::company.company'
+    >;
+    BSE: Attribute.Boolean & Attribute.DefaultTo<false>;
+    NSE: Attribute.Boolean & Attribute.DefaultTo<true>;
+    date: Attribute.Date;
+    price: Attribute.Float & Attribute.Required;
+    volume: Attribute.Float;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::company-share-price.company-share-price',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::company-share-price.company-share-price',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCompanyTypeCompanyType extends Schema.CollectionType {
+  collectionName: 'company_types';
+  info: {
+    singularName: 'company-type';
+    pluralName: 'company-types';
+    displayName: 'CompanyType';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::company-type.company-type', 'name'>;
+    description: Attribute.Text;
+    metaTitle: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::company-type.company-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::company-type.company-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCompnayTimelineCompnayTimeline
+  extends Schema.CollectionType {
+  collectionName: 'compnay_timelines';
+  info: {
+    singularName: 'compnay-timeline';
+    pluralName: 'compnay-timelines';
+    displayName: 'CompnayTimeline';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    date: Attribute.Date;
+    description: Attribute.Text;
+    company: Attribute.Relation<
+      'api::compnay-timeline.compnay-timeline',
+      'oneToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::compnay-timeline.compnay-timeline',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::compnay-timeline.compnay-timeline',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFinancialHighlightFinancialHighlight
+  extends Schema.CollectionType {
+  collectionName: 'financial_highlights';
+  info: {
+    singularName: 'financial-highlight';
+    pluralName: 'financial-highlights';
+    displayName: 'FinancialHighlight';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    year: Attribute.Integer;
+    title: Attribute.String;
+    value: Attribute.Float;
+    currencyCode: Attribute.String;
+    unit: Attribute.String;
+    company: Attribute.Relation<
+      'api::financial-highlight.financial-highlight',
+      'oneToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::financial-highlight.financial-highlight',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::financial-highlight.financial-highlight',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiIndustryIndustry extends Schema.CollectionType {
+  collectionName: 'industries';
+  info: {
+    singularName: 'industry';
+    pluralName: 'industries';
+    displayName: 'Industry';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    industrialOutlook: Attribute.Blocks;
+    slug: Attribute.UID<'api::industry.industry', 'name'>;
+    companies: Attribute.Relation<
+      'api::industry.industry',
+      'oneToMany',
+      'api::company.company'
+    >;
+    ipos: Attribute.Relation<
+      'api::industry.industry',
+      'oneToMany',
+      'api::ipo.ipo'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::industry.industry',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::industry.industry',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiIpoIpo extends Schema.CollectionType {
+  collectionName: 'ipos';
+  info: {
+    singularName: 'ipo';
+    pluralName: 'ipos';
+    displayName: 'IPO';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    openDate: Attribute.DateTime & Attribute.Required;
+    offerPricePe: Attribute.String & Attribute.Required;
+    lastYearSalesGrowth: Attribute.Float;
+    company: Attribute.Relation<
+      'api::ipo.ipo',
+      'oneToOne',
+      'api::company.company'
+    >;
+    tag: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'api::tag.tag'>;
+    industry: Attribute.Relation<
+      'api::ipo.ipo',
+      'manyToOne',
+      'api::industry.industry'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiNewNew extends Schema.CollectionType {
+  collectionName: 'news';
+  info: {
+    singularName: 'new';
+    pluralName: 'news';
+    displayName: 'New';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    active: Attribute.Boolean & Attribute.DefaultTo<true>;
+    source: Attribute.String;
+    url: Attribute.String & Attribute.Required;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.String;
+    image: Attribute.Media;
+    slug: Attribute.UID<'api::new.new', 'title'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::new.new', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::new.new', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiNotificationNotification extends Schema.CollectionType {
+  collectionName: 'notifications';
+  info: {
+    singularName: 'notification';
+    pluralName: 'notifications';
+    displayName: 'Notification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    read: Attribute.Boolean & Attribute.DefaultTo<false>;
+    message: Attribute.Text;
+    users_permissions_user: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiOperationDetailOperationDetail
+  extends Schema.CollectionType {
+  collectionName: 'operation_details';
+  info: {
+    singularName: 'operation-detail';
+    pluralName: 'operation-details';
+    displayName: 'operationDetail';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    company: Attribute.Relation<
+      'api::operation-detail.operation-detail',
+      'oneToOne',
+      'api::company.company'
+    >;
+    title: Attribute.String;
+    year: Attribute.Integer;
+    month: Attribute.String;
+    isPercentValue: Attribute.Boolean & Attribute.DefaultTo<false>;
+    value: Attribute.Float;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::operation-detail.operation-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::operation-detail.operation-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPlanPlan extends Schema.CollectionType {
+  collectionName: 'plans';
+  info: {
+    singularName: 'plan';
+    pluralName: 'plans';
+    displayName: 'Plan';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    price: Attribute.Float & Attribute.Required;
+    features: Attribute.JSON;
+    active: Attribute.Boolean & Attribute.DefaultTo<true>;
+    planType: Attribute.String;
+    durationInDays: Attribute.Integer & Attribute.Required;
+    slug: Attribute.UID<'api::plan.plan', 'name'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSectorSector extends Schema.CollectionType {
+  collectionName: 'sectors';
+  info: {
+    singularName: 'sector';
+    pluralName: 'sectors';
+    displayName: 'Sector';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::sector.sector', 'name'>;
+    description: Attribute.Text;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    companies: Attribute.Relation<
+      'api::sector.sector',
+      'oneToMany',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::sector.sector',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::sector.sector',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiShareHoldingShareHolding extends Schema.CollectionType {
+  collectionName: 'share_holdings';
+  info: {
+    singularName: 'share-holding';
+    pluralName: 'share-holdings';
+    displayName: 'ShareHolding';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    year: Attribute.Integer & Attribute.Required;
+    month: Attribute.String;
+    title: Attribute.String;
+    valueInPercent: Attribute.Float;
+    company: Attribute.Relation<
+      'api::share-holding.share-holding',
+      'oneToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::share-holding.share-holding',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::share-holding.share-holding',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSubscriptionSubscription extends Schema.CollectionType {
+  collectionName: 'subscriptions';
+  info: {
+    singularName: 'subscription';
+    pluralName: 'subscriptions';
+    displayName: 'Subscription';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    status: Attribute.Boolean & Attribute.DefaultTo<false>;
+    expiryDate: Attribute.DateTime;
+    isCancel: Attribute.Boolean & Attribute.DefaultTo<false>;
+    paymentGateway: Attribute.String;
+    amount: Attribute.String;
+    users_permissions_user: Attribute.Relation<
+      'api::subscription.subscription',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    plan: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'api::plan.plan'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTagTag extends Schema.CollectionType {
+  collectionName: 'tags';
+  info: {
+    singularName: 'tag';
+    pluralName: 'tags';
+    displayName: 'Tag';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::tag.tag', 'name'>;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    colorHash: Attribute.String & Attribute.Required;
+    buckets: Attribute.Relation<
+      'api::tag.tag',
+      'oneToMany',
+      'api::bucket.bucket'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTopGainerTopGainer extends Schema.CollectionType {
+  collectionName: 'top_gainers';
+  info: {
+    singularName: 'top-gainer';
+    pluralName: 'top-gainers';
+    displayName: 'topGainer';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    value: Attribute.Float;
+    company: Attribute.Relation<
+      'api::top-gainer.top-gainer',
+      'oneToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::top-gainer.top-gainer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::top-gainer.top-gainer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTopLoserTopLoser extends Schema.CollectionType {
+  collectionName: 'top_losers';
+  info: {
+    singularName: 'top-loser';
+    pluralName: 'top-losers';
+    displayName: 'TopLoser';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    value: Attribute.Float;
+    company: Attribute.Relation<
+      'api::top-loser.top-loser',
+      'oneToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::top-loser.top-loser',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::top-loser.top-loser',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiWishlistWishlist extends Schema.CollectionType {
+  collectionName: 'wishlists';
+  info: {
+    singularName: 'wishlist';
+    pluralName: 'wishlists';
+    displayName: 'Wishlist';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    users_permissions_user: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    companyId: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::wishlist.wishlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::wishlist.wishlist',
       'oneToOne',
       'admin::user'
     > &
@@ -806,6 +1697,28 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::bucket.bucket': ApiBucketBucket;
+      'api::business-segment.business-segment': ApiBusinessSegmentBusinessSegment;
+      'api::category.category': ApiCategoryCategory;
+      'api::company.company': ApiCompanyCompany;
+      'api::company-share-detail.company-share-detail': ApiCompanyShareDetailCompanyShareDetail;
+      'api::company-share-price.company-share-price': ApiCompanySharePriceCompanySharePrice;
+      'api::company-type.company-type': ApiCompanyTypeCompanyType;
+      'api::compnay-timeline.compnay-timeline': ApiCompnayTimelineCompnayTimeline;
+      'api::financial-highlight.financial-highlight': ApiFinancialHighlightFinancialHighlight;
+      'api::industry.industry': ApiIndustryIndustry;
+      'api::ipo.ipo': ApiIpoIpo;
+      'api::new.new': ApiNewNew;
+      'api::notification.notification': ApiNotificationNotification;
+      'api::operation-detail.operation-detail': ApiOperationDetailOperationDetail;
+      'api::plan.plan': ApiPlanPlan;
+      'api::sector.sector': ApiSectorSector;
+      'api::share-holding.share-holding': ApiShareHoldingShareHolding;
+      'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::tag.tag': ApiTagTag;
+      'api::top-gainer.top-gainer': ApiTopGainerTopGainer;
+      'api::top-loser.top-loser': ApiTopLoserTopLoser;
+      'api::wishlist.wishlist': ApiWishlistWishlist;
     }
   }
 }

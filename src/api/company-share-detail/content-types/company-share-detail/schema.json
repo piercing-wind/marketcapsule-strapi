@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_share_details",
+  "info": {
+    "singularName": "company-share-detail",
+    "pluralName": "company-share-details",
+    "displayName": "companyShareDetail"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "marketCap": {
+      "type": "string"
+    },
+    "peRatio": {
+      "type": "float"
+    },
+    "rocePercent": {
+      "type": "float"
+    },
+    "rociPercent": {
+      "type": "float"
+    },
+    "roePercent": {
+      "type": "float"
+    },
+    "currentPrice": {
+      "type": "float"
+    },
+    "deRatio": {
+      "type": "float"
+    },
+    "cwip": {
+      "type": "string"
+    },
+    "cashConversionCycle": {
+      "type": "string"
+    },
+    "pegRatio": {
+      "type": "float"
+    },
+    "ltp": {
+      "type": "float"
+    },
+    "prevClosePrice": {
+      "type": "float"
+    },
+    "changeInPercent": {
+      "type": "float"
+    },
+    "dayHigh": {
+      "type": "float"
+    },
+    "dayLow": {
+      "type": "float"
+    },
+    "sectoralPERange": {
+      "type": "string"
+    },
+    "BSE": {
+      "type": "integer"
+    },
+    "NSE": {
+      "type": "integer"
+    },
+    "ttpmPE": {
+      "type": "string"
+    },
+    "peRemark": {
+      "type": "string"
+    }
+  }
+}

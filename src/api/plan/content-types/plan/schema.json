@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "plans",
+  "info": {
+    "singularName": "plan",
+    "pluralName": "plans",
+    "displayName": "Plan",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "price": {
+      "type": "float",
+      "required": true
+    },
+    "features": {
+      "type": "json"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "planType": {
+      "type": "string"
+    },
+    "durationInDays": {
+      "type": "integer",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    }
+  }
+}

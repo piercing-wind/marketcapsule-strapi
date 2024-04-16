@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "share_holdings",
+  "info": {
+    "singularName": "share-holding",
+    "pluralName": "share-holdings",
+    "displayName": "ShareHolding"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "year": {
+      "type": "integer",
+      "required": true
+    },
+    "month": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "valueInPercent": {
+      "type": "float"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company",
+      "inversedBy": "share_holding"
+    }
+  }
+}

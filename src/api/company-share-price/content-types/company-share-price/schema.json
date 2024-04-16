@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_share_prices",
+  "info": {
+    "singularName": "company-share-price",
+    "pluralName": "company-share-prices",
+    "displayName": "companySharePrice"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "companyId": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    },
+    "BSE": {
+      "type": "boolean",
+      "default": false
+    },
+    "NSE": {
+      "type": "boolean",
+      "default": true
+    },
+    "date": {
+      "type": "date"
+    },
+    "price": {
+      "type": "float",
+      "required": true
+    },
+    "volume": {
+      "type": "float"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "top_gainers",
+  "info": {
+    "singularName": "top-gainer",
+    "pluralName": "top-gainers",
+    "displayName": "topGainer"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "value": {
+      "type": "float"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    }
+  }
+}

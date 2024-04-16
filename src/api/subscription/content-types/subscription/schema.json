@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscriptions",
+  "info": {
+    "singularName": "subscription",
+    "pluralName": "subscriptions",
+    "displayName": "Subscription"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "status": {
+      "type": "boolean",
+      "default": false
+    },
+    "expiryDate": {
+      "type": "datetime"
+    },
+    "isCancel": {
+      "type": "boolean",
+      "default": false
+    },
+    "paymentGateway": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "string"
+    },
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "subscriptions"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::plan.plan"
+    }
+  }
+}

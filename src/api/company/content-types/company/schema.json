@@ -1,0 +1,130 @@
+{
+  "kind": "collectionType",
+  "collectionName": "companies",
+  "info": {
+    "singularName": "company",
+    "pluralName": "companies",
+    "displayName": "Company",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "about": {
+      "type": "text"
+    },
+    "sector": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sector.sector",
+      "inversedBy": "companies"
+    },
+    "industry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::industry.industry",
+      "inversedBy": "companies"
+    },
+    "company_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company-type.company-type"
+    },
+    "featuredImage": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "logo": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "productDetail": {
+      "type": "text"
+    },
+    "websiteUrl": {
+      "type": "string"
+    },
+    "aboutTheCompany": {
+      "type": "blocks"
+    },
+    "capsuleView": {
+      "type": "blocks"
+    },
+    "businessDetail": {
+      "type": "blocks"
+    },
+    "otherDetails": {
+      "type": "json"
+    },
+    "bucket": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::bucket.bucket",
+      "inversedBy": "companies"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "capsuleplus": {
+      "type": "boolean",
+      "default": false
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "business_segments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::business-segment.business-segment",
+      "mappedBy": "company"
+    },
+    "compnay_timeline": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::compnay-timeline.compnay-timeline",
+      "mappedBy": "company"
+    },
+    "financial_highlight": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::financial-highlight.financial-highlight",
+      "mappedBy": "company"
+    },
+    "operation_detail": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::operation-detail.operation-detail",
+      "mappedBy": "company"
+    },
+    "share_holding": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::share-holding.share-holding",
+      "mappedBy": "company"
+    },
+    "keyHighlights": {
+      "type": "blocks"
+    }
+  }
+}
