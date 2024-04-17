@@ -8,30 +8,34 @@ aws.config.update({
 });
 
 
-const sesNormal = new aws.SES({ apiVersion: '2010-12-01' });
+const awsSes = new aws.SES({ apiVersion: '2010-12-01' });
 
 module.exports = {
 
   async sendEmailNormal(email,data) {
+ 
     const params = {
       Source:`${process.env.EMAIL_DEFAULT_FROM}`,
       Destination: {
         ToAddresses: [email],
       },
+      ReplyToAddresses: [process.env.EMAIL_DEFAULT_FROM],
       Message: {
         Subject: {
           Data: 'Market capsule OTP',
         },
         Body: {
           Html: {
+            Charset: "UTF-8",
             Data: `<h3>Use this otp ${data.otp} to login market capsule.</h3>`
           },
           
         },
       },
     };
+ 
     return new Promise(resolve => {
-      sesNormal.sendEmail(params)
+        awsSes.sendEmail(params)
       .promise()
       .then((data)=>{
         console.log(data);

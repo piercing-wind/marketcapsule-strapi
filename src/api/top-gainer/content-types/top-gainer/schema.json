@@ -4,7 +4,8 @@
   "info": {
     "singularName": "top-gainer",
     "pluralName": "top-gainers",
-    "displayName": "topGainer"
+    "displayName": "topGainer",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -18,6 +19,13 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::company.company"
+    },
+    "exchangeType": {
+      "type": "enumeration",
+      "enum": [
+        "NSE",
+        "BSE"
+      ]
     }
   }
 }

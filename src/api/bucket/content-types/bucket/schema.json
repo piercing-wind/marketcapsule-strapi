@@ -21,12 +21,10 @@
     },
     "image": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "allowedTypes": [
-        "files",
-        "videos",
-        "audios"
+        "images"
       ]
     },
     "capsuleplus": {
@@ -56,9 +54,9 @@
     },
     "companies": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::company.company",
-      "mappedBy": "bucket"
+      "mappedBy": "buckets"
     }
   }
 }

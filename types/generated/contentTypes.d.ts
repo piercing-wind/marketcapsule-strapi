@@ -816,7 +816,7 @@ export interface ApiBucketBucket extends Schema.CollectionType {
     tag: Attribute.Relation<'api::bucket.bucket', 'manyToOne', 'api::tag.tag'>;
     companies: Attribute.Relation<
       'api::bucket.bucket',
-      'oneToMany',
+      'manyToMany',
       'api::company.company'
     >;
     createdAt: Attribute.DateTime;
@@ -949,13 +949,12 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     title: Attribute.String;
     productDetail: Attribute.Text;
     websiteUrl: Attribute.String;
-    aboutTheCompany: Attribute.Blocks;
     capsuleView: Attribute.Blocks;
     businessDetail: Attribute.Blocks;
     otherDetails: Attribute.JSON;
-    bucket: Attribute.Relation<
+    buckets: Attribute.Relation<
       'api::company.company',
-      'manyToOne',
+      'manyToMany',
       'api::bucket.bucket'
     >;
     slug: Attribute.UID<'api::company.company', 'name'>;
@@ -988,6 +987,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'api::share-holding.share-holding'
     >;
     keyHighlights: Attribute.Blocks;
+    aboutTheCompany: Attribute.RichText;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1578,6 +1578,7 @@ export interface ApiTopGainerTopGainer extends Schema.CollectionType {
     singularName: 'top-gainer';
     pluralName: 'top-gainers';
     displayName: 'topGainer';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1589,6 +1590,7 @@ export interface ApiTopGainerTopGainer extends Schema.CollectionType {
       'oneToOne',
       'api::company.company'
     >;
+    exchangeType: Attribute.Enumeration<['NSE', 'BSE']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1612,6 +1614,7 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
     singularName: 'top-loser';
     pluralName: 'top-losers';
     displayName: 'TopLoser';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1623,6 +1626,7 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
       'oneToOne',
       'api::company.company'
     >;
+    exchangeType: Attribute.Enumeration<['NSE', 'BSE']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

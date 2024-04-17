@@ -38,7 +38,7 @@
     },
     "featuredImage": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "allowedTypes": [
         "images"
@@ -46,7 +46,7 @@
     },
     "logo": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "allowedTypes": [
         "images"
@@ -61,9 +61,6 @@
     "websiteUrl": {
       "type": "string"
     },
-    "aboutTheCompany": {
-      "type": "blocks"
-    },
     "capsuleView": {
       "type": "blocks"
     },
@@ -73,9 +70,9 @@
     "otherDetails": {
       "type": "json"
     },
-    "bucket": {
+    "buckets": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::bucket.bucket",
       "inversedBy": "companies"
     },
@@ -125,6 +122,9 @@
     },
     "keyHighlights": {
       "type": "blocks"
+    },
+    "aboutTheCompany": {
+      "type": "richtext"
     }
   }
 }

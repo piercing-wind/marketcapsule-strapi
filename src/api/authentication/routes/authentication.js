@@ -2,8 +2,8 @@ module.exports = {
   routes: [
     {
      method: 'POST',
-     path: '/authentication/register',
-     handler: 'authentication.register',
+     path: '/authentication/login',
+     handler: 'authentication.login',
      
     },
     {
@@ -12,11 +12,11 @@ module.exports = {
       handler: 'authentication.verifyOtp',
       
      },
-     {
-      method: 'POST',
-      path: '/authentication/login',
-      handler: 'authentication.login',
+    //  {
+    //   method: 'POST',
+    //   path: '/authentication/login',
+    //   handler: 'authentication.login',
       
-     },
+    //  },
   ],
 };

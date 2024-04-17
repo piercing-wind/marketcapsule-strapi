@@ -4,7 +4,8 @@
   "info": {
     "singularName": "top-loser",
     "pluralName": "top-losers",
-    "displayName": "TopLoser"
+    "displayName": "TopLoser",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -18,6 +19,13 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::company.company"
+    },
+    "exchangeType": {
+      "type": "enumeration",
+      "enum": [
+        "NSE",
+        "BSE"
+      ]
     }
   }
 }
