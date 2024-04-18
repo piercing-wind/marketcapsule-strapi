@@ -96,12 +96,6 @@
       "target": "api::business-segment.business-segment",
       "mappedBy": "company"
     },
-    "compnay_timeline": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::compnay-timeline.compnay-timeline",
-      "mappedBy": "company"
-    },
     "financial_highlight": {
       "type": "relation",
       "relation": "oneToOne",
@@ -125,6 +119,18 @@
     },
     "aboutTheCompany": {
       "type": "richtext"
+    },
+    "company_share_detail": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company-share-detail.company-share-detail",
+      "mappedBy": "company"
+    },
+    "compnay_timeline": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::compnay-timeline.compnay-timeline",
+      "mappedBy": "company"
     }
   }
 }

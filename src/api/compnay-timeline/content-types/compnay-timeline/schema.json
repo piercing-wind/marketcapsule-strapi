@@ -4,7 +4,8 @@
   "info": {
     "singularName": "compnay-timeline",
     "pluralName": "compnay-timelines",
-    "displayName": "CompnayTimeline"
+    "displayName": "CompnayTimeline",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true

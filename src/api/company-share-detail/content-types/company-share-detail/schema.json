@@ -4,16 +4,14 @@
   "info": {
     "singularName": "company-share-detail",
     "pluralName": "company-share-details",
-    "displayName": "companyShareDetail"
+    "displayName": "companyShareDetail",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "marketCap": {
-      "type": "string"
-    },
     "peRatio": {
       "type": "float"
     },
@@ -70,6 +68,15 @@
     },
     "peRemark": {
       "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company",
+      "inversedBy": "company_share_detail"
+    },
+    "marketCap": {
+      "type": "float"
     }
   }
 }

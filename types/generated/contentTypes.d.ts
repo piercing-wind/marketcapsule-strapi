@@ -966,11 +966,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToMany',
       'api::business-segment.business-segment'
     >;
-    compnay_timeline: Attribute.Relation<
-      'api::company.company',
-      'oneToOne',
-      'api::compnay-timeline.compnay-timeline'
-    >;
     financial_highlight: Attribute.Relation<
       'api::company.company',
       'oneToOne',
@@ -988,6 +983,16 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     >;
     keyHighlights: Attribute.Blocks;
     aboutTheCompany: Attribute.RichText;
+    company_share_detail: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::company-share-detail.company-share-detail'
+    >;
+    compnay_timeline: Attribute.Relation<
+      'api::company.company',
+      'oneToOne',
+      'api::compnay-timeline.compnay-timeline'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1013,12 +1018,12 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     singularName: 'company-share-detail';
     pluralName: 'company-share-details';
     displayName: 'companyShareDetail';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    marketCap: Attribute.String;
     peRatio: Attribute.Float;
     rocePercent: Attribute.Float;
     rociPercent: Attribute.Float;
@@ -1038,6 +1043,12 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     NSE: Attribute.Integer;
     ttpmPE: Attribute.String;
     peRemark: Attribute.String;
+    company: Attribute.Relation<
+      'api::company-share-detail.company-share-detail',
+      'oneToOne',
+      'api::company.company'
+    >;
+    marketCap: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1136,6 +1147,7 @@ export interface ApiCompnayTimelineCompnayTimeline
     singularName: 'compnay-timeline';
     pluralName: 'compnay-timelines';
     displayName: 'CompnayTimeline';
+    description: '';
   };
   options: {
     draftAndPublish: true;
