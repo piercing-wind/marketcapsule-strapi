@@ -949,8 +949,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     title: Attribute.String;
     productDetail: Attribute.Text;
     websiteUrl: Attribute.String;
-    capsuleView: Attribute.Blocks;
-    businessDetail: Attribute.Blocks;
     otherDetails: Attribute.JSON;
     buckets: Attribute.Relation<
       'api::company.company',
@@ -982,7 +980,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'api::share-holding.share-holding'
     >;
     keyHighlights: Attribute.Blocks;
-    aboutTheCompany: Attribute.RichText;
     company_share_detail: Attribute.Relation<
       'api::company.company',
       'oneToOne',
@@ -993,6 +990,10 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToOne',
       'api::compnay-timeline.compnay-timeline'
     >;
+    capsuleView: Attribute.Blocks;
+    aboutTheCompany: Attribute.Blocks;
+    businessDetail: Attribute.Blocks;
+    businessOverview: Attribute.Blocks;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

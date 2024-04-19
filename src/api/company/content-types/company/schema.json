@@ -61,12 +61,6 @@
     "websiteUrl": {
       "type": "string"
     },
-    "capsuleView": {
-      "type": "blocks"
-    },
-    "businessDetail": {
-      "type": "blocks"
-    },
     "otherDetails": {
       "type": "json"
     },
@@ -117,9 +111,6 @@
     "keyHighlights": {
       "type": "blocks"
     },
-    "aboutTheCompany": {
-      "type": "richtext"
-    },
     "company_share_detail": {
       "type": "relation",
       "relation": "oneToOne",
@@ -131,6 +122,18 @@
       "relation": "oneToOne",
       "target": "api::compnay-timeline.compnay-timeline",
       "mappedBy": "company"
+    },
+    "capsuleView": {
+      "type": "blocks"
+    },
+    "aboutTheCompany": {
+      "type": "blocks"
+    },
+    "businessDetail": {
+      "type": "blocks"
+    },
+    "businessOverview": {
+      "type": "blocks"
     }
   }
 }

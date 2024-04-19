@@ -10,6 +10,12 @@ module.exports = {
         path: '/company/detail', 
         handler: 'companies.detail',
 
+      },
+      {
+        method: 'GET',
+        path: '/company/filter', 
+        handler: 'companies.filter',
+
       }
 
     ]

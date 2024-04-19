@@ -99,7 +99,7 @@ module.exports = {
            console.log("slug",slug)
           let filters=[
             {
-                filterName:"sme",
+                filterName:"companyTypeId",
                 name:'Type of SME',
                 type:"checkbox",
                 detail:[]
