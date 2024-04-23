@@ -28,6 +28,7 @@ module.exports = (plugin) =>{
 
 
 
+
     plugin.routes['content-api'].routes.push({
 
         method: "PUT",

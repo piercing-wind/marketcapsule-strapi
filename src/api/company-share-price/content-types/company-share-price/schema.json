@@ -4,7 +4,8 @@
   "info": {
     "singularName": "company-share-price",
     "pluralName": "company-share-prices",
-    "displayName": "companySharePrice"
+    "displayName": "companySharePrice",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,14 +17,6 @@
       "relation": "oneToOne",
       "target": "api::company.company"
     },
-    "BSE": {
-      "type": "boolean",
-      "default": false
-    },
-    "NSE": {
-      "type": "boolean",
-      "default": true
-    },
     "date": {
       "type": "date"
     },
@@ -33,6 +26,13 @@
     },
     "volume": {
       "type": "float"
+    },
+    "exchangeName": {
+      "type": "enumeration",
+      "enum": [
+        "NSE",
+        "BSE"
+      ]
     }
   }
 }

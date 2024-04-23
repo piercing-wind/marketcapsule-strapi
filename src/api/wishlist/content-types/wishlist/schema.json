@@ -4,14 +4,15 @@
   "info": {
     "singularName": "wishlist",
     "pluralName": "wishlists",
-    "displayName": "Wishlist"
+    "displayName": "Wishlist",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "users_permissions_user": {
+    "userId": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"

@@ -763,15 +763,15 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     fullName: Attribute.String;
     dob: Attribute.Date;
     profession: Attribute.String;
+    googleId: Attribute.String;
+    facebookId: Attribute.String;
+    linkdinId: Attribute.String;
+    profileStatus: Attribute.String & Attribute.DefaultTo<'pending'>;
     subscriptions: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
       'api::subscription.subscription'
     >;
-    googleId: Attribute.String;
-    facebookId: Attribute.String;
-    linkdinId: Attribute.String;
-    profileStatus: Attribute.String & Attribute.DefaultTo<'pending'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1075,6 +1075,7 @@ export interface ApiCompanySharePriceCompanySharePrice
     singularName: 'company-share-price';
     pluralName: 'company-share-prices';
     displayName: 'companySharePrice';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1085,11 +1086,10 @@ export interface ApiCompanySharePriceCompanySharePrice
       'oneToOne',
       'api::company.company'
     >;
-    BSE: Attribute.Boolean & Attribute.DefaultTo<false>;
-    NSE: Attribute.Boolean & Attribute.DefaultTo<true>;
     date: Attribute.Date;
     price: Attribute.Float & Attribute.Required;
     volume: Attribute.Float;
+    exchangeName: Attribute.Enumeration<['NSE', 'BSE']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1517,6 +1517,7 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     singularName: 'subscription';
     pluralName: 'subscriptions';
     displayName: 'Subscription';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1527,7 +1528,7 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     isCancel: Attribute.Boolean & Attribute.DefaultTo<false>;
     paymentGateway: Attribute.String;
     amount: Attribute.String;
-    users_permissions_user: Attribute.Relation<
+    userId: Attribute.Relation<
       'api::subscription.subscription',
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1664,12 +1665,13 @@ export interface ApiWishlistWishlist extends Schema.CollectionType {
     singularName: 'wishlist';
     pluralName: 'wishlists';
     displayName: 'Wishlist';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
-    users_permissions_user: Attribute.Relation<
+    userId: Attribute.Relation<
       'api::wishlist.wishlist',
       'oneToOne',
       'plugin::users-permissions.user'

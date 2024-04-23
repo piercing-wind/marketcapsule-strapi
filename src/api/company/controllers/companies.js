@@ -2,7 +2,7 @@ module.exports = {
     list: async (ctx) => {
         try {
 
-            let {limit, page, bucketId, companyTypeId, pe, marketCap,smeTypeId } = ctx.request.query
+            let { limit, page, bucketId, companyTypeId, pe, marketCap, sectorId ,industryId} = ctx.request.query
             console.log(ctx.request.query);
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -47,14 +47,41 @@ module.exports = {
                     peRatio: { $gte: pe.gte }
                 }
             }
+            if(sectorId){
+                sectorId=parseInt(sectorId)
+                whereQuery["sector"]={
+                    id:sectorId
+                }
+            }
+            if(industryId){
+                industryId = parseInt(industryId);
+                whereQuery["industry"]={
+                    id:industryId
+                }
+            }
 
             const companies = await strapi.db.query("api::company.company").findMany({
                 where: whereQuery,
-                select: ["name", "slug"],
+                select: ["name", "slug", "capsuleplus"],
                 populate: {
-                    company_share_detail: true,
-                    company_type: true,
-                    buckets: true
+                    company_share_detail: {
+                        select: ["marketCap", "ttpmPE"]
+                    },
+                    company_type: {
+                        select: ["id", "slug"]
+                    },
+                    buckets: {
+                        select: ["id", "slug"]
+                    },
+                    industry: {
+                        select: ["id", "slug", "name"]
+                    },
+                    sector: {
+                        select: ["id", "name", "slug"]
+                    },
+                    featuredImage: {
+                        select: ["alternativeText", "url"]
+                    }
                 },
                 offset: offset,
                 limit: limit,
@@ -99,36 +126,87 @@ module.exports = {
             if (pageName === "bucket-company-detail") {
                 let obj = {
                     compnay_timeline: true,
-                    company_share_detail: true,
-                    featuredImage: true,
-                    logo: true
+                    sector:{
+                        select:["name"]
+                    },
+                    company_share_detail: {
+                        select:["prevClosePrice","marketCap","sectoralPERange","BSE","ttpmPE","peRemark"]
+                    },
+                    featuredImage: {
+                        select: ["alternativeText", "url"]
+                    },
+                    logo: {
+                        select: ["alternativeText", "url"]
+                    },
                 }
                 populate = { ...populate, ...obj }
                 select.push("about")
             }
 
-            if(pageName==="ipo-company-detail"){
+            if (pageName === "ipo-company-detail") {
                 let obj = {
                     business_segments: true,
-                    company_share_detail: true,
-                    featuredImage: true,
-                    logo: true,
-                    industry:true,
-                    share_holding:true,
-                    financial_highlight:true
+                    company_share_detail: {
+                        select:["marketCap","peRatio","rociPercent","roePercent","roePercent","currentPrice","deRatio","cwip","cashConversionCycle","pegRatio"]
+                    },
+                    featuredImage: {
+                        select: ["alternativeText", "url"]
+                    },
+                    logo: {
+                        select: ["alternativeText", "url"]
+                    },
+                    industry: {
+                        select:["industrialOutlook"]
+                    },
+                    share_holding: true,
+                    financial_highlight: true
                 }
                 populate = { ...populate, ...obj }
-                select.push("aboutTheCompany","keyHighlights","capsuleView")
+                select.push("aboutTheCompany", "keyHighlights", "capsuleView")
+            }
+            let isPrice=false;
+            let prices;
+
+            if(pageName==="capsuleplus-company-detail"){
+                isPrice=true;
+                let obj = {
+                    company_share_detail: {
+                        select:["marketCap","BSE","ttpmPE","prevClosePrice","sectoralPERange","peRemark"]
+                    },
+                    featuredImage: {
+                        select: ["alternativeText", "url"]
+                    },
+                    logo: {
+                        select: ["alternativeText", "url"]
+                    },
+                    sector: {
+                        select:["name"]
+                    },
+                    operation_detail:true
+                }
+                populate = { ...populate, ...obj }
+                select.push("businessOverview","otherDetails");
+
+                // load share pricess of company...
+                let company = await strapi.db.query("api::company.company").findOne({where:whereQuery,select:["id"]})
+                prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
+                    where:{
+                        companyId:company.id
+                    },
+                })
+
+                console.log("prices",prices)
+
             }
 
-            console.log("populate", populate, select)
-
-
+            
+            
             let company = await strapi.db.query("api::company.company").findOne({
                 where: whereQuery,
                 select: select,
                 populate: populate
             })
+            company = !isPrice?company:{...company,...{prices:prices}}
 
             return ctx.response.send({
                 success: true,

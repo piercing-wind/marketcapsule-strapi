@@ -65,12 +65,6 @@
     "profession": {
       "type": "string"
     },
-    "subscriptions": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::subscription.subscription",
-      "mappedBy": "users_permissions_user"
-    },
     "googleId": {
       "type": "string"
     },
@@ -83,6 +77,12 @@
     "profileStatus": {
       "type": "string",
       "default": "pending"
+    },
+    "subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subscription.subscription",
+      "mappedBy": "userId"
     }
   }
 }
