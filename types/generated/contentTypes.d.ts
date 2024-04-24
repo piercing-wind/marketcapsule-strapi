@@ -765,13 +765,18 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     profession: Attribute.String;
     googleId: Attribute.String;
     facebookId: Attribute.String;
-    linkdinId: Attribute.String;
     profileStatus: Attribute.String & Attribute.DefaultTo<'pending'>;
     subscriptions: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
       'api::subscription.subscription'
     >;
+    user_roles: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::user-role.user-role'
+    >;
+    capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -819,6 +824,7 @@ export interface ApiBucketBucket extends Schema.CollectionType {
       'manyToMany',
       'api::company.company'
     >;
+    isPaid: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1050,6 +1056,7 @@ export interface ApiCompanyShareDetailCompanyShareDetail
       'api::company.company'
     >;
     marketCap: Attribute.Float;
+    change: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1175,6 +1182,36 @@ export interface ApiCompnayTimelineCompnayTimeline
       'oneToOne',
       'admin::user'
     > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiFeedFeed extends Schema.CollectionType {
+  collectionName: 'feeds';
+  info: {
+    singularName: 'feed';
+    pluralName: 'feeds';
+    displayName: 'Feed';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    type: Attribute.Enumeration<['SCREENER', 'CAPSULE+', 'IPO']>;
+    tag: Attribute.Relation<'api::feed.feed', 'oneToOne', 'api::tag.tag'>;
+    featuredImage: Attribute.Media & Attribute.Required;
+    url: Attribute.String & Attribute.Required;
+    industry: Attribute.Relation<
+      'api::feed.feed',
+      'oneToOne',
+      'api::industry.industry'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::feed.feed', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::feed.feed', 'oneToOne', 'admin::user'> &
       Attribute.Private;
   };
 }
@@ -1425,6 +1462,7 @@ export interface ApiPlanPlan extends Schema.CollectionType {
     planType: Attribute.String;
     durationInDays: Attribute.Integer & Attribute.Required;
     slug: Attribute.UID<'api::plan.plan', 'name'>;
+    currency: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
@@ -1523,11 +1561,8 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    status: Attribute.Boolean & Attribute.DefaultTo<false>;
     expiryDate: Attribute.DateTime;
     isCancel: Attribute.Boolean & Attribute.DefaultTo<false>;
-    paymentGateway: Attribute.String;
-    amount: Attribute.String;
     userId: Attribute.Relation<
       'api::subscription.subscription',
       'manyToOne',
@@ -1538,6 +1573,12 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
       'oneToOne',
       'api::plan.plan'
     >;
+    paymentDetails: Attribute.JSON;
+    paymentStatus: Attribute.Enumeration<['PENDING', 'INITIATED', 'COMPLETED']>;
+    transactionID: Attribute.String;
+    amount: Attribute.Float;
+    invoiceUrl: Attribute.String;
+    active: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1659,6 +1700,36 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserRoleUserRole extends Schema.CollectionType {
+  collectionName: 'user_roles';
+  info: {
+    singularName: 'user-role';
+    pluralName: 'user-roles';
+    displayName: 'UserRole';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    description: Attribute.Text & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-role.user-role',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-role.user-role',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiWishlistWishlist extends Schema.CollectionType {
   collectionName: 'wishlists';
   info: {
@@ -1724,6 +1795,7 @@ declare module '@strapi/types' {
       'api::company-share-price.company-share-price': ApiCompanySharePriceCompanySharePrice;
       'api::company-type.company-type': ApiCompanyTypeCompanyType;
       'api::compnay-timeline.compnay-timeline': ApiCompnayTimelineCompnayTimeline;
+      'api::feed.feed': ApiFeedFeed;
       'api::financial-highlight.financial-highlight': ApiFinancialHighlightFinancialHighlight;
       'api::industry.industry': ApiIndustryIndustry;
       'api::ipo.ipo': ApiIpoIpo;
@@ -1737,6 +1809,7 @@ declare module '@strapi/types' {
       'api::tag.tag': ApiTagTag;
       'api::top-gainer.top-gainer': ApiTopGainerTopGainer;
       'api::top-loser.top-loser': ApiTopLoserTopLoser;
+      'api::user-role.user-role': ApiUserRoleUserRole;
       'api::wishlist.wishlist': ApiWishlistWishlist;
     }
   }

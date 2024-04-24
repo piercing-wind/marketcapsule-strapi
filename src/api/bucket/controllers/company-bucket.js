@@ -62,29 +62,47 @@ module.exports = {
     },
     detail:async(ctx)=>{
         try {
+            let capsuleplusUser=false;
+
+            if(ctx.state && ctx.state.user){
+                capsuleplusUser = ctx.state.user.capsuleplus;
+            }
 
             let {slug} = ctx.request.query
      
             if(!slug){
                 return ctx.badRequest("Slug missing!")
             }
+
            let bucket = await strapi.db.query("api::bucket.bucket").findOne({
             where:{slug:slug},
-            select:["name","slug","description"],
+            select:["name","slug","description","capsuleplus"],
             populate:{
                 companies:{
+                    select:["name"],
                     populate:{
-                        company_share_detail:true,
+                        company_share_detail:{
+                            select:["ttpmPE","marketCap"]
+                        },
                     }
                 }
                 
             }
            })
 
+           let data = JSON.parse(JSON.stringify(bucket));
+
+           if(data && capsuleplusUser&& bucket.capsuleplus){
+                data.companies = bucket.companies.slice(0,6)
+            
+           }
+     
+
             return ctx.response.send({
                 success:true,
                 message:"Detail fetched",
-                data:bucket
+                capsuleplus:data ? data.capsuleplus:false,
+                data:data,
             })
             
         } catch (err) {
@@ -139,25 +157,7 @@ module.exports = {
 
           let companyType = await strapi.db.query("api::company-type.company-type").findMany({select:["id","name","slug"]})
           filters[0]["detail"] = companyType
-
-        //   let shareDetail  = await strapi.db.query("api::company-share-detail.company-share-detail").findMany({
-        //     where:{
-        //         "company":{
-        //             "buckets":{
-        //                 "slug":slug
-        //             }
-        //         }
-        //     },
-        //     select:["marketCap","peRatio"],
-        //     populate:{
-        //         company:{
-        //             populate:{
-        //                     buckets:true
-        //             }
-        //         }
-        //     }
-        //   })
-
+          
             return ctx.response.send({
                 success:true,
                 message:"Detail fetched",

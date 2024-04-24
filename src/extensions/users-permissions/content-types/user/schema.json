@@ -71,9 +71,6 @@
     "facebookId": {
       "type": "string"
     },
-    "linkdinId": {
-      "type": "string"
-    },
     "profileStatus": {
       "type": "string",
       "default": "pending"
@@ -83,6 +80,15 @@
       "relation": "oneToMany",
       "target": "api::subscription.subscription",
       "mappedBy": "userId"
+    },
+    "user_roles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-role.user-role"
+    },
+    "capsuleplus": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -45,6 +45,7 @@ module.exports ={
             let offset = (page - 1) * limit;
 
 
+            let whereQuery={}
 
             let list = await strapi.db.query("api::wishlist.wishlist").findMany(({
                 where:{userId:userId},
@@ -54,18 +55,48 @@ module.exports ={
                         populate:{
                             company_share_detail:{
 
-                                select:["ltp","prevClosePrice","dayHigh","dayLow","changeInPercent"]
+                                select:["ltp","prevClosePrice","dayHigh","dayLow","changeInPercent","change"]
                             }
                         }
                     }
-                }
+                },
+                offset:offset,
+                limit:limit,
+                orderBy: { createdAt: 'desc'}
+                
             }))
+
+            let count=await strapi.db.query("api::wishlist.wishlist").count({where:whereQuery})
 
             return ctx.response.send({
                 success:true,
                 message:"success",
+                count:count,
                 data:list
             })
+            
+        } catch (error) {
+            return ctx.badRequest(error)
+        }
+    },
+    remove:async(ctx)=>{
+        try {
+            if(!ctx.state.user || !ctx.state.user.id){
+                return ctx.badRequest("Please login first")
+            }
+
+            let userId = ctx.state.user.id;
+
+            let {companyId} = ctx.request.params;
+            if(!companyId){
+                return ctx.badRequest("CompanyId missing!")
+            }
+
+           await strapi.db.query("api::wishlist.wishlist").delete({where:{userId,companyId}})
+           return ctx.response.send({
+            success:true,
+            message:"Removed from Watchlist."
+           })
             
         } catch (error) {
             return ctx.badRequest(error)

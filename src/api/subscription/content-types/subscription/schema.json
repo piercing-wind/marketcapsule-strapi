@@ -12,22 +12,12 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "status": {
-      "type": "boolean",
-      "default": false
-    },
     "expiryDate": {
       "type": "datetime"
     },
     "isCancel": {
       "type": "boolean",
       "default": false
-    },
-    "paymentGateway": {
-      "type": "string"
-    },
-    "amount": {
-      "type": "string"
     },
     "userId": {
       "type": "relation",
@@ -39,6 +29,30 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::plan.plan"
+    },
+    "paymentDetails": {
+      "type": "json"
+    },
+    "paymentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "PENDING",
+        "INITIATED",
+        "COMPLETED"
+      ]
+    },
+    "transactionID": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "float"
+    },
+    "invoiceUrl": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

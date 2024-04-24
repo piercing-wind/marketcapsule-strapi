@@ -112,7 +112,13 @@ module.exports = {
     },
     detail: async (ctx) => {
         try {
-            console.log("1234567");
+
+            let capsuleplusUser=false;
+
+            if(ctx.state && ctx.state.user){
+                capsuleplusUser = ctx.state.user.capsuleplus;
+            }
+           
 
             let { slug, id, pageName } = ctx.request.query
 
@@ -128,6 +134,9 @@ module.exports = {
                     compnay_timeline: true,
                     sector:{
                         select:["name"]
+                    },
+                    industry:{
+                        select:["name","slug"]
                     },
                     company_share_detail: {
                         select:["prevClosePrice","marketCap","sectoralPERange","BSE","ttpmPE","peRemark"]
@@ -156,7 +165,7 @@ module.exports = {
                         select: ["alternativeText", "url"]
                     },
                     industry: {
-                        select:["industrialOutlook"]
+                        select:["industrialOutlook","name","slug"]
                     },
                     share_holding: true,
                     financial_highlight: true
@@ -207,6 +216,11 @@ module.exports = {
                 populate: populate
             })
             company = !isPrice?company:{...company,...{prices:prices}}
+
+            if(capsuleplusUser&& company.capsuleplus){
+               
+            
+           }
 
             return ctx.response.send({
                 success: true,

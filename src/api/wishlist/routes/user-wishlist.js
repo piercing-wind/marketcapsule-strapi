@@ -10,6 +10,12 @@ module.exports = {
         path: '/wishlist/add', 
         handler: 'user-wishlist.add',
 
+      },
+      {
+        method: 'DELETE',
+        path: '/wishlist/:companyId', 
+        handler: 'user-wishlist.remove',
+
       }
 
     ]

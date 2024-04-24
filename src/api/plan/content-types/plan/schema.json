@@ -40,6 +40,9 @@
     "slug": {
       "type": "uid",
       "targetField": "name"
+    },
+    "currency": {
+      "type": "string"
     }
   }
 }
