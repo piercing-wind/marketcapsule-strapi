@@ -89,6 +89,9 @@
     "capsuleplus": {
       "type": "boolean",
       "default": false
+    },
+    "socketId": {
+      "type": "string"
     }
   }
 }

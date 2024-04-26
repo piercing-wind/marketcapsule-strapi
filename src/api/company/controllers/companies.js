@@ -2,7 +2,7 @@ module.exports = {
     list: async (ctx) => {
         try {
 
-            let { limit, page, bucketId, companyTypeId, pe, marketCap, sectorId ,industryId} = ctx.request.query
+            let { limit, page, bucketId, companyTypeId, pe, marketCap, sectorId, industryId,pageName } = ctx.request.query
             console.log(ctx.request.query);
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -10,6 +10,11 @@ module.exports = {
             let offset = (page - 1) * limit;
 
             let whereQuery = {}
+
+            if(pageName==="capsuleplus"){
+                limit=9;
+                page=1
+            }
 
 
             if (bucketId) {
@@ -47,16 +52,16 @@ module.exports = {
                     peRatio: { $gte: pe.gte }
                 }
             }
-            if(sectorId){
-                sectorId=parseInt(sectorId)
-                whereQuery["sector"]={
-                    id:sectorId
+            if (sectorId) {
+                sectorId = parseInt(sectorId)
+                whereQuery["sector"] = {
+                    id: sectorId
                 }
             }
-            if(industryId){
+            if (industryId) {
                 industryId = parseInt(industryId);
-                whereQuery["industry"]={
-                    id:industryId
+                whereQuery["industry"] = {
+                    id: industryId
                 }
             }
 
@@ -101,6 +106,7 @@ module.exports = {
                 success: true,
                 message: "success",
                 count,
+                capsuleplus:pageName==="capsuleplus"?true:false,
                 data: companies,
             })
 
@@ -113,14 +119,16 @@ module.exports = {
     detail: async (ctx) => {
         try {
 
-            let capsuleplusUser=false;
+            let capsuleplusUser = false;
 
-            if(ctx.state && ctx.state.user){
+            if (ctx.state && ctx.state.user) {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
-           
 
-            let { slug, id, pageName } = ctx.request.query
+
+            let { slug, id, pageName, capsuleplus} = ctx.request.query;
+            console.log("capsuleplus",capsuleplus);
+            console.log("capsuleplusUser",capsuleplusUser)
 
             let whereQuery = {
                 ...(slug && { slug }),
@@ -132,14 +140,14 @@ module.exports = {
             if (pageName === "bucket-company-detail") {
                 let obj = {
                     compnay_timeline: true,
-                    sector:{
-                        select:["name"]
+                    sector: {
+                        select: ["name"]
                     },
-                    industry:{
-                        select:["name","slug"]
+                    industry: {
+                        select: ["name", "slug"]
                     },
                     company_share_detail: {
-                        select:["prevClosePrice","marketCap","sectoralPERange","BSE","ttpmPE","peRemark"]
+                        select: ["prevClosePrice", "marketCap", "sectoralPERange", "BSE", "ttpmPE", "peRemark"]
                     },
                     featuredImage: {
                         select: ["alternativeText", "url"]
@@ -153,78 +161,115 @@ module.exports = {
             }
 
             if (pageName === "ipo-company-detail") {
-                let obj = {
-                    business_segments: true,
-                    company_share_detail: {
-                        select:["marketCap","peRatio","rociPercent","roePercent","roePercent","currentPrice","deRatio","cwip","cashConversionCycle","pegRatio"]
-                    },
-                    featuredImage: {
-                        select: ["alternativeText", "url"]
-                    },
-                    logo: {
-                        select: ["alternativeText", "url"]
-                    },
-                    industry: {
-                        select:["industrialOutlook","name","slug"]
-                    },
-                    share_holding: true,
-                    financial_highlight: true
+                if ((!capsuleplus) || (capsuleplus==="true" && capsuleplusUser)) {
+                    console.log('false===');
+                    let obj = {
+                        business_segments: true,
+                        company_share_detail: {
+                            select: ["marketCap", "peRatio", "rociPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
+                        },
+                        featuredImage: {
+                            select: ["alternativeText", "url"]
+                        },
+                        logo: {
+                            select: ["alternativeText", "url"]
+                        },
+                        industry: {
+                            select: ["industrialOutlook", "name", "slug"]
+                        },
+                        share_holding: true,
+                        financial_highlight: true
+                    }
+                    populate = { ...populate, ...obj }
+                    select.push("aboutTheCompany", "keyHighlights", "capsuleView")
                 }
-                populate = { ...populate, ...obj }
-                select.push("aboutTheCompany", "keyHighlights", "capsuleView")
+                else {
+                    let obj = {
+                        business_segments: true,
+                        company_share_detail: {
+                            select: ["marketCap", "peRatio", "rociPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
+                        },
+                        featuredImage: {
+                            select: ["alternativeText", "url"]
+                        },
+                        logo: {
+                            select: ["alternativeText", "url"]
+                        },
+                    }
+                    populate = { ...populate, ...obj }
+                    select.push("aboutTheCompany")
+                }
+
             }
-            let isPrice=false;
+            let isPrice = false;
             let prices;
 
-            if(pageName==="capsuleplus-company-detail"){
-                isPrice=true;
-                let obj = {
-                    company_share_detail: {
-                        select:["marketCap","BSE","ttpmPE","prevClosePrice","sectoralPERange","peRemark"]
-                    },
-                    featuredImage: {
-                        select: ["alternativeText", "url"]
-                    },
-                    logo: {
-                        select: ["alternativeText", "url"]
-                    },
-                    sector: {
-                        select:["name"]
-                    },
-                    operation_detail:true
+            if (pageName === "capsuleplus-company-detail") {
+                if ((!capsuleplus) || (capsuleplus==="true" && capsuleplusUser)) {
+                    isPrice = true;
+                    let obj = {
+                        company_share_detail: {
+                            select: ["marketCap", "BSE", "ttpmPE", "prevClosePrice", "sectoralPERange", "peRemark"]
+                        },
+                        featuredImage: {
+                            select: ["alternativeText", "url"]
+                        },
+                        logo: {
+                            select: ["alternativeText", "url"]
+                        },
+                        sector: {
+                            select: ["name"]
+                        },
+                        industry: {
+                            select: ["name", "slug"]
+                        },
+                        operation_detail: true
+                    }
+                    populate = { ...populate, ...obj }
+                    select.push("businessOverview", "otherDetails");
+                    // load share pricess of company...
+                    let company = await strapi.db.query("api::company.company").findOne({ where: whereQuery, select: ["id"] })
+                    prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
+                        where: {
+                            companyId: company.id
+                        },
+                    })
                 }
-                populate = { ...populate, ...obj }
-                select.push("businessOverview","otherDetails");
+                else {
+                    let obj = {
 
-                // load share pricess of company...
-                let company = await strapi.db.query("api::company.company").findOne({where:whereQuery,select:["id"]})
-                prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
-                    where:{
-                        companyId:company.id
-                    },
-                })
-
-                console.log("prices",prices)
-
+                        featuredImage: {
+                            select: ["alternativeText", "url"]
+                        },
+                        logo: {
+                            select: ["alternativeText", "url"]
+                        },
+                        sector: {
+                            select: ["name"]
+                        },
+                        industry: {
+                            select: ["name", "slug"]
+                        },
+                    }
+                    populate = { ...populate, ...obj }
+                    select.push("businessOverview");
+                }
             }
 
-            
-            
+
+
             let company = await strapi.db.query("api::company.company").findOne({
                 where: whereQuery,
                 select: select,
-                populate: populate
-            })
-            company = !isPrice?company:{...company,...{prices:prices}}
+                populate: populate,
 
-            if(capsuleplusUser&& company.capsuleplus){
-               
-            
-           }
+            })
+            company = !isPrice ? company : { ...company, ...{ prices: prices } }
 
             return ctx.response.send({
                 success: true,
                 message: "Detail fetched",
+                capsuleplus: capsuleplus==="true"?true:false,
                 data: company
             })
 

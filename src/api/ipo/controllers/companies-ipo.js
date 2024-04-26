@@ -69,7 +69,8 @@ module.exports = {
                         openDate:moment(item.openDate).format("MMM Do YYYY"),
                         offerPricePe:item.offerPricePe,
                         lastYearSaleGrowth:item.lastYearSalesGrowth,
-                        industry:item.company?.industry?.name
+                        industry:item.company?.industry?.name,
+                        capsuleplus:item.company?.capsuleplus
                     }
                     data.push(obj)
                 }

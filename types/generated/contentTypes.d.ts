@@ -777,6 +777,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::user-role.user-role'
     >;
     capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
+    socketId: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1371,22 +1372,21 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
     singularName: 'notification';
     pluralName: 'notifications';
     displayName: 'Notification';
+    description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String;
-    read: Attribute.Boolean & Attribute.DefaultTo<false>;
     message: Attribute.Text;
-    users_permissions_user: Attribute.Relation<
+    userId: Attribute.Relation<
       'api::notification.notification',
       'oneToOne',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::notification.notification',
       'oneToOne',
