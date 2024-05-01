@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "capsulepluses",
+  "info": {
+    "singularName": "capsuleplus",
+    "pluralName": "capsulepluses",
+    "displayName": "Capsuleplus"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "wachlists",
+  "info": {
+    "singularName": "wachlist",
+    "pluralName": "wachlists",
+    "displayName": "Wachlist"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

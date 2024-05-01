@@ -43,6 +43,11 @@
       "relation": "oneToMany",
       "target": "api::ipo.ipo",
       "mappedBy": "industry"
+    },
+    "tag": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tag.tag"
     }
   }
 }

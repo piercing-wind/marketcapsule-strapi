@@ -113,6 +113,12 @@ module.exports = {
                     type: "checkbox",
                     detail: []
                 },
+                {
+                    filterName: "companyName",
+                    name: 'Company Name',
+                    type: "checkbox",
+                    detail: []
+                },
             ]
 
             let companyType = await strapi.db.query("api::company-type.company-type").findMany({ select: ["id", "name", "slug"] })
@@ -123,6 +129,12 @@ module.exports = {
 
             let industries = await strapi.db.query("api::industry.industry").findMany({ select: ["id", "name", "slug"] });
             filters[2]["detail"] = industries;
+
+            let companies = await strapi.db.query("api::company.company").findMany({select:["name"]})
+
+            if(companies.length>0){
+                filters[3]["detail"] = companies.map(i=>i.name)
+            }
 
             return ctx.response.send({
                 success: true,

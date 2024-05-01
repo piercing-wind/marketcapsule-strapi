@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "screeners",
+  "info": {
+    "singularName": "screener",
+    "pluralName": "screeners",
+    "displayName": "Screener"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

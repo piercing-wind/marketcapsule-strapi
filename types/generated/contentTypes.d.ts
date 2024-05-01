@@ -884,6 +884,37 @@ export interface ApiBusinessSegmentBusinessSegment
   };
 }
 
+export interface ApiCapsuleplusCapsuleplus extends Schema.SingleType {
+  collectionName: 'capsulepluses';
+  info: {
+    singularName: 'capsuleplus';
+    pluralName: 'capsulepluses';
+    displayName: 'Capsuleplus';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::capsuleplus.capsuleplus',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::capsuleplus.capsuleplus',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCategoryCategory extends Schema.CollectionType {
   collectionName: 'categories';
   info: {
@@ -992,15 +1023,15 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToOne',
       'api::company-share-detail.company-share-detail'
     >;
-    compnay_timeline: Attribute.Relation<
-      'api::company.company',
-      'oneToOne',
-      'api::compnay-timeline.compnay-timeline'
-    >;
     capsuleView: Attribute.Blocks;
     aboutTheCompany: Attribute.Blocks;
     businessDetail: Attribute.Blocks;
     businessOverview: Attribute.Blocks;
+    compnay_timelines: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::compnay-timeline.compnay-timeline'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1166,7 +1197,7 @@ export interface ApiCompnayTimelineCompnayTimeline
     description: Attribute.Text;
     company: Attribute.Relation<
       'api::compnay-timeline.compnay-timeline',
-      'oneToOne',
+      'manyToOne',
       'api::company.company'
     >;
     createdAt: Attribute.DateTime;
@@ -1180,6 +1211,35 @@ export interface ApiCompnayTimelineCompnayTimeline
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::compnay-timeline.compnay-timeline',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDisclaimerDisclaimer extends Schema.SingleType {
+  collectionName: 'disclaimers';
+  info: {
+    singularName: 'disclaimer';
+    pluralName: 'disclaimers';
+    displayName: 'Disclaimer';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::disclaimer.disclaimer',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::disclaimer.disclaimer',
       'oneToOne',
       'admin::user'
     > &
@@ -1285,6 +1345,11 @@ export interface ApiIndustryIndustry extends Schema.CollectionType {
       'oneToMany',
       'api::ipo.ipo'
     >;
+    tag: Attribute.Relation<
+      'api::industry.industry',
+      'oneToOne',
+      'api::tag.tag'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1333,6 +1398,37 @@ export interface ApiIpoIpo extends Schema.CollectionType {
     createdBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiIpoZoneIpoZone extends Schema.SingleType {
+  collectionName: 'ipo_zones';
+  info: {
+    singularName: 'ipo-zone';
+    pluralName: 'ipo-zones';
+    displayName: 'IPO ZONE';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ipo-zone.ipo-zone',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ipo-zone.ipo-zone',
+      'oneToOne',
+      'admin::user'
+    > &
       Attribute.Private;
   };
 }
@@ -1472,6 +1568,104 @@ export interface ApiPlanPlan extends Schema.CollectionType {
   };
 }
 
+export interface ApiProfessionProfession extends Schema.CollectionType {
+  collectionName: 'professions';
+  info: {
+    singularName: 'profession';
+    pluralName: 'professions';
+    displayName: 'Profession';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::profession.profession', 'name'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::profession.profession',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::profession.profession',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPromoCodePromoCode extends Schema.CollectionType {
+  collectionName: 'promo_codes';
+  info: {
+    singularName: 'promo-code';
+    pluralName: 'promo-codes';
+    displayName: 'PromoCode';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    code: Attribute.String & Attribute.Required;
+    expiryDate: Attribute.DateTime & Attribute.Required;
+    maxUsage: Attribute.Integer;
+    discountAmount: Attribute.Float & Attribute.Required;
+    isActive: Attribute.Boolean & Attribute.DefaultTo<true>;
+    availedCount: Attribute.Integer & Attribute.DefaultTo<0>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::promo-code.promo-code',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::promo-code.promo-code',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiScreenerScreener extends Schema.SingleType {
+  collectionName: 'screeners';
+  info: {
+    singularName: 'screener';
+    pluralName: 'screeners';
+    displayName: 'Screener';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::screener.screener',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::screener.screener',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiSectorSector extends Schema.CollectionType {
   collectionName: 'sectors';
   info: {
@@ -1579,6 +1773,11 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     amount: Attribute.Float;
     invoiceUrl: Attribute.String;
     active: Attribute.Boolean & Attribute.DefaultTo<false>;
+    promoCode: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'api::promo-code.promo-code'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1730,6 +1929,36 @@ export interface ApiUserRoleUserRole extends Schema.CollectionType {
   };
 }
 
+export interface ApiWachlistWachlist extends Schema.SingleType {
+  collectionName: 'wachlists';
+  info: {
+    singularName: 'wachlist';
+    pluralName: 'wachlists';
+    displayName: 'Wachlist';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::wachlist.wachlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::wachlist.wachlist',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiWishlistWishlist extends Schema.CollectionType {
   collectionName: 'wishlists';
   info: {
@@ -1789,20 +2018,26 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::bucket.bucket': ApiBucketBucket;
       'api::business-segment.business-segment': ApiBusinessSegmentBusinessSegment;
+      'api::capsuleplus.capsuleplus': ApiCapsuleplusCapsuleplus;
       'api::category.category': ApiCategoryCategory;
       'api::company.company': ApiCompanyCompany;
       'api::company-share-detail.company-share-detail': ApiCompanyShareDetailCompanyShareDetail;
       'api::company-share-price.company-share-price': ApiCompanySharePriceCompanySharePrice;
       'api::company-type.company-type': ApiCompanyTypeCompanyType;
       'api::compnay-timeline.compnay-timeline': ApiCompnayTimelineCompnayTimeline;
+      'api::disclaimer.disclaimer': ApiDisclaimerDisclaimer;
       'api::feed.feed': ApiFeedFeed;
       'api::financial-highlight.financial-highlight': ApiFinancialHighlightFinancialHighlight;
       'api::industry.industry': ApiIndustryIndustry;
       'api::ipo.ipo': ApiIpoIpo;
+      'api::ipo-zone.ipo-zone': ApiIpoZoneIpoZone;
       'api::new.new': ApiNewNew;
       'api::notification.notification': ApiNotificationNotification;
       'api::operation-detail.operation-detail': ApiOperationDetailOperationDetail;
       'api::plan.plan': ApiPlanPlan;
+      'api::profession.profession': ApiProfessionProfession;
+      'api::promo-code.promo-code': ApiPromoCodePromoCode;
+      'api::screener.screener': ApiScreenerScreener;
       'api::sector.sector': ApiSectorSector;
       'api::share-holding.share-holding': ApiShareHoldingShareHolding;
       'api::subscription.subscription': ApiSubscriptionSubscription;
@@ -1810,6 +2045,7 @@ declare module '@strapi/types' {
       'api::top-gainer.top-gainer': ApiTopGainerTopGainer;
       'api::top-loser.top-loser': ApiTopLoserTopLoser;
       'api::user-role.user-role': ApiUserRoleUserRole;
+      'api::wachlist.wachlist': ApiWachlistWachlist;
       'api::wishlist.wishlist': ApiWishlistWishlist;
     }
   }

@@ -37,7 +37,7 @@ module.exports ={
             }
             
             let userId = ctx.state.user.id;
-            let { limit, page} = ctx.request.query
+            let { limit, page,sort} = ctx.request.query
             console.log(ctx.request.query);
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -45,7 +45,7 @@ module.exports ={
             let offset = (page - 1) * limit;
 
 
-            let whereQuery={}
+            let whereQuery={};
 
             let list = await strapi.db.query("api::wishlist.wishlist").findMany(({
                 where:{userId:userId},
@@ -55,8 +55,8 @@ module.exports ={
                         populate:{
                             company_share_detail:{
 
-                                select:["ltp","prevClosePrice","dayHigh","dayLow","changeInPercent","change"]
-                            }
+                                select:["ltp","prevClosePrice","dayHigh","dayLow","changeInPercent","change"],
+                            }   
                         }
                     }
                 },
@@ -66,13 +66,58 @@ module.exports ={
                 
             }))
 
-            let count=await strapi.db.query("api::wishlist.wishlist").count({where:whereQuery})
+            let count=await strapi.db.query("api::wishlist.wishlist").count({where:whereQuery});
+            let data=[]
+
+            if(list.length>0){
+                data=JSON.parse(JSON.stringify(list))
+           
+                if(sort==="LowHighLtp"){
+            
+                    data.sort((a,b)=>a.companyId?.company_share_detail?.ltp-b.companyId?.company_share_detail?.ltp)
+                }
+                if(sort==="highLowLtp"){
+                    data.sort((a,b)=>b.companyId?.company_share_detail?.ltp-a.companyId?.company_share_detail?.ltp)
+                }
+                if(sort==="lowHighPreClosePrice"){
+                    data.sort((a,b)=>a.companyId?.company_share_detail?.prevClosePrice-b.companyId?.company_share_detail?.prevClosePrice)
+                }
+                if(sort==="highLowPreClosePrice"){
+                    data.sort((a,b)=>b.companyId?.company_share_detail?.prevClosePrice-a.companyId?.company_share_detail?.prevClosePrice)
+                }
+                if(sort==="lowHighChange"){
+                    data.sort((a,b)=>a.companyId?.company_share_detail?.change-b.companyId?.company_share_detail?.change)
+                }
+                if(sort==="highLowChange"){
+                    data.sort((a,b)=>b.companyId?.company_share_detail?.change-a.companyId?.company_share_detail?.change)
+                }
+                if(sort==="lowHighChange%"){
+                    data.sort((a,b)=>a.companyId?.company_share_detail?.changeInPercent-b.companyId?.company_share_detail?.changeInPercent)
+                }
+                if(sort==="highLowChange%"){
+                    data.sort((a,b)=>b.companyId?.company_share_detail?.changeInPercent-a.companyId?.company_share_detail?.changeInPercent)
+                }
+                if(sort==="lowHighDayHigh"){
+                    data.sort((a,b)=>a.companyId?.company_share_detail?.dayHigh-b.companyId?.company_share_detail?.dayHigh)
+                }
+                if(sort==="highLowDayHigh"){
+                    data.sort((a,b)=>b.companyId?.company_share_detail?.dayHigh-a.companyId?.company_share_detail?.dayHigh)
+                }
+                if(sort==="lowHighDayLow"){
+                    data.sort((a,b)=>a.companyId?.company_share_detail?.dayLow-b.companyId?.company_share_detail?.dayLow)
+                }
+                if(sort==="highLowDayLow"){
+                    data.sort((a,b)=>b.companyId?.company_share_detail?.dayLow-a.companyId?.company_share_detail?.dayLow)
+                }
+
+            }
+
 
             return ctx.response.send({
                 success:true,
                 message:"success",
                 count:count,
-                data:list
+                data:data
             })
             
         } catch (error) {

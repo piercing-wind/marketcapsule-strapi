@@ -117,12 +117,6 @@
       "target": "api::company-share-detail.company-share-detail",
       "mappedBy": "company"
     },
-    "compnay_timeline": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::compnay-timeline.compnay-timeline",
-      "mappedBy": "company"
-    },
     "capsuleView": {
       "type": "blocks"
     },
@@ -134,6 +128,12 @@
     },
     "businessOverview": {
       "type": "blocks"
+    },
+    "compnay_timelines": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::compnay-timeline.compnay-timeline",
+      "mappedBy": "company"
     }
   }
 }

@@ -1,0 +1,22 @@
+{
+  "kind": "singleType",
+  "collectionName": "ipo_zones",
+  "info": {
+    "singularName": "ipo-zone",
+    "pluralName": "ipo-zones",
+    "displayName": "IPO ZONE"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

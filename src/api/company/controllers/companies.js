@@ -1,8 +1,13 @@
 module.exports = {
     list: async (ctx) => {
         try {
+            let capsuleplusUser = false;
 
-            let { limit, page, bucketId, companyTypeId, pe, marketCap, sectorId, industryId,pageName } = ctx.request.query
+            if (ctx.state && ctx.state.user) {
+                capsuleplusUser = ctx.state.user.capsuleplus;
+            }
+
+            let { limit, page, bucketId, companyTypeId, pe, marketCap, sectorId, industryId,pageName,companyName,sort } = ctx.request.query
             console.log(ctx.request.query);
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -10,11 +15,6 @@ module.exports = {
             let offset = (page - 1) * limit;
 
             let whereQuery = {}
-
-            if(pageName==="capsuleplus"){
-                limit=9;
-                page=1
-            }
 
 
             if (bucketId) {
@@ -64,6 +64,9 @@ module.exports = {
                     id: industryId
                 }
             }
+            if(companyName){
+                whereQuery.name = {$containsi:companyName}
+            }
 
             const companies = await strapi.db.query("api::company.company").findMany({
                 where: whereQuery,
@@ -101,12 +104,27 @@ module.exports = {
                 },
             })
 
+            if(companies.length>0){
+                if(sort==="lowHighMarketCap"){
+                    companies.sort((a,b)=>a.company_share_detail?.marketCap-b.company_share_detail?.marketCap)
+                }
+                if(sort==="highLowMarketCap"){
+                    companies.sort((a,b)=>b.company_share_detail?.marketCap-a.company_share_detail?.marketCap)
+                }
+                if(sort==="lowHighTTMPE"){
+                    companies.sort((a,b)=>a.company_share_detail?.ttpmPE-b.company_share_detail?.ttpmPE)
+                }
+                if(sort==="highLowTTMPE"){
+                    companies.sort((a,b)=>b.company_share_detail?.ttpmPE-a.company_share_detail?.ttpmPE)
+                }
+            }
+
 
             return ctx.response.send({
                 success: true,
                 message: "success",
                 count,
-                capsuleplus:pageName==="capsuleplus"?true:false,
+                capsuleplus:pageName==="capsuleplus"?capsuleplusUser?false:true:true,
                 data: companies,
             })
 
@@ -126,20 +144,22 @@ module.exports = {
             }
 
 
-            let { slug, id, pageName, capsuleplus} = ctx.request.query;
+
+            let { slug,name, id, pageName, capsuleplus} = ctx.request.query;
             console.log("capsuleplus",capsuleplus);
             console.log("capsuleplusUser",capsuleplusUser)
 
             let whereQuery = {
                 ...(slug && { slug }),
-                ...(id && { id })
+                ...(id && { id }),
+                ...(name &&{name})
             }
 
             let select = ["name", "websiteUrl", "productDetail", "capsuleplus"]
             let populate = {}
             if (pageName === "bucket-company-detail") {
                 let obj = {
-                    compnay_timeline: true,
+                    compnay_timelines: true,
                     sector: {
                         select: ["name"]
                     },
@@ -266,10 +286,14 @@ module.exports = {
             })
             company = !isPrice ? company : { ...company, ...{ prices: prices } }
 
+            if(company && company.company_share_detail && company.sector?.name){
+                company.company_share_detail.sector = company.sector.name;
+            }
+
             return ctx.response.send({
                 success: true,
                 message: "Detail fetched",
-                capsuleplus: capsuleplus==="true"?true:false,
+                capsuleplus: capsuleplus? !capsuleplusUser?true:false:false,
                 data: company
             })
 
@@ -301,6 +325,12 @@ module.exports = {
                     type: "checkbox",
                     detail: []
                 },
+                {
+                    filterName: "companyName",
+                    name: 'Company Name',
+                    type: "checkbox",
+                    detail: []
+                },
             ]
 
             let companyType = await strapi.db.query("api::company-type.company-type").findMany({ select: ["id", "name", "slug"] })
@@ -311,6 +341,12 @@ module.exports = {
 
             let industries = await strapi.db.query("api::industry.industry").findMany({ select: ["id", "name", "slug"] });
             filters[2]["detail"] = industries;
+
+            let companies = await strapi.db.query("api::company.company").findMany({select:["name"]})
+
+            if(companies.length>0){
+                filters[3]["detail"] = companies.map(i=>i.name)
+            }
 
             return ctx.response.send({
                 success: true,

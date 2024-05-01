@@ -20,9 +20,9 @@
     },
     "company": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::company.company",
-      "inversedBy": "compnay_timeline"
+      "inversedBy": "compnay_timelines"
     }
   }
 }
