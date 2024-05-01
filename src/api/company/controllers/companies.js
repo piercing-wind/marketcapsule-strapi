@@ -184,7 +184,14 @@ module.exports = {
                 if ((!capsuleplus) || (capsuleplus==="true" && capsuleplusUser)) {
                     console.log('false===');
                     let obj = {
-                        business_segments: true,
+                        business_segments: {
+                            select:["title","description"],
+                            populate:{
+                                image:{
+                                    select:["alternativeText", "url"]
+                                }
+                            }
+                        },
                         company_share_detail: {
                             select: ["marketCap", "peRatio", "rociPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
                         },

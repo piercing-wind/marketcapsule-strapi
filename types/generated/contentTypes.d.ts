@@ -851,6 +851,7 @@ export interface ApiBusinessSegmentBusinessSegment
     singularName: 'business-segment';
     pluralName: 'business-segments';
     displayName: 'businessSegment';
+    description: '';
   };
   options: {
     draftAndPublish: true;
