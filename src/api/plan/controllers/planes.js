@@ -1,4 +1,6 @@
 const {AddDaysToTime} = require("../../subscription/utils/index");
+const {convertHtmlIntoPdf,invoiceHtml} = require("../../../../helper/index");
+const {uploadFileToS3} = require("../../../../helper/aws")
 
 module.exports={
     checkout:async(ctx)=>{
@@ -23,8 +25,14 @@ module.exports={
             }
 
             if(promoCode){
-            
-            }
+                let {error,discountAmount} = await strapi.service("api::promo-code.promo-code").checkPromoCode(promoCode,planId);
+
+                if(error){
+                    return ctx.badRequest(error)
+                }
+                res.promoCodeDiscount=discountAmount;
+                res.totalPayableAmount = res.totalPayableAmount-res.promoCodeDiscount
+            }   
 
             return ctx.response.send({
                 success:true,
@@ -39,7 +47,7 @@ module.exports={
     buy:async(ctx)=>{
         try {
             let userId = ctx.state.user.id;
-            const {amount,planId,currency}=ctx.request.body;
+            const {amount,planId,currency,promoCode}=ctx.request.body;
 
             if(!planId){
                 return ctx.badRequest("PlanId is missing!")
@@ -86,7 +94,19 @@ module.exports={
     webhook:async(ctx)=>{
         try {
 
+           
             
+        } catch (error) {
+            return ctx.badRequest(error)
+        }
+    },
+    invoice:async(ctx)=>{
+        try {
+            let html = invoiceHtml();
+            const pdfBuffer = await convertHtmlIntoPdf(html);
+            const url =await  uploadFileToS3(process.env.AWS_BUCKET,"invoice123",pdfBuffer);
+            console.log("url",url);
+            return ctx.send(url)
             
         } catch (error) {
             return ctx.badRequest(error)

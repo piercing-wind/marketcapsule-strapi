@@ -825,7 +825,6 @@ export interface ApiBucketBucket extends Schema.CollectionType {
       'manyToMany',
       'api::company.company'
     >;
-    isPaid: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1003,20 +1002,10 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToMany',
       'api::business-segment.business-segment'
     >;
-    financial_highlight: Attribute.Relation<
-      'api::company.company',
-      'oneToOne',
-      'api::financial-highlight.financial-highlight'
-    >;
     operation_detail: Attribute.Relation<
       'api::company.company',
       'oneToOne',
       'api::operation-detail.operation-detail'
-    >;
-    share_holding: Attribute.Relation<
-      'api::company.company',
-      'oneToOne',
-      'api::share-holding.share-holding'
     >;
     keyHighlights: Attribute.Blocks;
     company_share_detail: Attribute.Relation<
@@ -1032,6 +1021,16 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'api::company.company',
       'oneToMany',
       'api::compnay-timeline.compnay-timeline'
+    >;
+    financial_highlights: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::financial-highlight.financial-highlight'
+    >;
+    share_holdings: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::share-holding.share-holding'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1066,7 +1065,7 @@ export interface ApiCompanyShareDetailCompanyShareDetail
   attributes: {
     peRatio: Attribute.Float;
     rocePercent: Attribute.Float;
-    rociPercent: Attribute.Float;
+    roicPercent: Attribute.Float;
     roePercent: Attribute.Float;
     currentPrice: Attribute.Float;
     deRatio: Attribute.Float;
@@ -1285,21 +1284,20 @@ export interface ApiFinancialHighlightFinancialHighlight
     singularName: 'financial-highlight';
     pluralName: 'financial-highlights';
     displayName: 'FinancialHighlight';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    year: Attribute.Integer;
     title: Attribute.String;
-    value: Attribute.Float;
-    currencyCode: Attribute.String;
-    unit: Attribute.String;
     company: Attribute.Relation<
       'api::financial-highlight.financial-highlight',
-      'oneToOne',
+      'manyToOne',
       'api::company.company'
     >;
+    year: Attribute.String;
+    value: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1618,6 +1616,11 @@ export interface ApiPromoCodePromoCode extends Schema.CollectionType {
     discountAmount: Attribute.Float & Attribute.Required;
     isActive: Attribute.Boolean & Attribute.DefaultTo<true>;
     availedCount: Attribute.Integer & Attribute.DefaultTo<0>;
+    plan: Attribute.Relation<
+      'api::promo-code.promo-code',
+      'oneToOne',
+      'api::plan.plan'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1712,20 +1715,20 @@ export interface ApiShareHoldingShareHolding extends Schema.CollectionType {
     singularName: 'share-holding';
     pluralName: 'share-holdings';
     displayName: 'ShareHolding';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    year: Attribute.Integer & Attribute.Required;
-    month: Attribute.String;
     title: Attribute.String;
-    valueInPercent: Attribute.Float;
     company: Attribute.Relation<
       'api::share-holding.share-holding',
-      'oneToOne',
+      'manyToOne',
       'api::company.company'
     >;
+    year: Attribute.String;
+    value: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

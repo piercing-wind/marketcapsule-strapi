@@ -57,10 +57,6 @@
       "relation": "manyToMany",
       "target": "api::company.company",
       "mappedBy": "buckets"
-    },
-    "isPaid": {
-      "type": "boolean",
-      "default": false
     }
   }
 }

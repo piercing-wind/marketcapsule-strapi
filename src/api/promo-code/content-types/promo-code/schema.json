@@ -38,6 +38,11 @@
     "availedCount": {
       "default": 0,
       "type": "integer"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::plan.plan"
     }
   }
 }

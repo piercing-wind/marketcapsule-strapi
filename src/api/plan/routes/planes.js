@@ -12,6 +12,12 @@ module.exports = {
        handler: 'planes.buy',
        
       },
+      {
+        method: 'POST',
+        path: '/plan/invoice',
+        handler: 'planes.invoice',
+        
+       },
 
     ],
   };

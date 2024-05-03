@@ -193,7 +193,7 @@ module.exports = {
                             }
                         },
                         company_share_detail: {
-                            select: ["marketCap", "peRatio", "rociPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -204,8 +204,8 @@ module.exports = {
                         industry: {
                             select: ["industrialOutlook", "name", "slug"]
                         },
-                        share_holding: true,
-                        financial_highlight: true
+                        share_holdings: true,
+                        financial_highlights: true
                     }
                     populate = { ...populate, ...obj }
                     select.push("aboutTheCompany", "keyHighlights", "capsuleView")
@@ -214,7 +214,7 @@ module.exports = {
                     let obj = {
                         business_segments: true,
                         company_share_detail: {
-                            select: ["marketCap", "peRatio", "rociPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -366,4 +366,61 @@ module.exports = {
             return ctx.badRequest(err)
         }
     },
+    search:async(ctx)=>{
+        try {
+
+            let {search,limit,page} = ctx.request.query;
+            limit = parseInt(limit) || 20;
+            page = parseInt(page) || 1;
+
+            let offset = (page - 1) * limit;
+            let searchQuery={}
+
+            if(search){
+                searchQuery={
+                    $or:[
+                        {
+                            name:{$containsi:search}
+                        },
+                        {
+                            about:{$containsi:search}
+                        },
+                        {
+                            slug:{$containsi:search}
+                        },
+                        {
+                            title:{$containsi:search}
+                        },
+                        {
+                            industry:{
+                                name:{$containsi:search}
+                            }
+                        },
+                    ],
+                    
+                }
+            }
+
+            let companies = await strapi.db.query("api::company.company").findMany({
+                where:searchQuery,
+                select:["name"],
+                populate:{
+                    indsutry:{
+                        select:["name"]
+                    }
+                },
+                limit:limit,
+                offset:offset
+            })
+
+            return ctx.send({
+                success:true,
+                message:"Success",
+                data:companies
+            })
+            
+        } catch (error) {
+            return ctx.badRequest(error)
+        }
+    }
 }

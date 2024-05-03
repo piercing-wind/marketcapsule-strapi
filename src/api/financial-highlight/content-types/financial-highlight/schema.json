@@ -4,33 +4,28 @@
   "info": {
     "singularName": "financial-highlight",
     "pluralName": "financial-highlights",
-    "displayName": "FinancialHighlight"
+    "displayName": "FinancialHighlight",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "year": {
-      "type": "integer"
-    },
     "title": {
-      "type": "string"
-    },
-    "value": {
-      "type": "float"
-    },
-    "currencyCode": {
-      "type": "string"
-    },
-    "unit": {
       "type": "string"
     },
     "company": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::company.company",
-      "inversedBy": "financial_highlight"
+      "inversedBy": "financial_highlights"
+    },
+    "year": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
     }
   }
 }

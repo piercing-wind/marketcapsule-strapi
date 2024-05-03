@@ -4,31 +4,28 @@
   "info": {
     "singularName": "share-holding",
     "pluralName": "share-holdings",
-    "displayName": "ShareHolding"
+    "displayName": "ShareHolding",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "year": {
-      "type": "integer",
-      "required": true
-    },
-    "month": {
-      "type": "string"
-    },
     "title": {
       "type": "string"
     },
-    "valueInPercent": {
-      "type": "float"
-    },
     "company": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::company.company",
-      "inversedBy": "share_holding"
+      "inversedBy": "share_holdings"
+    },
+    "year": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
     }
   }
 }

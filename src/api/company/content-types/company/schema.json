@@ -90,22 +90,10 @@
       "target": "api::business-segment.business-segment",
       "mappedBy": "company"
     },
-    "financial_highlight": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::financial-highlight.financial-highlight",
-      "mappedBy": "company"
-    },
     "operation_detail": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::operation-detail.operation-detail",
-      "mappedBy": "company"
-    },
-    "share_holding": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::share-holding.share-holding",
       "mappedBy": "company"
     },
     "keyHighlights": {
@@ -133,6 +121,18 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::compnay-timeline.compnay-timeline",
+      "mappedBy": "company"
+    },
+    "financial_highlights": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::financial-highlight.financial-highlight",
+      "mappedBy": "company"
+    },
+    "share_holdings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::share-holding.share-holding",
       "mappedBy": "company"
     }
   }
