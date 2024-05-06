@@ -422,5 +422,34 @@ module.exports = {
         } catch (error) {
             return ctx.badRequest(error)
         }
+    },
+    priceList:async(ctx)=>{
+        try {
+
+            let {companyId,startDate,endDate} = ctx.request.query;
+
+            if(!companyId){
+                return ctx.badRequest("CompanyId missing!")
+            }
+
+            let searchQuery ={
+                companyId:companyId,
+                ...(startDate && {date:{$gte:new Date(startDate)}}),
+                ...(endDate&& {date:{$lte: new Date(endDate)}})
+            }
+
+            let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
+                where:searchQuery,
+                orderBy: { createdAt: 'desc', updatedAt: 'desc' }
+            })
+            return ctx.send({
+                success:true,
+                message:"Data fetched",
+                data:prices
+            })
+            
+        } catch (error) {
+            return ctx.badRequest(error)
+        }
     }
 }

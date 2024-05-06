@@ -22,6 +22,12 @@ module.exports = {
         path: '/company/search', 
         handler: 'companies.search',
 
+      },
+      {
+        method: 'GET',
+        path: '/company/prices', 
+        handler: 'companies.priceList',
+
       }
 
     ]

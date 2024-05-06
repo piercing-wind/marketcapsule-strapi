@@ -1032,6 +1032,8 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToMany',
       'api::share-holding.share-holding'
     >;
+    financialReport: Attribute.Blocks;
+    shareCapitalAndEmployees: Attribute.Blocks;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1089,6 +1091,7 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     >;
     marketCap: Attribute.Float;
     change: Attribute.Float;
+    companyName: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

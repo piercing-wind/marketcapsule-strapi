@@ -134,6 +134,12 @@
       "relation": "oneToMany",
       "target": "api::share-holding.share-holding",
       "mappedBy": "company"
+    },
+    "financialReport": {
+      "type": "blocks"
+    },
+    "shareCapitalAndEmployees": {
+      "type": "blocks"
     }
   }
 }

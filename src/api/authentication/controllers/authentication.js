@@ -7,12 +7,12 @@ const {testUserCheck} = require('../utils/test');
 module.exports = {
   login: async (ctx, next) => {
     try {
+   
       console.log("123456789");
       const { email } = ctx.request.body;
       if (!email) {
         return ctx.badRequest('Email required!');
       }
-
       let user;
 
       let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });

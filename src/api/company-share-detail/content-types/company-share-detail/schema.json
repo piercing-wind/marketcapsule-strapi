@@ -80,6 +80,9 @@
     },
     "change": {
       "type": "float"
+    },
+    "companyName": {
+      "type": "string"
     }
   }
 }
