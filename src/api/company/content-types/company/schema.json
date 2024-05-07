@@ -61,9 +61,6 @@
     "websiteUrl": {
       "type": "string"
     },
-    "otherDetails": {
-      "type": "json"
-    },
     "buckets": {
       "type": "relation",
       "relation": "manyToMany",
@@ -88,12 +85,6 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::business-segment.business-segment",
-      "mappedBy": "company"
-    },
-    "operation_detail": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::operation-detail.operation-detail",
       "mappedBy": "company"
     },
     "keyHighlights": {
@@ -140,6 +131,21 @@
     },
     "shareCapitalAndEmployees": {
       "type": "blocks"
+    },
+    "capsuleHighlights": {
+      "type": "blocks"
+    },
+    "companyTypeDetails": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::company-type-detail.company-type-detail",
+      "mappedBy": "company"
+    },
+    "operation_details": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::operation-detail.operation-detail",
+      "mappedBy": "company"
     }
   }
 }

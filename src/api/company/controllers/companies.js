@@ -250,12 +250,16 @@ module.exports = {
                         industry: {
                             select: ["name", "slug"]
                         },
-                        operation_detail: true
+                        operation_details: true,
+                        companyTypeDetails:true
                     }
                     populate = { ...populate, ...obj }
-                    select.push("businessOverview", "otherDetails");
+                    select.push("businessOverview","capsuleHighlights");
+
                     // load share pricess of company...
-                    let company = await strapi.db.query("api::company.company").findOne({ where: whereQuery, select: ["id"] })
+                    console.log("whereQuery",whereQuery);
+                    let company = await strapi.db.query("api::company.company").findOne({ where: whereQuery, select: ["id"] });
+
                     prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                         where: {
                             companyId: company.id
@@ -426,7 +430,7 @@ module.exports = {
     priceList:async(ctx)=>{
         try {
 
-            let {companyId,startDate,endDate} = ctx.request.query;
+            let {companyId,startDate,endDate,exchangeType} = ctx.request.query;
 
             if(!companyId){
                 return ctx.badRequest("CompanyId missing!")
@@ -435,7 +439,8 @@ module.exports = {
             let searchQuery ={
                 companyId:companyId,
                 ...(startDate && {date:{$gte:new Date(startDate)}}),
-                ...(endDate&& {date:{$lte: new Date(endDate)}})
+                ...(endDate&& {date:{$lte: new Date(endDate)}}),
+                ...(exchangeType && {exchangeName:exchangeType})
             }
 
             let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({

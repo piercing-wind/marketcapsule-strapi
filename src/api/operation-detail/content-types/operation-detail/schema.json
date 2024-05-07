@@ -4,7 +4,8 @@
   "info": {
     "singularName": "operation-detail",
     "pluralName": "operation-details",
-    "displayName": "operationDetail"
+    "displayName": "operationDetail",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -13,11 +14,14 @@
   "attributes": {
     "company": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "api::company.company",
-      "inversedBy": "operation_detail"
+      "inversedBy": "operation_details"
     },
     "title": {
+      "type": "string"
+    },
+    "value": {
       "type": "string"
     },
     "year": {
@@ -26,12 +30,12 @@
     "month": {
       "type": "string"
     },
-    "isPercentValue": {
-      "type": "boolean",
-      "default": false
-    },
-    "value": {
-      "type": "float"
+    "duration": {
+      "type": "enumeration",
+      "enum": [
+        "yearly",
+        "quarterly"
+      ]
     }
   }
 }

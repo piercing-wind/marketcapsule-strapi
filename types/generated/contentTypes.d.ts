@@ -987,7 +987,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     title: Attribute.String;
     productDetail: Attribute.Text;
     websiteUrl: Attribute.String;
-    otherDetails: Attribute.JSON;
     buckets: Attribute.Relation<
       'api::company.company',
       'manyToMany',
@@ -1001,11 +1000,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'api::company.company',
       'oneToMany',
       'api::business-segment.business-segment'
-    >;
-    operation_detail: Attribute.Relation<
-      'api::company.company',
-      'oneToOne',
-      'api::operation-detail.operation-detail'
     >;
     keyHighlights: Attribute.Blocks;
     company_share_detail: Attribute.Relation<
@@ -1034,6 +1028,17 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     >;
     financialReport: Attribute.Blocks;
     shareCapitalAndEmployees: Attribute.Blocks;
+    capsuleHighlights: Attribute.Blocks;
+    companyTypeDetails: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::company-type-detail.company-type-detail'
+    >;
+    operation_details: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::operation-detail.operation-detail'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1176,6 +1181,44 @@ export interface ApiCompanyTypeCompanyType extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::company-type.company-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCompanyTypeDetailCompanyTypeDetail
+  extends Schema.CollectionType {
+  collectionName: 'company_type_details';
+  info: {
+    singularName: 'company-type-detail';
+    pluralName: 'company-type-details';
+    displayName: 'CompanyTypeDetail';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    title: Attribute.String;
+    value: Attribute.String;
+    remark: Attribute.String;
+    company: Attribute.Relation<
+      'api::company-type-detail.company-type-detail',
+      'manyToOne',
+      'api::company.company'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::company-type-detail.company-type-detail',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::company-type-detail.company-type-detail',
       'oneToOne',
       'admin::user'
     > &
@@ -1507,6 +1550,7 @@ export interface ApiOperationDetailOperationDetail
     singularName: 'operation-detail';
     pluralName: 'operation-details';
     displayName: 'operationDetail';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1514,14 +1558,14 @@ export interface ApiOperationDetailOperationDetail
   attributes: {
     company: Attribute.Relation<
       'api::operation-detail.operation-detail',
-      'oneToOne',
+      'manyToOne',
       'api::company.company'
     >;
     title: Attribute.String;
+    value: Attribute.String;
     year: Attribute.Integer;
     month: Attribute.String;
-    isPercentValue: Attribute.Boolean & Attribute.DefaultTo<false>;
-    value: Attribute.Float;
+    duration: Attribute.Enumeration<['yearly', 'quarterly']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -2031,6 +2075,7 @@ declare module '@strapi/types' {
       'api::company-share-detail.company-share-detail': ApiCompanyShareDetailCompanyShareDetail;
       'api::company-share-price.company-share-price': ApiCompanySharePriceCompanySharePrice;
       'api::company-type.company-type': ApiCompanyTypeCompanyType;
+      'api::company-type-detail.company-type-detail': ApiCompanyTypeDetailCompanyTypeDetail;
       'api::compnay-timeline.compnay-timeline': ApiCompnayTimelineCompnayTimeline;
       'api::disclaimer.disclaimer': ApiDisclaimerDisclaimer;
       'api::feed.feed': ApiFeedFeed;
