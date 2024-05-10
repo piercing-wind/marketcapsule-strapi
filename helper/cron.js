@@ -50,7 +50,18 @@ module.exports={
                         }
                     })
 
+                    let user = await strapi.db.query("plugin::users-permissions.user").findOne({
+                        where:{
+                            id:item.userId.id
+                        },
+                        select:["id","socketId"]
+                    })
+
                     // send socket notification here...
+                    strapi.io.to(user.socketId).emit('notification', {
+                        title:"Subscription Expired!",
+                        message:`Your ${item.plan.name} subscription has been expired.`,
+                    })
                    
                 }
 

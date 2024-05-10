@@ -8,9 +8,10 @@ const { createCoreService } = require('@strapi/strapi').factories;
 
 module.exports = createCoreService('api::promo-code.promo-code',({strapi})=>({
     checkPromoCode:async(promoCode,planId)=>{
+        try {
+            
+       
         promoCode = promoCode.toUpperCase()
-
-        let whereQuery
 
         let findPromoCode = await strapi.db.query("api::promo-code.promo-code").findOne({
             where:{code:promoCode,isActive:true},
@@ -20,8 +21,6 @@ module.exports = createCoreService('api::promo-code.promo-code',({strapi})=>({
                 }
             }
         })
-
-
 
         if(planId && findPromoCode.plan &&  findPromoCode.plan?.id !==planId){
             return {error:'Promo Code not aplicable on this plan!',discountAmount:0}
@@ -41,5 +40,8 @@ module.exports = createCoreService('api::promo-code.promo-code',({strapi})=>({
             return {error:'"PromoCode usage limit reached!',discountAmount:0}
         }
         return {error:null,discountAmount:findPromoCode.discountAmount}
+    } catch (error) {
+        return {error:'Some error has occured!',discountAmount:0}
+    }
     }
 }));

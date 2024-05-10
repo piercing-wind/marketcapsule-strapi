@@ -1819,16 +1819,14 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
       'api::plan.plan'
     >;
     paymentDetails: Attribute.JSON;
-    paymentStatus: Attribute.Enumeration<['PENDING', 'INITIATED', 'COMPLETED']>;
+    paymentStatus: Attribute.Enumeration<['PENDING', 'COMPLETED', 'FAILED']>;
     transactionID: Attribute.String;
     amount: Attribute.Float;
     invoiceUrl: Attribute.String;
     active: Attribute.Boolean & Attribute.DefaultTo<false>;
-    promoCode: Attribute.Relation<
-      'api::subscription.subscription',
-      'oneToOne',
-      'api::promo-code.promo-code'
-    >;
+    orderId: Attribute.String;
+    paymentOrderJson: Attribute.JSON;
+    paymentVerifyJson: Attribute.JSON;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

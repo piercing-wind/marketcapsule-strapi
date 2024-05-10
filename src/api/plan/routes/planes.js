@@ -14,8 +14,8 @@ module.exports = {
       },
       {
         method: 'POST',
-        path: '/plan/invoice',
-        handler: 'planes.invoice',
+        path: '/plan/paymentVerify',
+        handler: 'planes.paymentVerify',
         
        },
 

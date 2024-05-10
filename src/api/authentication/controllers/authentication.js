@@ -1,6 +1,6 @@
 'use strict';
 
-const { generateOtpToken } = require("../utils/index");
+const { generateOtpToken ,sanitizeUser} = require("../utils/index");
 const { decode } = require('../utils/hash');
 const { sendEmailNormal } = require('../../../../helper/ses');
 const {testUserCheck} = require('../utils/test');
@@ -140,10 +140,10 @@ module.exports = {
 
       let jwtToken=strapi.plugin("users-permissions").services.jwt.issue(payload, { expiresIn: '3600h' })
 
-      // const jwtToken = await strapi.service("plugin::users-permissions.jwt").issue(payload);
+      let userData = await sanitizeUser(updateUser)
 
 
-      return ctx.response.send({ success: true, message: "Successfully Login", data: { token: jwtToken, user: updateUser } })
+      return ctx.response.send({ success: true, message: "Successfully Login", data: { token: jwtToken, user: userData } })
 
     } catch (error) {
       console.log(error);

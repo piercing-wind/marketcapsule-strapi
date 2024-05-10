@@ -20,3 +20,15 @@ exports.generateOtpToken = async(obj)=>{
     const decodeToken = await encode(JSON.stringify(verifyToken));
     return {otp,token:decodeToken}
 }
+
+exports.sanitizeUser = async (user) => {
+    delete user.otp;
+    delete user.createdAt;
+    delete user.updatedAt;
+    delete user.provider;
+    delete user.password;
+    delete user.resetPasswordToken;
+    delete user.confirmationToken;
+    delete user.otp;
+    return user;
+  };

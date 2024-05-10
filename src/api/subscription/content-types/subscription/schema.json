@@ -37,8 +37,8 @@
       "type": "enumeration",
       "enum": [
         "PENDING",
-        "INITIATED",
-        "COMPLETED"
+        "COMPLETED",
+        "FAILED"
       ]
     },
     "transactionID": {
@@ -54,10 +54,14 @@
       "type": "boolean",
       "default": false
     },
-    "promoCode": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::promo-code.promo-code"
+    "orderId": {
+      "type": "string"
+    },
+    "paymentOrderJson": {
+      "type": "json"
+    },
+    "paymentVerifyJson": {
+      "type": "json"
     }
   }
 }
