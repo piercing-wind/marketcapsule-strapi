@@ -92,6 +92,14 @@
     },
     "socketId": {
       "type": "string"
+    },
+    "newslettersSubscribed": {
+      "type": "boolean",
+      "default": false
+    },
+    "isTermAndConditionAccept": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

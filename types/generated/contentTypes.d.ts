@@ -778,6 +778,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     socketId: Attribute.String;
+    newslettersSubscribed: Attribute.Boolean & Attribute.DefaultTo<false>;
+    isTermAndConditionAccept: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

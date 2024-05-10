@@ -5,11 +5,11 @@ const { decode } = require('../utils/hash');
 const { sendEmailNormal } = require('../../../../helper/ses');
 const {testUserCheck} = require('../utils/test');
 module.exports = {
-  login: async (ctx, next) => {
+  register: async (ctx, next) => {
     try {
    
       console.log("123456789");
-      const { email } = ctx.request.body;
+      const { email,newslettersSubscribed=false,isTermAndConditionAccept=false } = ctx.request.body;
       if (!email) {
         return ctx.badRequest('Email required!');
       }
@@ -17,29 +17,23 @@ module.exports = {
 
       let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });
       if (userExists) {
-        if (userExists && userExists.blocked) {
-          return ctx.badRequest('Your account has been blocked by an administrator');
-        }
-        
-      if (userExists.provider !== "local") {
-        return ctx.badRequest('User exists but not signup through email!');
+        return ctx.badRequest("Email already exist!")
       }
 
-        user = userExists
-      }
-      else {
         // create user 
         let userObj = {
           email,
           role: 1,
-          provider: "local"
+          provider: "local",
+          newslettersSubscribed,
+          isTermAndConditionAccept
         }
         const create = await strapi.db.query("plugin::users-permissions.user").create({ data: userObj })
         if (!create) {
           return ctx.badRequest('Failed to create user!')
         }
         user=create
-      }
+      
 
 
 
@@ -151,61 +145,66 @@ module.exports = {
     }
   },
 
-  // login: async (ctx, next) => {
-  //   try {
-  //     console.log("123456789");
-  //     const { email } = ctx.request.body;
-  //     if (!email) {
-  //       return ctx.badRequest('Email required!');
-  //     }
+  login: async (ctx, next) => {
+    try {
+      console.log("123456789");
+      const { email } = ctx.request.body;
+      if (!email) {
+        return ctx.badRequest('Email required!');
+      }
 
-  //     let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });
-  //     if (!userExists) {
-  //       return ctx.badRequest('User not found!');
-  //     }
+      let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });
+      if (!userExists) {
+        return ctx.badRequest('User not found!');
+      }
 
-  //     if (userExists && userExists.blocked) {
-  //       return ctx.badRequest('Your account has been blocked by an administrator');
-  //     }
+      if (userExists && userExists.blocked) {
+        return ctx.badRequest('Your account has been blocked by an administrator');
+      }
 
-  //     if (userExists.provider !== "local") {
-  //       return ctx.badRequest('User exists but not signup through email!');
-  //     }
-
-
-  //     let verifyToken = await generateOtpToken(userExists)
-  //     if (!verifyToken) {
-  //       return ctx.badRequest('Faild to send otp!')
-  //     }
-  //     if (process.env.MODE === "development") {
-
-  //     } else {
-  //       /// send otp
-  //     }
-
-  //     if (verifyToken && verifyToken.token) {
-  //       await strapi.db.query("plugin::users-permissions.user").update(
-  //         {
-  //           where: {
-  //             id: userExists.id
-  //           },
-  //           data: {
-  //             confirmationToken: verifyToken?.token
-  //           }
-  //         }
-  //       )
-  //       return ctx.response.send({ success: true, message: "Please check your email for 4 Digits Code sent to you mail", data: { token: verifyToken.token, otp: verifyToken.otp } })
-  //     }
-  //     else {
-  //       return ctx.badRequest('Failed to generate token!')
-  //     }
+      if (userExists.provider !== "local") {
+        return ctx.badRequest('User exists but not signup through email!');
+      }
 
 
+      let verifyToken = await generateOtpToken(userExists)
+      if (!verifyToken) {
+        return ctx.badRequest('Faild to send otp!')
+      }
+      if (process.env.MODE === "development") {
+        let testEmails = testUserCheck();
+        if(testEmails.includes(email)){
+          await sendEmailNormal(email, { otp: verifyToken.otp })
+        }
+        await sendEmailNormal(email, { otp: verifyToken.otp })
+      } else {
+        await sendEmailNormal(email, { otp: verifyToken.otp })
+      }
 
 
-  //   } catch (err) {
-  //     return ctx.badRequest(err)
-  //   }
-  // },
+      if (verifyToken && verifyToken.token) {
+        await strapi.db.query("plugin::users-permissions.user").update(
+          {
+            where: {
+              id: userExists.id
+            },
+            data: {
+              confirmationToken: verifyToken?.token
+            }
+          }
+        )
+        return ctx.response.send({ success: true, message: "Please check your email for 4 Digits Code sent to you mail", data: { token: verifyToken.token, otp: verifyToken.otp } })
+      }
+      else {
+        return ctx.badRequest('Failed to generate token!')
+      }
+
+
+
+
+    } catch (err) {
+      return ctx.badRequest(err)
+    }
+  },
 
 };
