@@ -51,7 +51,7 @@ module.exports ={
                 where:{userId:userId},
                 populate:{
                     companyId:{
-                        select:["id"],
+                        select:["id","name"],
                         populate:{
                             company_share_detail:{
 

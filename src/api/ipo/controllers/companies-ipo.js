@@ -66,6 +66,7 @@ module.exports = {
                     let obj={
                         companyId:item.company?.id,
                         companyName:item.company?.name,
+                        slug:item.company?.slug,
                         openDate:moment(item.openDate).format("MMM Do YYYY"),
                         offerPricePe:item.offerPricePe,
                         lastYearSaleGrowth:item.lastYearSalesGrowth,

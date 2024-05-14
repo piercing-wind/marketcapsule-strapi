@@ -13,11 +13,16 @@ module.exports = {
             let whereQuery={}
 
             if(ctx.request.query.categoryId){
-                whereQuery.category = ctx.request.query.categoryId
+                whereQuery.category = parseInt(ctx.request.query.categoryId)
             }
 
             let buckets = await strapi.db.query("api::bucket.bucket").findMany({
                 where:whereQuery,
+                populate:{
+                    image:{
+                        select:["alternativeText","url"]
+                    }
+                },
                 offset:offset,
                 limit:limit,
                 orderBy:{ createdAt: 'desc', updatedAt: 'desc' }

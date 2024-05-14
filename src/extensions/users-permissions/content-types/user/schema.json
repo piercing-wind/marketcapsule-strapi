@@ -53,7 +53,7 @@
       "enum": [
         "male",
         "female",
-        "prefer no to say"
+        "other"
       ]
     },
     "fullName": {
@@ -70,10 +70,6 @@
     },
     "facebookId": {
       "type": "string"
-    },
-    "profileStatus": {
-      "type": "string",
-      "default": "pending"
     },
     "subscriptions": {
       "type": "relation",
@@ -100,6 +96,13 @@
     "isTermAndConditionAccept": {
       "type": "boolean",
       "default": false
+    },
+    "profileStatus": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "complete"
+      ]
     }
   }
 }

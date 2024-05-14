@@ -82,7 +82,12 @@ module.exports = {
                         select: ["id", "slug"]
                     },
                     industry: {
-                        select: ["id", "slug", "name"]
+                        select: ["id", "slug", "name"],
+                        populate:{
+                            tag:{
+                                select:["name","colorHash"]
+                            }
+                        }
                     },
                     sector: {
                         select: ["id", "name", "slug"]
@@ -181,7 +186,7 @@ module.exports = {
             }
 
             if (pageName === "ipo-company-detail") {
-                if ((!capsuleplus) || (capsuleplus==="true" && capsuleplusUser)) {
+                if ((capsuleplus!=="true") || (capsuleplus==="true" && capsuleplusUser)) {
                     console.log('false===');
                     let obj = {
                         business_segments: {
@@ -222,9 +227,12 @@ module.exports = {
                         logo: {
                             select: ["alternativeText", "url"]
                         },
+                        industry: {
+                            select: ["name", "slug"]
+                        },
                     }
                     populate = { ...populate, ...obj }
-                    select.push("aboutTheCompany")
+                    select.push("aboutTheCompany","capsuleView")
                 }
 
             }
@@ -232,7 +240,7 @@ module.exports = {
             let prices;
 
             if (pageName === "capsuleplus-company-detail") {
-                if ((!capsuleplus) || (capsuleplus==="true" && capsuleplusUser)) {
+                if ((capsuleplus!=="true") || (capsuleplus==="true" && capsuleplusUser)) {
                     isPrice = true;
                     let obj = {
                         company_share_detail: {
@@ -301,10 +309,12 @@ module.exports = {
                 company.company_share_detail.sector = company.sector.name;
             }
 
+            let isConetentLock = capsuleplus==="true"?!capsuleplusUser?true:false:false
+
             return ctx.response.send({
                 success: true,
                 message: "Detail fetched",
-                capsuleplus: capsuleplus? !capsuleplusUser?true:false:false,
+                capsuleplus: isConetentLock,
                 data: company
             })
 

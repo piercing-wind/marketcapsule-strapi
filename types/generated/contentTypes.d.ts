@@ -759,13 +759,12 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.role'
     >;
     image: Attribute.String;
-    gender: Attribute.Enumeration<['male', 'female', 'prefer no to say']>;
+    gender: Attribute.Enumeration<['male', 'female', 'other']>;
     fullName: Attribute.String;
     dob: Attribute.Date;
     profession: Attribute.String;
     googleId: Attribute.String;
     facebookId: Attribute.String;
-    profileStatus: Attribute.String & Attribute.DefaultTo<'pending'>;
     subscriptions: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToMany',
@@ -780,6 +779,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     socketId: Attribute.String;
     newslettersSubscribed: Attribute.Boolean & Attribute.DefaultTo<false>;
     isTermAndConditionAccept: Attribute.Boolean & Attribute.DefaultTo<false>;
+    profileStatus: Attribute.Enumeration<['pending', 'complete']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1622,13 +1622,13 @@ export interface ApiProfessionProfession extends Schema.CollectionType {
     singularName: 'profession';
     pluralName: 'professions';
     displayName: 'Profession';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    slug: Attribute.UID<'api::profession.profession', 'name'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1829,6 +1829,11 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
     orderId: Attribute.String;
     paymentOrderJson: Attribute.JSON;
     paymentVerifyJson: Attribute.JSON;
+    promoCodeId: Attribute.Relation<
+      'api::subscription.subscription',
+      'oneToOne',
+      'api::promo-code.promo-code'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

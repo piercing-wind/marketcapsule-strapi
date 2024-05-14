@@ -54,7 +54,7 @@ module.exports = {
         try {
 
             let userId = ctx.state.user.id;
-            const { amount, planId, currency, receipt } = ctx.request.body;
+            const { amount, planId, currency, receipt,promoCode } = ctx.request.body;
 
             if (!planId) {
                 return ctx.badRequest("PlanId is missing!")
@@ -91,7 +91,17 @@ module.exports = {
                 paymentStatus: "PENDING",
                 amount: amount,
                 orderId: response.id,
-                paymentOrderJson: response
+                paymentOrderJson: response,
+            }
+
+            if (promoCode) {
+                let { error,promoCodeId } = await strapi.service("api::promo-code.promo-code").checkPromoCode(promoCode, planId);
+
+                if (error) {
+                    return ctx.badRequest(error)
+                }
+
+                subscriptionObj.promoCodeId = promoCodeId;
             }
 
             let newSubscription = await strapi.db.query("api::subscription.subscription").create({ data: subscriptionObj });
@@ -185,6 +195,16 @@ module.exports = {
                 // send real time notification to user..
 
                 await strapi.service("api::plan.plan").sendNotification({ socketId: user.socketId, planName: findSubscription.plan.name }, strapi);
+
+                if(findSubscription.promoCodeId){
+                    await strapi.db.query("api::promo-code.promo-code").update({
+                        where:{id:findSubscription.promoCodeId},
+                        data:{
+                            $inc:{availedCount:1}
+                        }
+                        
+                    })
+                }
 
                 return ctx.response.send({
                     success: true,

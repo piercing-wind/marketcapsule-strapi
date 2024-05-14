@@ -6,7 +6,7 @@ module.exports = (plugin) =>{
             return ctx.badRequest("Please login first")
         }
         let {email} = ctx.request.body;
-        console.log("state",ctx.state);
+
         if(!email==undefined  || !email ==null){
             return ctx.badRequest("Email update is not allowed here")
         }

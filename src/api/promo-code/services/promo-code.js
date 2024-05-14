@@ -22,13 +22,12 @@ module.exports = createCoreService('api::promo-code.promo-code',({strapi})=>({
             }
         })
 
-        if(planId && findPromoCode.plan &&  findPromoCode.plan?.id !==planId){
-            return {error:'Promo Code not aplicable on this plan!',discountAmount:0}
-        }
-
-
         if(!findPromoCode){
             return {error:'Invalid PromoCode!',discountAmount:0}
+        }
+
+        if(planId && findPromoCode.plan &&  findPromoCode.plan?.id !==planId){
+            return {error:'Promo Code not aplicable on this plan!',discountAmount:0}
         }
 
         let dt = new Date();
@@ -39,7 +38,7 @@ module.exports = createCoreService('api::promo-code.promo-code',({strapi})=>({
         if(promoCode.maxUsage>0 && promoCode.maxUsage===promoCode.availedCount){
             return {error:'"PromoCode usage limit reached!',discountAmount:0}
         }
-        return {error:null,discountAmount:findPromoCode.discountAmount}
+        return {error:null,discountAmount:findPromoCode.discountAmount,promoCodeId:findPromoCode.id}
     } catch (error) {
         return {error:'Some error has occured!',discountAmount:0}
     }

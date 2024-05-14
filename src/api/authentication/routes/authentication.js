@@ -18,5 +18,12 @@ module.exports = {
       handler: 'authentication.login',
       
      },
+     {
+      method: 'POST',
+      path: '/authentication/resendOtp',
+      handler: 'authentication.resendOtp',
+      
+     },
   ],
+
 };

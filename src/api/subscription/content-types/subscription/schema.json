@@ -62,6 +62,11 @@
     },
     "paymentVerifyJson": {
       "type": "json"
+    },
+    "promoCodeId": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::promo-code.promo-code"
     }
   }
 }

@@ -63,7 +63,7 @@ module.exports = {
             }
           }
         )
-        return ctx.response.send({ success: true, message: "Please check your email for 4 Digits Code sent to you mail", data: { token: verifyToken.token, otp: verifyToken.otp } })
+        return ctx.response.send({ success: true, message: "Please check your email for 4 Digits Code sent to you mail", data: { token: verifyToken.token} })
       }
       else {
         return ctx.badRequest('Failed to generate token!')
@@ -206,5 +206,58 @@ module.exports = {
       return ctx.badRequest(err)
     }
   },
+
+  resendOtp: async (ctx,next)=>{
+    try {
+      console.log("123456789");
+      const { email } = ctx.request.body;
+      if (!email) {
+        return ctx.badRequest('Email required!');
+      }
+
+      let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });
+      if (!userExists) {
+        return ctx.badRequest('Email not exist!');
+      }
+
+      let verifyToken = await generateOtpToken(userExists)
+      if (!verifyToken) {
+        return ctx.badRequest('Faild to resend otp!')
+      }
+      if (process.env.MODE === "development") {
+        let testEmails = testUserCheck();
+        if(testEmails.includes(email)){
+          await sendEmailNormal(email, { otp: verifyToken.otp })
+        }
+        await sendEmailNormal(email, { otp: verifyToken.otp })
+      } else {
+        await sendEmailNormal(email, { otp: verifyToken.otp })
+      }
+
+
+      if (verifyToken && verifyToken.token) {
+        await strapi.db.query("plugin::users-permissions.user").update(
+          {
+            where: {
+              id: userExists.id
+            },
+            data: {
+              confirmationToken: verifyToken?.token
+            }
+          }
+        )
+        return ctx.response.send({ success: true, message: "Please check your email for 4 Digits Code sent to you mail", data: { token: verifyToken.token, otp: verifyToken.otp } })
+      }
+      else {
+        return ctx.badRequest('Failed to resent otp!')
+      }
+
+
+
+
+    } catch (err) {
+      return ctx.badRequest(err)
+    }
+  }
 
 };
