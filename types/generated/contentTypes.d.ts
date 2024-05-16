@@ -1041,6 +1041,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToMany',
       'api::operation-detail.operation-detail'
     >;
+    whatsNewInCapsulePlusImage: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

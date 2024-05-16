@@ -146,6 +146,17 @@
       "relation": "oneToMany",
       "target": "api::operation-detail.operation-detail",
       "mappedBy": "company"
+    },
+    "whatsNewInCapsulePlusImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

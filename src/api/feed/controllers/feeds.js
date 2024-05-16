@@ -2,6 +2,23 @@ module.exports={
     list:async(ctx)=>{
         try {
 
+            let isPremiumUser=false;
+
+            if(ctx.request.header.authorization){
+
+                let decode = await strapi.plugins[
+                    'users-permissions'
+                  ].services.jwt.getToken(ctx);
+                  
+                  if(decode){
+                    let user = await strapi.db.query("plugin::users-permissions.user").findOne({where:{id:decode.id},select:["capsuleplus"]});
+
+                    if(user){
+                        isPremiumUser = user.capsuleplus
+                    }
+                  }
+            }
+
             let { limit, page,industryId} = ctx.request.query
             console.log(ctx.request.query);
             limit = parseInt(limit) || 10;
@@ -29,6 +46,16 @@ module.exports={
                 limit:limit,
                 orderBy: { createdAt: 'desc', updatedAt: 'desc' }
             })
+
+            if(feeds.length>0){
+                feeds = feeds.map((feed)=>{
+                    if(feed.type==="CAPSULE+"){
+                        feed.isPremium = isPremiumUser?false:true
+                    }
+
+                    return feed
+                })
+            }
 
             let count = await strapi.db.query("api::feed.feed").count({where:whereQuery})
  
