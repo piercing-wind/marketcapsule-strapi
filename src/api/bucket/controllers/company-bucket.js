@@ -73,7 +73,12 @@ module.exports = {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
 
-            let {slug} = ctx.request.query
+            let {slug,limit,page} = ctx.request.query;
+
+            limit = parseInt(limit) || 10;
+            page = parseInt(page) || 1;
+
+            let offset = (page - 1) * limit;
      
             if(!slug){
                 return ctx.badRequest("Slug missing!")
@@ -84,7 +89,7 @@ module.exports = {
             select:["name","slug","description","capsuleplus"],
             populate:{
                 companies:{
-                    select:["name"],
+                    select:["name","createdAt"],
                     populate:{
                         company_share_detail:{
                             select:["ttpmPE","marketCap"]
@@ -96,11 +101,18 @@ module.exports = {
            })
 
            let data = JSON.parse(JSON.stringify(bucket));
+           data.companiesCount = data.companies.length;
 
-           if(data && capsuleplusUser&& bucket.capsuleplus){
+           if(data && (bucket.capsuleplus && !capsuleplusUser)){
                 data.companies = bucket.companies.slice(0,6)
             
            }
+           else{
+            console.log("else",limit,offset);
+            data.companies = bucket.companies.slice(offset,limit+offset)
+           }
+
+           
      
 
             return ctx.response.send({

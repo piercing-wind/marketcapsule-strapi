@@ -7,7 +7,7 @@ module.exports = {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
 
-            let { limit, page, bucketId, companyTypeId, pe, marketCap, sectorId, industryId,pageName,companyName,sort } = ctx.request.query
+            let { limit, page, bucketId,bucketSlug, companyTypeId, pe, marketCap, sectorId, industryId,pageName,companyName,sort } = ctx.request.query
             console.log(ctx.request.query);
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -16,6 +16,15 @@ module.exports = {
 
             let whereQuery = {}
 
+            if(bucketSlug){
+                let bucket = await strapi.db.query("api::bucket.bucket").findOne({where:{slug:bucketSlug},select:["id"]});
+
+                if(bucket){
+                    whereQuery["buckets"] = {
+                        id: bucket.id
+                    }
+                }
+            }
 
             if (bucketId) {
                 bucketId = parseInt(bucketId)
