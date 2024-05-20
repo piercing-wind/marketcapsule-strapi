@@ -25,6 +25,11 @@ module.exports={
                 orderBy: { createdAt: 'desc'}
             })
 
+            let count = await strapi.db.query("api::subscription.subscription").count({where:{
+                userId:userId,
+                    paymentStatus:"COMPLETED"
+            }})
+
             let activeSubscription = await strapi.db.query("api::subscription.subscription").findOne({
                 where:{
                     userId:userId,
@@ -35,6 +40,7 @@ module.exports={
             return ctx.response.send({
                 success:true,
                 message:"Success",
+                count:count,
                 data:{
                     userSubscriptions,
                     nextBillingDate:activeSubscription?activeSubscription.expiryDate:null
