@@ -89,7 +89,7 @@ module.exports = {
             select:["name","slug","description","capsuleplus"],
             populate:{
                 companies:{
-                    select:["name","createdAt"],
+                    select:["name","createdAt","slug"],
                     populate:{
                         company_share_detail:{
                             select:["ttpmPE","marketCap"]
