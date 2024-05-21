@@ -145,11 +145,11 @@ module.exports = {
                 type:"dropdown",
                 detail:[
                     {
-                        name:"Less Than 500 Cr",
+                        name:"Less Than 40",
                         lte:40
                     },
                     {
-                        name:"Greater than 500 Cr",
+                        name:"Greater than 40",
                         gte:40
                     },
                 ]

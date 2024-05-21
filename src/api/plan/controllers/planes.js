@@ -2,6 +2,8 @@
 const { addDaysToDate } = require("../utils/index")
 const crypto = require("crypto");
 const Razorpay = require('razorpay');
+const moment = require("moment");
+const numberToWords = require('number-to-words');
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY,
@@ -141,7 +143,7 @@ module.exports = {
                     where: { orderId: orderId },
                     populate: {
                         plan: {
-                            select: ["name", "durationInDays"]
+                            select: ["name", "durationInDays","price"]
                         },
                         userId: {
                             select: ["id"]
@@ -151,17 +153,37 @@ module.exports = {
             );
 
             if (razorpay_signature === generated_signature) {
+                let paymentDetails = getPaymentDetails(paymentId);
+                console.log("paymentDetails",paymentDetails);
 
                 let user = await strapi.db.query("plugin::users-permissions.user").findOne({
                     where: { id: findSubscription.userId.id },
-                    select: ["id", "socketId"]
+                    select: ["id", "socketId","fullName"]
                 })
 
                 let subscriptionExpiryDate = addDaysToDate(new Date(), findSubscription.plan.durationInDays)
 
 
                 // generate invoice...
-                let invoiceUrl = await strapi.service("api::plan.plan").generateInvoice();
+                let invoiceData = {
+                    CIN:" fd6564564546456",
+                    GSTIN:"644444444",
+                    mobile:"+91-4433334434",
+                    email:"johndoe@mail.com",
+                    address:"Lorem Ipsum",
+                    userFullName:user.fullName,
+                    invoiceDate:moment(new Date()).format("MMM Do YYYY"),
+                    planName:findSubscription.plan?.name,
+                    totalAmount:findSubscription.plan?.price,
+                    discount:0,
+                    totalPayableAmount:findSubscription.amount,
+                    totalPayableAmountInWords:""
+                }
+
+                invoiceData.discount = invoiceData.totalAmount-invoiceData.totalPayableAmount
+                invoiceData.totalPayableAmountInWords = numberToWords.toWords(invoiceData.totalPayableAmount)
+
+                let invoiceUrl = await strapi.service("api::plan.plan").generateInvoice(invoiceData);
 
                 await strapi.db.query("api::subscription.subscription").update({
                     where: { id: findSubscription.id },
@@ -235,3 +257,14 @@ module.exports = {
         }
     },
 }
+
+const getPaymentDetails = async (paymentId) => {
+    try {
+      const details = await razorpay.payments.fetch(paymentId);
+      return JSON.parse(JSON.stringify(details));
+  
+    } catch (error) {
+      return {}
+    }
+  }
+
