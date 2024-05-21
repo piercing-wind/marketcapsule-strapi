@@ -4,7 +4,7 @@ module.exports = {
     list: async (ctx) => {
         try {
 
-            let { page, limit, companyTypeId, sectorId, industryId } = ctx.request.query;
+            let { page, limit, companyTypeId, sectorId, industryId,companyName } = ctx.request.body;
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
 
@@ -12,31 +12,33 @@ module.exports = {
 
             let whereQuery = {}
 
-
-            if (companyTypeId) {
-                companyTypeId = parseInt(companyTypeId)
+            if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
                 whereQuery["company"] = {...whereQuery["company"],...{
                     company_type: {
-                        id: companyTypeId
+                        id: { $in: companyTypeId.map(i => parseInt(i)) }
                     }
                 }}
-              
             }
-            if (sectorId) {
-                sectorId = parseInt(sectorId);
+
+            if (Array.isArray(sectorId) && sectorId.length > 0) {
                 whereQuery["company"] ={...whereQuery["company"],... {
                     sector: {
-                        id: sectorId
+                        id: {$in:sectorId}
                     }
                 }}
             }
-            if (industryId) {
-                industryId = parseInt(industryId);
+            if (Array.isArray(industryId) && industryId.length > 0) {
                 whereQuery["company"] = {...whereQuery["company"],...{
                     industry: {
-                        id: industryId
+                        id: {$in:industryId}
                     }
                 }}
+            }
+            if (Array.isArray(companyName) && companyName.length > 0) {
+                whereQuery["company"] = {...whereQuery["company"],...{
+                    name:{$in:companyName}
+                }}
+                
             }
 
             console.log("whereQuery",whereQuery)
@@ -56,6 +58,7 @@ module.exports = {
                 limit: limit,
                 orderBy: { createdAt: 'desc', updatedAt: 'desc' }
             })
+            // return ctx.send(ipos)
             let count = await strapi.db.query("api::ipo.ipo").count({ where: whereQuery });
 
             let data=[];

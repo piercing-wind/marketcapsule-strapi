@@ -1,14 +1,15 @@
 module.exports = {
     list: async (ctx) => {
         try {
+            console.log("query", ctx.request.body)
             let capsuleplusUser = false;
 
             if (ctx.state && ctx.state.user) {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
 
-            let { limit, page, bucketId,bucketSlug, companyTypeId, pe, marketCap, sectorId, industryId,pageName,companyName,sort } = ctx.request.query
-            console.log(ctx.request.query);
+            let { limit, page, bucketId, bucketSlug, companyTypeId, pe, marketCap, sectorId, industryId, companyName, sort, capsuleplus } = ctx.request.body;
+
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
 
@@ -16,10 +17,10 @@ module.exports = {
 
             let whereQuery = {}
 
-            if(bucketSlug){
-                let bucket = await strapi.db.query("api::bucket.bucket").findOne({where:{slug:bucketSlug},select:["id"]});
+            if (bucketSlug) {
+                let bucket = await strapi.db.query("api::bucket.bucket").findOne({ where: { slug: bucketSlug }, select: ["id"] });
 
-                if(bucket){
+                if (bucket) {
                     whereQuery["buckets"] = {
                         id: bucket.id
                     }
@@ -33,21 +34,23 @@ module.exports = {
                 }
             }
 
-            if (companyTypeId) {
-                companyTypeId = parseInt(companyTypeId)
+            if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
                 whereQuery["company_type"] = {
-                    id: companyTypeId
+                    id: { $in: companyTypeId.map(i => parseInt(i)) }
                 }
             }
+
+
+
             if (pe && pe.lte) {
                 whereQuery["company_share_detail"] = {
-                    peRatio: { $lte: pe.lte }
+                    ttpmPE: { $lte: pe.lte }
                 }
             }
             if (marketCap && marketCap.gte) {
-                whereQuery["company_share_detail"] = {
+                whereQuery["company_share_detail"] = [{
                     marketCap: { $gte: marketCap.gte }
-                }
+                }]
             }
 
             if (marketCap && marketCap.lte) {
@@ -58,24 +61,26 @@ module.exports = {
 
             if (pe && pe.gte) {
                 whereQuery["company_share_detail"] = {
-                    peRatio: { $gte: pe.gte }
+                    ttpmPE: { $gte: pe.gte }
                 }
             }
-            if (sectorId) {
-                sectorId = parseInt(sectorId)
+            if (Array.isArray(sectorId) && sectorId.length > 0) {
                 whereQuery["sector"] = {
-                    id: sectorId
+                    id: { $in: sectorId }
                 }
             }
-            if (industryId) {
-                industryId = parseInt(industryId);
+
+            if (Array.isArray(industryId) && industryId.length > 0) {
                 whereQuery["industry"] = {
-                    id: industryId
+                    id: { $in: sectorId }
                 }
             }
-            if(companyName){
-                whereQuery.name = {$containsi:companyName}
+
+            if (Array.isArray(companyName) && companyName.length > 0) {
+                whereQuery.name = { $in: companyName }
             }
+
+            console.log("whereQuery", whereQuery);
 
             const companies = await strapi.db.query("api::company.company").findMany({
                 where: whereQuery,
@@ -92,9 +97,9 @@ module.exports = {
                     },
                     industry: {
                         select: ["id", "slug", "name"],
-                        populate:{
-                            tag:{
-                                select:["name","colorHash"]
+                        populate: {
+                            tag: {
+                                select: ["name", "colorHash"]
                             }
                         }
                     },
@@ -118,18 +123,18 @@ module.exports = {
                 },
             })
 
-            if(companies.length>0){
-                if(sort==="lowHighMarketCap"){
-                    companies.sort((a,b)=>a.company_share_detail?.marketCap-b.company_share_detail?.marketCap)
+            if (companies.length > 0) {
+                if (sort === "lowHighMarketCap") {
+                    companies.sort((a, b) => a.company_share_detail?.marketCap - b.company_share_detail?.marketCap)
                 }
-                if(sort==="highLowMarketCap"){
-                    companies.sort((a,b)=>b.company_share_detail?.marketCap-a.company_share_detail?.marketCap)
+                if (sort === "highLowMarketCap") {
+                    companies.sort((a, b) => b.company_share_detail?.marketCap - a.company_share_detail?.marketCap)
                 }
-                if(sort==="lowHighTTMPE"){
-                    companies.sort((a,b)=>a.company_share_detail?.ttpmPE-b.company_share_detail?.ttpmPE)
+                if (sort === "lowHighTTMPE") {
+                    companies.sort((a, b) => a.company_share_detail?.ttpmPE - b.company_share_detail?.ttpmPE)
                 }
-                if(sort==="highLowTTMPE"){
-                    companies.sort((a,b)=>b.company_share_detail?.ttpmPE-a.company_share_detail?.ttpmPE)
+                if (sort === "highLowTTMPE") {
+                    companies.sort((a, b) => b.company_share_detail?.ttpmPE - a.company_share_detail?.ttpmPE)
                 }
             }
 
@@ -138,7 +143,7 @@ module.exports = {
                 success: true,
                 message: "success",
                 count,
-                capsuleplus:pageName==="capsuleplus"?capsuleplusUser?false:true:true,
+                capsuleplus: capsuleplus === "capsuleplus" ? capsuleplusUser ? false : true : true,
                 data: companies,
             })
 
@@ -159,14 +164,14 @@ module.exports = {
 
 
 
-            let { slug,name, id, pageName, capsuleplus} = ctx.request.query;
-            console.log("capsuleplus",capsuleplus);
-            console.log("capsuleplusUser",capsuleplusUser)
+            let { slug, name, id, pageName, capsuleplus } = ctx.request.query;
+            console.log("capsuleplus", capsuleplus);
+            console.log("capsuleplusUser", capsuleplusUser)
 
             let whereQuery = {
                 ...(slug && { slug }),
                 ...(id && { id }),
-                ...(name &&{name})
+                ...(name && { name })
             }
 
             let select = ["name", "websiteUrl", "productDetail", "capsuleplus"]
@@ -181,7 +186,7 @@ module.exports = {
                         select: ["name", "slug"]
                     },
                     company_share_detail: {
-                        select: ["prevClosePrice", "marketCap", "sectoralPERange", "BSE", "ttpmPE", "peRemark"]
+                        select: ["prevClosePrice", "marketCap", "sectoralPERange", "BSE", "ttpmPE", "peRemark", "updatedAt"]
                     },
                     featuredImage: {
                         select: ["alternativeText", "url"]
@@ -195,14 +200,14 @@ module.exports = {
             }
 
             if (pageName === "ipo-company-detail") {
-                if ((capsuleplus!=="true") || (capsuleplus==="true" && capsuleplusUser)) {
+                if ((capsuleplus !== "true") || (capsuleplus === "true" && capsuleplusUser)) {
                     console.log('false===');
                     let obj = {
                         business_segments: {
-                            select:["title","description"],
-                            populate:{
-                                image:{
-                                    select:["alternativeText", "url"]
+                            select: ["title", "description"],
+                            populate: {
+                                image: {
+                                    select: ["alternativeText", "url"]
                                 }
                             }
                         },
@@ -241,7 +246,7 @@ module.exports = {
                         },
                     }
                     populate = { ...populate, ...obj }
-                    select.push("aboutTheCompany","capsuleView")
+                    select.push("aboutTheCompany", "capsuleView")
                 }
 
             }
@@ -249,7 +254,7 @@ module.exports = {
             let prices;
 
             if (pageName === "capsuleplus-company-detail") {
-                if ((capsuleplus!=="true") || (capsuleplus==="true" && capsuleplusUser)) {
+                if ((capsuleplus !== "true") || (capsuleplus === "true" && capsuleplusUser)) {
                     isPrice = true;
                     let obj = {
                         company_share_detail: {
@@ -268,13 +273,13 @@ module.exports = {
                             select: ["name", "slug"]
                         },
                         operation_details: true,
-                        companyTypeDetails:true
+                        companyTypeDetails: true
                     }
                     populate = { ...populate, ...obj }
-                    select.push("businessOverview","capsuleHighlights");
+                    select.push("businessOverview", "capsuleHighlights");
 
                     // load share pricess of company...
-                    console.log("whereQuery",whereQuery);
+                    console.log("whereQuery", whereQuery);
                     let company = await strapi.db.query("api::company.company").findOne({ where: whereQuery, select: ["id"] });
 
                     prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
@@ -314,11 +319,11 @@ module.exports = {
             })
             company = !isPrice ? company : { ...company, ...{ prices: prices } }
 
-            if(company && company.company_share_detail && company.sector?.name){
+            if (company && company.company_share_detail && company.sector?.name) {
                 company.company_share_detail.sector = company.sector.name;
             }
 
-            let isConetentLock = capsuleplus==="true"?!capsuleplusUser?true:false:false
+            let isConetentLock = capsuleplus === "true" ? !capsuleplusUser ? true : false : false
 
             return ctx.response.send({
                 success: true,
@@ -372,10 +377,10 @@ module.exports = {
             let industries = await strapi.db.query("api::industry.industry").findMany({ select: ["id", "name", "slug"] });
             filters[2]["detail"] = industries;
 
-            let companies = await strapi.db.query("api::company.company").findMany({select:["name"]})
+            let companies = await strapi.db.query("api::company.company").findMany({ select: ["name"] })
 
-            if(companies.length>0){
-                filters[3]["detail"] = companies.map(i=>i.name)
+            if (companies.length > 0) {
+                filters[3]["detail"] = companies.map(i => i.name)
             }
 
             return ctx.response.send({
@@ -389,89 +394,89 @@ module.exports = {
             return ctx.badRequest(err)
         }
     },
-    search:async(ctx)=>{
+    search: async (ctx) => {
         try {
 
-            let {search,limit,page} = ctx.request.query;
+            let { search, limit, page } = ctx.request.query;
             limit = parseInt(limit) || 20;
             page = parseInt(page) || 1;
 
             let offset = (page - 1) * limit;
-            let searchQuery={}
+            let searchQuery = {}
 
-            if(search){
-                searchQuery={
-                    $or:[
+            if (search) {
+                searchQuery = {
+                    $or: [
                         {
-                            name:{$containsi:search}
+                            name: { $containsi: search }
                         },
                         {
-                            about:{$containsi:search}
+                            about: { $containsi: search }
                         },
                         {
-                            slug:{$containsi:search}
+                            slug: { $containsi: search }
                         },
                         {
-                            title:{$containsi:search}
+                            title: { $containsi: search }
                         },
                         {
-                            industry:{
-                                name:{$containsi:search}
+                            industry: {
+                                name: { $containsi: search }
                             }
                         },
                     ],
-                    
+
                 }
             }
 
             let companies = await strapi.db.query("api::company.company").findMany({
-                where:searchQuery,
-                select:["name"],
-                populate:{
-                    indsutry:{
-                        select:["name"]
+                where: searchQuery,
+                select: ["name"],
+                populate: {
+                    indsutry: {
+                        select: ["name"]
                     }
                 },
-                limit:limit,
-                offset:offset
+                limit: limit,
+                offset: offset
             })
 
             return ctx.send({
-                success:true,
-                message:"Success",
-                data:companies
+                success: true,
+                message: "Success",
+                data: companies
             })
-            
+
         } catch (error) {
             return ctx.badRequest(error)
         }
     },
-    priceList:async(ctx)=>{
+    priceList: async (ctx) => {
         try {
 
-            let {companyId,startDate,endDate,exchangeType} = ctx.request.query;
+            let { companyId, startDate, endDate, exchangeType } = ctx.request.query;
 
-            if(!companyId){
+            if (!companyId) {
                 return ctx.badRequest("CompanyId missing!")
             }
 
-            let searchQuery ={
-                companyId:companyId,
-                ...(startDate && {date:{$gte:new Date(startDate)}}),
-                ...(endDate&& {date:{$lte: new Date(endDate)}}),
-                ...(exchangeType && {exchangeName:exchangeType})
+            let searchQuery = {
+                companyId: companyId,
+                ...(startDate && { date: { $gte: new Date(startDate) } }),
+                ...(endDate && { date: { $lte: new Date(endDate) } }),
+                ...(exchangeType && { exchangeName: exchangeType })
             }
 
             let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
-                where:searchQuery,
+                where: searchQuery,
                 orderBy: { createdAt: 'desc', updatedAt: 'desc' }
             })
             return ctx.send({
-                success:true,
-                message:"Data fetched",
-                data:prices
+                success: true,
+                message: "Data fetched",
+                data: prices
             })
-            
+
         } catch (error) {
             return ctx.badRequest(error)
         }

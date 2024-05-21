@@ -32,7 +32,12 @@ module.exports = [
   'strapi::cors',
   'strapi::poweredBy',
   'strapi::query',
-  'strapi::body',
+  {
+    name: 'strapi::body',
+    config: {
+      parsedMethods: ['GET', 'POST', 'PUT', 'PATCH'],
+    },
+  },
   'strapi::session',
   'strapi::favicon',
   'strapi::public',
