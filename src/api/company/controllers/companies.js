@@ -212,7 +212,7 @@ module.exports = {
                             }
                         },
                         company_share_detail: {
-                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio","rocePercent"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -233,7 +233,7 @@ module.exports = {
                     let obj = {
                         business_segments: true,
                         company_share_detail: {
-                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio"]
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio","rocePercent"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
