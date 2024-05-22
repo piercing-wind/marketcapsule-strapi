@@ -99,7 +99,7 @@ module.exports = {
 
             const companies = await strapi.db.query("api::company.company").findMany({
                 where: whereQuery,
-                select: ["name", "slug", "capsuleplus"],
+                select: ["name", "slug", "capsuleplus","metaTitle","metaDescription"],
                 populate: {
                     company_share_detail: {
                         select: ["marketCap", "ttpmPE"]
