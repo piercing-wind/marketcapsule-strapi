@@ -87,29 +87,29 @@ module.exports = {
            let bucket = await strapi.db.query("api::bucket.bucket").findOne({
             where:{slug:slug},
             select:["name","slug","description","capsuleplus"],
-            populate:{
-                companies:{
-                    select:["name","createdAt","slug"],
-                    populate:{
-                        company_share_detail:{
-                            select:["ttpmPE","marketCap"]
-                        },
-                    }
-                }
+            // populate:{
+            //     companies:{
+            //         select:["name","createdAt","slug"],
+            //         populate:{
+            //             company_share_detail:{
+            //                 select:["ttpmPE","marketCap"]
+            //             },
+            //         }
+            //     }
                 
-            }
+            // }
            })
 
-           let data = JSON.parse(JSON.stringify(bucket));
-           data.companiesCount = data.companies.length;
+        //    let data = JSON.parse(JSON.stringify(bucket));
+        //    data.companiesCount = data.companies.length;
 
-           if(data && (bucket.capsuleplus && !capsuleplusUser)){
-                data.companies = bucket.companies.slice(0,6)
+        //    if(data && (bucket.capsuleplus && !capsuleplusUser)){
+        //         data.companies = bucket.companies.slice(0,6)
             
-           }
-           else{
-            data.companies = bucket.companies.slice(offset,limit+offset)
-           }
+        //    }
+        //    else{
+        //     data.companies = bucket.companies.slice(offset,limit+offset)
+        //    }
 
            
      
@@ -117,8 +117,8 @@ module.exports = {
             return ctx.response.send({
                 success:true,
                 message:"Detail fetched",
-                capsuleplus:data ? data.capsuleplus:false,
-                data:data,
+                // capsuleplus:data ? data.capsuleplus:false,
+                data:bucket,
             })
             
         } catch (err) {

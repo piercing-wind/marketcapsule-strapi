@@ -1,14 +1,15 @@
 module.exports = {
     list: async (ctx) => {
         try {
-            console.log("query", ctx.request.body)
+            // console.log("query", ctx.request.query);
+
             let capsuleplusUser = false;
 
             if (ctx.state && ctx.state.user) {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
 
-            let { limit, page, bucketId, bucketSlug, companyTypeId, pe, marketCap, sectorId, industryId, companyName, sort, capsuleplus } = ctx.request.body;
+            let { limit, page, bucketId, bucketSlug, companyTypeId, peLte, peGte, marketCapLte, marketCapGte, sectorId, industryId, companyName, sort, capsuleplus } = ctx.request.query;
 
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -34,50 +35,81 @@ module.exports = {
                 }
             }
 
-            if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
-                whereQuery["company_type"] = {
-                    id: { $in: companyTypeId.map(i => parseInt(i)) }
+            if (companyTypeId) {
+
+                companyTypeId = JSON.parse(companyTypeId);
+                if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
+                    whereQuery["company_type"] = {
+                        id: { $in: companyTypeId.map(i => parseInt(i)) }
+                    }
                 }
             }
 
 
-
-            if (pe && pe.lte) {
+            if (peLte) {
+                console.log("11661616");
                 whereQuery["company_share_detail"] = {
-                    ttpmPE: { $lte: pe.lte }
+                    ...whereQuery["company_share_detail"], ...{
+                        ttpmPE: { $lte: parseInt(peLte) }
+                    }
                 }
-            }
-            if (marketCap && marketCap.gte) {
-                whereQuery["company_share_detail"] = [{
-                    marketCap: { $gte: marketCap.gte }
-                }]
+
             }
 
-            if (marketCap && marketCap.lte) {
+            if (peGte) {
+
                 whereQuery["company_share_detail"] = {
-                    marketCap: { $lte: marketCap.lte }
+                    ...whereQuery["company_share_detail"], ...{
+                        ttpmPE: { $gte: parseInt(peGte) }
+                    }
+                }
+
+            }
+
+            if (marketCapLte) {
+                 whereQuery["company_share_detail"] = {
+                    ...whereQuery["company_share_detail"], ...{
+                        marketCap: { $lte: parseInt(marketCapLte) }
+                    }
                 }
             }
 
-            if (pe && pe.gte) {
+            if (marketCapGte) {
                 whereQuery["company_share_detail"] = {
-                    ttpmPE: { $gte: pe.gte }
+                    ...whereQuery["company_share_detail"], ...{
+                        marketCap: { $gte: parseInt(marketCapGte) }
+                    }
                 }
+
             }
-            if (Array.isArray(sectorId) && sectorId.length > 0) {
-                whereQuery["sector"] = {
-                    id: { $in: sectorId }
+
+
+
+            if (sectorId) {
+                sectorId = JSON.parse(sectorId)
+                if (Array.isArray(sectorId) && sectorId.length > 0) {
+                    whereQuery["sector"] = {
+                        id: { $in: sectorId }
+                    }
                 }
             }
 
-            if (Array.isArray(industryId) && industryId.length > 0) {
-                whereQuery["industry"] = {
-                    id: { $in: sectorId }
+            if (industryId) {
+                industryId = JSON.parse(industryId)
+
+                if (Array.isArray(industryId) && industryId.length > 0) {
+                    whereQuery["industry"] = {
+                        id: { $in: sectorId }
+                    }
                 }
             }
 
-            if (Array.isArray(companyName) && companyName.length > 0) {
-                whereQuery.name = { $in: companyName }
+            if (companyName) {
+                companyName = JSON.parse(companyName)
+
+                if (Array.isArray(companyName) && companyName.length > 0) {
+                    whereQuery.name = { $in: companyName }
+                }
             }
 
             console.log("whereQuery", whereQuery);
@@ -212,7 +244,7 @@ module.exports = {
                             }
                         },
                         company_share_detail: {
-                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio","rocePercent"]
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio", "rocePercent"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -233,7 +265,7 @@ module.exports = {
                     let obj = {
                         business_segments: true,
                         company_share_detail: {
-                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio","rocePercent"]
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio", "rocePercent"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -276,7 +308,7 @@ module.exports = {
                         companyTypeDetails: true
                     }
                     populate = { ...populate, ...obj }
-                    select.push("businessOverview","financialReport","shareCapitalAndEmployees", "capsuleHighlights");
+                    select.push("businessOverview", "financialReport", "shareCapitalAndEmployees", "capsuleHighlights");
 
                     // load share pricess of company...
                     console.log("whereQuery", whereQuery);
@@ -377,10 +409,10 @@ module.exports = {
             let industries = await strapi.db.query("api::industry.industry").findMany({ select: ["id", "name", "slug"] });
             filters[2]["detail"] = industries;
 
-            let companies = await strapi.db.query("api::company.company").findMany({ select: ["name"] })
+            let companies = await strapi.db.query("api::company.company").findMany({ select: ["id", "name", "slug"] })
 
             if (companies.length > 0) {
-                filters[3]["detail"] = companies.map(i => i.name)
+                filters[3]["detail"] = companies
             }
 
             return ctx.response.send({
@@ -467,7 +499,7 @@ module.exports = {
                 // ...(exchangeType && { exchangeName: exchangeType })
             }
 
-            console.log("searchQuery",searchQuery)
+            console.log("searchQuery", searchQuery)
 
             let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                 where: searchQuery,

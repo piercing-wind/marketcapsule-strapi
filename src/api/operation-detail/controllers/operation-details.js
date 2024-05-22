@@ -2,18 +2,26 @@ module.exports={
     list:async(ctx)=>{
         try {
 
-            let {companyId,duration,startYear,endYear}=ctx.request.query;
+            let {companySlug,duration,startYear,endYear}=ctx.request.query;
 
-            if(!companyId){
-                return ctx.badRequest("CompanyId missing!")
+            if(!companySlug){
+                return ctx.badRequest("CompanySlug is missing")
             }
 
             if(duration && !["yearly","quarterly"].includes(duration)){
                 return ctx.badRequest("Invalid duration!")
             }
+            let companyId;
+
+            if(companySlug){
+                let company = await strapi.db.query("api::company.company").findOne({where:{slug:companySlug},select:["id"]});
+                if(company){
+                    companyId = companySlug
+                }
+            }
 
             let whereQuery={
-                company:parseInt(companyId),
+                ...(companyId &&{company:parseInt(companyId)}),
                 ...(duration && {duration:duration}),
                 ...(startYear && {year:{$gte:parseInt(startYear)}}),
                 ...(endYear&& {year:{$lte:parseInt(endYear)}})

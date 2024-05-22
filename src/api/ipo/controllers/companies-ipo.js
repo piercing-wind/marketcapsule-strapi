@@ -12,33 +12,45 @@ module.exports = {
 
             let whereQuery = {}
 
-            if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
-                whereQuery["company"] = {...whereQuery["company"],...{
-                    company_type: {
-                        id: { $in: companyTypeId.map(i => parseInt(i)) }
-                    }
-                }}
+            if(companyTypeId){
+                companyTypeId = JSON.parse(companyTypeId)
+                if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
+                    whereQuery["company"] = {...whereQuery["company"],...{
+                        company_type: {
+                            id: { $in: companyTypeId.map(i => parseInt(i)) }
+                        }
+                    }}
+                }
             }
 
-            if (Array.isArray(sectorId) && sectorId.length > 0) {
-                whereQuery["company"] ={...whereQuery["company"],... {
-                    sector: {
-                        id: {$in:sectorId}
-                    }
-                }}
+            if(sectorId){
+                sectorId = JSON.parse(sectorId)
+                if (Array.isArray(sectorId) && sectorId.length > 0) {
+                    whereQuery["company"] ={...whereQuery["company"],... {
+                        sector: {
+                            id: {$in:sectorId}
+                        }
+                    }}
+                }
             }
-            if (Array.isArray(industryId) && industryId.length > 0) {
-                whereQuery["company"] = {...whereQuery["company"],...{
-                    industry: {
-                        id: {$in:industryId}
-                    }
-                }}
+            if(industryId){
+                industryId = JSON.parse(industryId)
+                if (Array.isArray(industryId) && industryId.length > 0) {
+                    whereQuery["company"] = {...whereQuery["company"],...{
+                        industry: {
+                            id: {$in:industryId}
+                        }
+                    }}
+                }
             }
-            if (Array.isArray(companyName) && companyName.length > 0) {
-                whereQuery["company"] = {...whereQuery["company"],...{
-                    name:{$in:companyName}
-                }}
-                
+            if(companyName){
+                companyName = JSON.parse(companyName)
+                if (Array.isArray(companyName) && companyName.length > 0) {
+                    whereQuery["company"] = {...whereQuery["company"],...{
+                        name:{$in:companyName}
+                    }}
+                    
+                }
             }
 
             console.log("whereQuery",whereQuery)
