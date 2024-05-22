@@ -2,7 +2,7 @@ module.exports={
     list:async(ctx)=>{
         try {
 
-            let {companyId,exchangeName,startDate,endDate}  = ctx.request.query;
+            let {companyId,startDate,endDate}  = ctx.request.query;
 
             if(!companyId){
                 return ctx.badRequest("CompanyId missing!")
@@ -10,7 +10,7 @@ module.exports={
 
             let whereQuery={
                 companyId:parseInt(companyId),
-                ...(exchangeName && {exchangeName:exchangeName}),
+                // ...(exchangeName && {exchangeName:exchangeName}),
                 ...(startDate && {date:{$gte:new Date(startDate)}}),
                 ...(endDate&& {date:{$lte:new Date(endDate)}})
             }

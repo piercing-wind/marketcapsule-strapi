@@ -276,7 +276,7 @@ module.exports = {
                         companyTypeDetails: true
                     }
                     populate = { ...populate, ...obj }
-                    select.push("businessOverview", "capsuleHighlights");
+                    select.push("businessOverview","financialReport","shareCapitalAndEmployees", "capsuleHighlights");
 
                     // load share pricess of company...
                     console.log("whereQuery", whereQuery);
@@ -454,7 +454,7 @@ module.exports = {
     priceList: async (ctx) => {
         try {
 
-            let { companyId, startDate, endDate, exchangeType } = ctx.request.query;
+            let { companyId, startDate, endDate } = ctx.request.query;
 
             if (!companyId) {
                 return ctx.badRequest("CompanyId missing!")
@@ -464,8 +464,10 @@ module.exports = {
                 companyId: companyId,
                 ...(startDate && { date: { $gte: new Date(startDate) } }),
                 ...(endDate && { date: { $lte: new Date(endDate) } }),
-                ...(exchangeType && { exchangeName: exchangeType })
+                // ...(exchangeType && { exchangeName: exchangeType })
             }
+
+            console.log("searchQuery",searchQuery)
 
             let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                 where: searchQuery,

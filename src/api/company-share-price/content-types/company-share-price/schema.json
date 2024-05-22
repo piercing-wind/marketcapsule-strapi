@@ -26,13 +26,6 @@
     },
     "volume": {
       "type": "float"
-    },
-    "exchangeName": {
-      "type": "enumeration",
-      "enum": [
-        "NSE",
-        "BSE"
-      ]
     }
   }
 }

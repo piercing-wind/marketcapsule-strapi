@@ -1139,7 +1139,6 @@ export interface ApiCompanySharePriceCompanySharePrice
     date: Attribute.Date;
     price: Attribute.Float & Attribute.Required;
     volume: Attribute.Float;
-    exchangeName: Attribute.Enumeration<['NSE', 'BSE']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

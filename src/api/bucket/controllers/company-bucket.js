@@ -108,7 +108,6 @@ module.exports = {
             
            }
            else{
-            console.log("else",limit,offset);
             data.companies = bucket.companies.slice(offset,limit+offset)
            }
 
