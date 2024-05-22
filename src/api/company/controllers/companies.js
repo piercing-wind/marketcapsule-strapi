@@ -1,7 +1,7 @@
 module.exports = {
     list: async (ctx) => {
         try {
-            console.log("query", ctx.request.query);
+            // console.log("query", ctx.request.query);
 
             let capsuleplusUser = false;
 
@@ -99,7 +99,7 @@ module.exports = {
 
             const companies = await strapi.db.query("api::company.company").findMany({
                 where: whereQuery,
-                select: ["name", "slug", "capsuleplus","metaTitle","metaDescription"],
+                select: ["name", "slug", "capsuleplus","metaTitle","metaDescription","createdAt","updatedAt"],
                 populate: {
                     company_share_detail: {
                         select: ["marketCap", "ttpmPE"]
