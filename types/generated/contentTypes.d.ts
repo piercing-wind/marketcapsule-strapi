@@ -1090,7 +1090,6 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     sectoralPERange: Attribute.String;
     BSE: Attribute.Integer;
     NSE: Attribute.Integer;
-    ttpmPE: Attribute.String;
     peRemark: Attribute.String;
     company: Attribute.Relation<
       'api::company-share-detail.company-share-detail',
@@ -1100,6 +1099,7 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     marketCap: Attribute.Float;
     change: Attribute.Float;
     companyName: Attribute.String;
+    ttpmPE: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

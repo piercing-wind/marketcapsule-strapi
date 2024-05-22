@@ -4,7 +4,10 @@ module.exports = {
     list: async (ctx) => {
         try {
 
-            let { page, limit, companyTypeId, sectorId, industryId,companyName } = ctx.request.body;
+            let { page, limit, companyTypeId, sectorId, industryId,companyName } = ctx.request.query;
+
+            console.log("payload",ctx.request.query)
+
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
 
@@ -12,8 +15,7 @@ module.exports = {
 
             let whereQuery = {}
 
-            if(companyTypeId){
-                companyTypeId = JSON.parse(companyTypeId)
+
                 if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
                     whereQuery["company"] = {...whereQuery["company"],...{
                         company_type: {
@@ -21,37 +23,32 @@ module.exports = {
                         }
                     }}
                 }
-            }
+            
 
-            if(sectorId){
-                sectorId = JSON.parse(sectorId)
                 if (Array.isArray(sectorId) && sectorId.length > 0) {
                     whereQuery["company"] ={...whereQuery["company"],... {
                         sector: {
-                            id: {$in:sectorId}
+                            id: {$in:sectorId.map(i=>parseInt(i))}
                         }
                     }}
                 }
-            }
-            if(industryId){
-                industryId = JSON.parse(industryId)
+            
+
                 if (Array.isArray(industryId) && industryId.length > 0) {
                     whereQuery["company"] = {...whereQuery["company"],...{
                         industry: {
-                            id: {$in:industryId}
+                            id: {$in:industryId.map(i=>parseInt(i))}
                         }
                     }}
                 }
-            }
-            if(companyName){
-                companyName = JSON.parse(companyName)
+            
+
                 if (Array.isArray(companyName) && companyName.length > 0) {
                     whereQuery["company"] = {...whereQuery["company"],...{
                         name:{$in:companyName}
                     }}
                     
                 }
-            }
 
             console.log("whereQuery",whereQuery)
             let ipos = await strapi.db.query("api::ipo.ipo").findMany({

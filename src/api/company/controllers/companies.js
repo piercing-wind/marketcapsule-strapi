@@ -1,7 +1,7 @@
 module.exports = {
     list: async (ctx) => {
         try {
-            // console.log("query", ctx.request.query);
+            console.log("query", ctx.request.query);
 
             let capsuleplusUser = false;
 
@@ -34,20 +34,15 @@ module.exports = {
                     id: bucketId
                 }
             }
-
-            if (companyTypeId) {
-
-                companyTypeId = JSON.parse(companyTypeId);
                 if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
                     whereQuery["company_type"] = {
                         id: { $in: companyTypeId.map(i => parseInt(i)) }
                     }
                 }
-            }
+            
 
 
             if (peLte) {
-                console.log("11661616");
                 whereQuery["company_share_detail"] = {
                     ...whereQuery["company_share_detail"], ...{
                         ttpmPE: { $lte: parseInt(peLte) }
@@ -83,34 +78,22 @@ module.exports = {
 
             }
 
-
-
-            if (sectorId) {
-                sectorId = JSON.parse(sectorId)
                 if (Array.isArray(sectorId) && sectorId.length > 0) {
                     whereQuery["sector"] = {
-                        id: { $in: sectorId }
+                        id: { $in: sectorId.map(i=>parseInt(i)) }
                     }
                 }
-            }
-
-            if (industryId) {
-                industryId = JSON.parse(industryId)
-
+            
                 if (Array.isArray(industryId) && industryId.length > 0) {
                     whereQuery["industry"] = {
-                        id: { $in: sectorId }
+                        id: { $in: industryId.map(i=>parseInt(i)) }
                     }
                 }
-            }
-
-            if (companyName) {
-                companyName = JSON.parse(companyName)
+            
 
                 if (Array.isArray(companyName) && companyName.length > 0) {
                     whereQuery.name = { $in: companyName }
                 }
-            }
 
             console.log("whereQuery", whereQuery);
 

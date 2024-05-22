@@ -63,9 +63,6 @@
     "NSE": {
       "type": "integer"
     },
-    "ttpmPE": {
-      "type": "string"
-    },
     "peRemark": {
       "type": "string"
     },
@@ -83,6 +80,9 @@
     },
     "companyName": {
       "type": "string"
+    },
+    "ttpmPE": {
+      "type": "float"
     }
   }
 }
