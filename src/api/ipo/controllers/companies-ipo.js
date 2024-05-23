@@ -147,9 +147,9 @@ module.exports = {
 
             let companies = await strapi.db.query("api::company.company").findMany({select:["id","name","slug"]})
 
-            if(companies.length>0){
-                filters[3]["detail"] = companies.map(i=>i.name)
-            }
+         
+                filters[3]["detail"] = companies
+            
 
             return ctx.response.send({
                 success: true,
