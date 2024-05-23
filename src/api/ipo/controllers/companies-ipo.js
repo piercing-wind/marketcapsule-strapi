@@ -145,7 +145,7 @@ module.exports = {
             let industries = await strapi.db.query("api::industry.industry").findMany({ select: ["id", "name", "slug"] });
             filters[2]["detail"] = industries;
 
-            let companies = await strapi.db.query("api::company.company").findMany({select:["name"]})
+            let companies = await strapi.db.query("api::company.company").findMany({select:["id","name","slug"]})
 
             if(companies.length>0){
                 filters[3]["detail"] = companies.map(i=>i.name)
