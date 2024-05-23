@@ -189,7 +189,7 @@ module.exports = {
                 ...(name && { name })
             }
 
-            let select = ["name", "websiteUrl", "productDetail", "capsuleplus"]
+            let select = ["name", "websiteUrl", "productDetail", "capsuleplus","metaTitle","metaDescription"]
             let populate = {}
             if (pageName === "bucket-company-detail") {
                 let obj = {

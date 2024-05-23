@@ -86,7 +86,7 @@ module.exports = {
 
            let bucket = await strapi.db.query("api::bucket.bucket").findOne({
             where:{slug:slug},
-            select:["name","slug","description","capsuleplus"],
+            select:["name","slug","description","capsuleplus","metaDescription","metaTitle"],
             // populate:{
             //     companies:{
             //         select:["name","createdAt","slug"],

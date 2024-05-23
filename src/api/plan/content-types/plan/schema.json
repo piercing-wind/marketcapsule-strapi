@@ -43,6 +43,9 @@
     },
     "currency": {
       "type": "string"
+    },
+    "regularPrice": {
+      "type": "float"
     }
   }
 }

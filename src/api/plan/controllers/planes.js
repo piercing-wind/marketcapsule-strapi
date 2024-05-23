@@ -21,12 +21,14 @@ module.exports = {
             }
 
             let plan = await strapi.db.query("api::plan.plan").findOne({ where: { id: planId } });
+
             if (!plan) {
                 return ctx.badRequest("Plan not exist!")
 
             }
 
             let res = {
+                planName:plan.name,
                 amount: plan.price,
                 discount: 0,
                 totalPayableAmount: plan.price

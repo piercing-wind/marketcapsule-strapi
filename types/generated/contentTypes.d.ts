@@ -892,6 +892,7 @@ export interface ApiCapsuleplusCapsuleplus extends Schema.SingleType {
     singularName: 'capsuleplus';
     pluralName: 'capsulepluses';
     displayName: 'Capsuleplus';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -899,6 +900,8 @@ export interface ApiCapsuleplusCapsuleplus extends Schema.SingleType {
   attributes: {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1364,6 +1367,37 @@ export interface ApiFinancialHighlightFinancialHighlight
   };
 }
 
+export interface ApiHomepageHomepage extends Schema.SingleType {
+  collectionName: 'homepages';
+  info: {
+    singularName: 'homepage';
+    pluralName: 'homepages';
+    displayName: 'homepage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::homepage.homepage',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::homepage.homepage',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiIndustryIndustry extends Schema.CollectionType {
   collectionName: 'industries';
   info: {
@@ -1455,6 +1489,7 @@ export interface ApiIpoZoneIpoZone extends Schema.SingleType {
     singularName: 'ipo-zone';
     pluralName: 'ipo-zones';
     displayName: 'IPO ZONE';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1462,6 +1497,8 @@ export interface ApiIpoZoneIpoZone extends Schema.SingleType {
   attributes: {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text;
+    metaDescription: Attribute.Text;
+    metaTitle: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1607,6 +1644,7 @@ export interface ApiPlanPlan extends Schema.CollectionType {
     durationInDays: Attribute.Integer & Attribute.Required;
     slug: Attribute.UID<'api::plan.plan', 'name'>;
     currency: Attribute.String;
+    regularPrice: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
@@ -1694,6 +1732,7 @@ export interface ApiScreenerScreener extends Schema.SingleType {
     singularName: 'screener';
     pluralName: 'screeners';
     displayName: 'Screener';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1701,6 +1740,8 @@ export interface ApiScreenerScreener extends Schema.SingleType {
   attributes: {
     Title: Attribute.String & Attribute.Required;
     description: Attribute.Text;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1991,6 +2032,7 @@ export interface ApiWachlistWachlist extends Schema.SingleType {
     singularName: 'wachlist';
     pluralName: 'wachlists';
     displayName: 'Wachlist';
+    description: '';
   };
   options: {
     draftAndPublish: false;
@@ -1998,6 +2040,8 @@ export interface ApiWachlistWachlist extends Schema.SingleType {
   attributes: {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2085,6 +2129,7 @@ declare module '@strapi/types' {
       'api::disclaimer.disclaimer': ApiDisclaimerDisclaimer;
       'api::feed.feed': ApiFeedFeed;
       'api::financial-highlight.financial-highlight': ApiFinancialHighlightFinancialHighlight;
+      'api::homepage.homepage': ApiHomepageHomepage;
       'api::industry.industry': ApiIndustryIndustry;
       'api::ipo.ipo': ApiIpoIpo;
       'api::ipo-zone.ipo-zone': ApiIpoZoneIpoZone;

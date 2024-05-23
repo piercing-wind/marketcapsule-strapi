@@ -4,7 +4,8 @@
   "info": {
     "singularName": "ipo-zone",
     "pluralName": "ipo-zones",
-    "displayName": "IPO ZONE"
+    "displayName": "IPO ZONE",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,6 +18,12 @@
     },
     "description": {
       "type": "text"
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "metaTitle": {
+      "type": "string"
     }
   }
 }
