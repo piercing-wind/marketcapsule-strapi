@@ -1,7 +1,7 @@
 module.exports = {
     list: async (ctx) => {
         try {
-            // console.log("query", ctx.request.query);
+            console.log("query", ctx.request.query);
 
             let capsuleplusUser = false;
 
