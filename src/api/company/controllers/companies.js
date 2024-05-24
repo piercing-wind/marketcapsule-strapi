@@ -158,7 +158,7 @@ module.exports = {
                 success: true,
                 message: "success",
                 count,
-                capsuleplus: capsuleplus === "capsuleplus" ? capsuleplusUser ? false : true : true,
+                capsuleplus: capsuleplus? !capsuleplusUser ? true : false : false,
                 data: companies,
             })
 
