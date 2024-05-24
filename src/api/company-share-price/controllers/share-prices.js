@@ -7,13 +7,30 @@ module.exports={
             if(!companyId){
                 return ctx.badRequest("CompanyId missing!")
             }
+            let dt =new Date();
+            dt.setFullYear(dt.getFullYear()-1)
+
+            startDate = startDate || dt
+            endDate = endDate || new Date()
+
+            console.log("startDate",startDate);
 
             let whereQuery={
                 companyId:parseInt(companyId),
                 // ...(exchangeName && {exchangeName:exchangeName}),
+                ...{$or:[
+                    {
+                        date:{$gte:new Date(startDate)}
+                    },
+                    {
+                        date:{$lte:new Date(endDate)}
+                    }
+                ]},
                 ...(startDate && {date:{$gte:new Date(startDate)}}),
                 ...(endDate&& {date:{$lte:new Date(endDate)}})
             }
+
+            console.log("whereQuery",whereQuery);
 
             let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                 where:whereQuery

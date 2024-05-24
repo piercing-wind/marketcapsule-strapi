@@ -9,7 +9,7 @@ module.exports = {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
 
-            let { limit, page, bucketId, bucketSlug, companyTypeId, peLte, peGte, marketCapLte, marketCapGte, sectorId, industryId, companyName, sort, capsuleplus } = ctx.request.query;
+            let { limit, page, bucketId, bucketSlug, companyTypeId, peLte, peGte, marketCapLte, marketCapGte, sectorId, industryId, companyName, sort, capsuleplus=false } = ctx.request.query;
 
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -179,7 +179,7 @@ module.exports = {
 
 
 
-            let { slug, name, id, pageName, capsuleplus } = ctx.request.query;
+            let { slug, name, id, pageName, capsuleplus=false } = ctx.request.query;
             console.log("capsuleplus", capsuleplus);
             console.log("capsuleplusUser", capsuleplusUser)
 
@@ -332,13 +332,14 @@ module.exports = {
                 populate: populate,
 
             })
+            capsuleplus = company?company.capsuleplus:false;
             company = !isPrice ? company : { ...company, ...{ prices: prices } }
 
             if (company && company.company_share_detail && company.sector?.name) {
                 company.company_share_detail.sector = company.sector.name;
             }
 
-            let isConetentLock = capsuleplus === "true" ? !capsuleplusUser ? true : false : false
+            let isConetentLock = capsuleplus ? !capsuleplusUser ? true : false : false
 
             return ctx.response.send({
                 success: true,
@@ -469,11 +470,14 @@ module.exports = {
     priceList: async (ctx) => {
         try {
 
-            let { companyId, startDate, endDate } = ctx.request.query;
+            let { companyId, startDate, endDate } = ctx.request.query; 
 
+            
             if (!companyId) {
                 return ctx.badRequest("CompanyId missing!")
             }
+
+
 
             let searchQuery = {
                 companyId: companyId,

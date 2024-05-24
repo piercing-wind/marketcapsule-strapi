@@ -29,7 +29,15 @@ module.exports = [
       },
     },
   },
-  'strapi::cors',
+  {
+    name: 'strapi::cors',
+    config: {
+      enabled: true,
+      header: '*',
+      origin: ['*'],
+      headers: ['*']
+    }
+  },
   'strapi::poweredBy',
   'strapi::query',
   {
