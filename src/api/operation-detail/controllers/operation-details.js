@@ -14,18 +14,23 @@ module.exports={
             let companyId;
 
             if(companySlug){
+
                 let company = await strapi.db.query("api::company.company").findOne({where:{slug:companySlug},select:["id"]});
-                if(company){
-                    companyId = companySlug
+
+                if(!company){
+                    return ctx.badRequest("Invalid company slug!")
                 }
+                companyId = company.id;
             }
 
             let whereQuery={
-                ...(companyId &&{company:parseInt(companyId)}),
+                ...(companyId &&{company:companyId}),
                 ...(duration && {duration:duration}),
                 ...(startYear && {year:{$gte:parseInt(startYear)}}),
                 ...(endYear&& {year:{$lte:parseInt(endYear)}})
             }
+
+            console.log("whereQuery",whereQuery)
 
             let details = await strapi.db.query("api::operation-detail.operation-detail").findMany({
                 where:whereQuery,
