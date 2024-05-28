@@ -2,8 +2,23 @@ module.exports={
     list:async(ctx)=>{
         try {
 
-            let {companyId,startDate,endDate}  = ctx.request.query;
+            let {companySlug,startDate,endDate}  = ctx.request.query;
 
+            
+            let companyId;
+            if(!companySlug){
+                return ctx.badRequest("CompanySlug is missing")
+            }
+
+            if(companySlug){
+
+                let company = await strapi.db.query("api::company.company").findOne({where:{slug:companySlug},select:["id"]});
+
+                if(!company){
+                    return ctx.badRequest("Invalid company slug!")
+                }
+                companyId = company.id;
+            }
             if(!companyId){
                 return ctx.badRequest("CompanyId missing!")
             }
@@ -14,11 +29,13 @@ module.exports={
             endDate = endDate || new Date()
 
             console.log("startDate",startDate);
+            console.log("endDate",endDate);
+
 
             let whereQuery={
                 companyId:parseInt(companyId),
                 // ...(exchangeName && {exchangeName:exchangeName}),
-                ...{$or:[
+                ...{$and:[
                     {
                         date:{$gte:new Date(startDate)}
                     },
@@ -26,8 +43,8 @@ module.exports={
                         date:{$lte:new Date(endDate)}
                     }
                 ]},
-                ...(startDate && {date:{$gte:new Date(startDate)}}),
-                ...(endDate&& {date:{$lte:new Date(endDate)}})
+                // ...(startDate && {date:{$gte:new Date(startDate)}}),
+                // ...(endDate&& {date:{$lte:new Date(endDate)}})
             }
 
             console.log("whereQuery",whereQuery);

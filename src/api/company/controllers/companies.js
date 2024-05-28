@@ -467,35 +467,50 @@ module.exports = {
             return ctx.badRequest(error)
         }
     },
-    priceList: async (ctx) => {
+    priceAndVolume: async (ctx) => {
         try {
+            const {companySlug} = ctx.request.query;
 
-            let { companyId, startDate, endDate } = ctx.request.query; 
-
-            
-            if (!companyId) {
-                return ctx.badRequest("CompanyId missing!")
+            let companyId;
+            if(!companySlug){
+                return ctx.badRequest("CompanySlug is missing")
             }
+
+            if(companySlug){
+
+                let company = await strapi.db.query("api::company.company").findOne({where:{slug:companySlug},select:["id"]});
+
+                if(!company){
+                    return ctx.badRequest("Invalid company slug!")
+                }
+                companyId = company.id;
+            }
+
+            let todayDate = new Date();
+            let endDate = new Date(todayDate.getFullYear() - 1, todayDate.getMonth(), todayDate.getDate());
 
 
 
             let searchQuery = {
                 companyId: companyId,
-                ...(startDate && { date: { $gte: new Date(startDate) } }),
-                ...(endDate && { date: { $lte: new Date(endDate) } }),
-                // ...(exchangeType && { exchangeName: exchangeType })
+                date:{
+                    $between:[
+                        todayDate,
+                        endDate
+                    ]
+                }
             }
 
             console.log("searchQuery", searchQuery)
 
-            let prices = await strapi.db.query("api::company-share-price.company-share-price").findMany({
+            let data = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                 where: searchQuery,
                 orderBy: { createdAt: 'desc', updatedAt: 'desc' }
             })
             return ctx.send({
                 success: true,
                 message: "Data fetched",
-                data: prices
+                data: data
             })
 
         } catch (error) {

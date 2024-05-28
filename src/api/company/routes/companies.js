@@ -25,8 +25,8 @@ module.exports = {
       },
       {
         method: 'GET',
-        path: '/company/prices', 
-        handler: 'companies.priceList',
+        path: '/company/priceAndVolume', 
+        handler: 'companies.priceAndVolume',
 
       }
 
