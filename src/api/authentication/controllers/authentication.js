@@ -427,10 +427,6 @@ module.exports = {
         return ctx.badRequest("Provider is missing");
       }
 
-      if (!type || (type !== "signIn" && type !== "signUp")) {
-        return ctx.badRequest('Invalid type. Use "signIn" or "signUp"');
-      }
-
       let socialMediaUser;
 
       if (provider === "google") {

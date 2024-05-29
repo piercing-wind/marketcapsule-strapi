@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "indices",
+  "info": {
+    "singularName": "index",
+    "pluralName": "indices",
+    "displayName": "Index",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "indexType": {
+      "type": "enumeration",
+      "enum": [
+        "Sensex",
+        "Nifty"
+      ]
+    },
+    "date": {
+      "type": "date"
+    },
+    "price": {
+      "type": "float"
+    },
+    "volume": {
+      "type": "float"
+    }
+  }
+}

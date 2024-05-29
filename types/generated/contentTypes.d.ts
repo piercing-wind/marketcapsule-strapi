@@ -1398,6 +1398,39 @@ export interface ApiHomepageHomepage extends Schema.SingleType {
   };
 }
 
+export interface ApiIndexIndex extends Schema.CollectionType {
+  collectionName: 'indices';
+  info: {
+    singularName: 'index';
+    pluralName: 'indices';
+    displayName: 'Index';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    indexType: Attribute.Enumeration<['Sensex', 'Nifty']>;
+    date: Attribute.Date;
+    price: Attribute.Float;
+    volume: Attribute.Float;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::index.index',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::index.index',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiIndustryIndustry extends Schema.CollectionType {
   collectionName: 'industries';
   info: {
@@ -2130,6 +2163,7 @@ declare module '@strapi/types' {
       'api::feed.feed': ApiFeedFeed;
       'api::financial-highlight.financial-highlight': ApiFinancialHighlightFinancialHighlight;
       'api::homepage.homepage': ApiHomepageHomepage;
+      'api::index.index': ApiIndexIndex;
       'api::industry.industry': ApiIndustryIndustry;
       'api::ipo.ipo': ApiIpoIpo;
       'api::ipo-zone.ipo-zone': ApiIpoZoneIpoZone;
