@@ -5,6 +5,9 @@ const { decode } = require('../utils/hash');
 const { sendEmailNormal } = require('../../../../helper/ses');
 const { testUserCheck } = require('../utils/test');
 const axios = require("axios");
+const { OAuth2Client } = require("google-auth-library");
+
+const client = new OAuth2Client(process.env.GOOGLE_AUTH_API_KEY);
 
 module.exports = {
   register: async (ctx, next) => {
@@ -410,5 +413,246 @@ module.exports = {
       return ctx.badRequest(error)
     }
   },
+  async loginWithFacebookAndGoogle(ctx) {
+    try {
+      const token = ctx.request.body.token;
+      const provider = ctx.request.body.provider;
+      const type = ctx.request.body.type;
+      const deviceType = ctx.request.deviceType
+
+      if (!token) {
+        return ctx.badRequest("Token is missing");
+      }
+
+      if (!provider) {
+        return ctx.badRequest("Provider is missing");
+      }
+
+      if (!type || (type !== "signIn" && type !== "signUp")) {
+        return ctx.badRequest('Invalid type. Use "signIn" or "signUp"');
+      }
+
+      let socialMediaUser;
+
+      if (provider === "google") {
+        socialMediaUser = await verifyGoogleToken(token, provider, type,);
+      } else if (provider === "facebook") {
+        socialMediaUser = await verifyFacebookToken(token, provider, type);
+      } else {
+        return ctx.badRequest("Invalid provider");
+      }
+
+      if (!socialMediaUser.success) {
+        return ctx.badRequest(socialMediaUser.message);
+      }
+
+      return ctx.send({
+        success: true,
+        message: `Successfully logged in with ${provider}`,
+        data: socialMediaUser.data,
+      });
+    } catch (error) {
+      console.error("Error during social media login:", error.message);
+      return ctx.badRequest(
+        `Failed to log in with social media: ${error.message}`
+      );
+    }
+  },
+
+
+
 
 };
+
+async function verifyGoogleToken(token, provider, type) {
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_API_KEY,
+    });
+  
+    const payload = ticket.getPayload();
+    const userId = payload["sub"];
+    const email = payload["email"];
+  
+    if(!email){
+        return {
+            success: false,
+            message: 'Email is not linked with your Google account. Please use different email address',
+            code:"0001"
+          }; 
+    }
+  
+    // Check if user already exists when type is 'signUp'
+    if (type === "signUp") {
+      const existingUser = await findUserByEmail(email);
+      if (existingUser) {
+        return {
+          success: false,
+          message: 'User already exists. Please use "signIn" to log in.',
+        };
+      }
+    }
+  
+    const user = await findOrCreateUser(email, provider, type);
+  
+    if (type === "signIn" && !user) {
+      return {
+        success: false,
+        message:
+          'Email does not exist. Please use "signUp" to create an account.',
+          code: "0002"
+      };
+    }
+  
+    const jwtToken = await createJWT(user);
+  
+    const responseObj = {
+      jwt: jwtToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        profileStatus:user.profileStatus,
+        provider: user.provider,
+        confirmed: user.confirmed,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    };
+  
+    return {
+      success: true,
+      message:
+        "Google token verified, user information stored, and JWT generated",
+      data: responseObj,
+    };
+  } catch (error) {
+    console.error("Error verifying Google token:", error.message);
+    return { success: false, message: "Failed to verify Google token" };
+  }
+  }
+  
+  async function findOrCreateUser(email, provider, type, deviceType) {
+  const user = await strapi.db.query("plugin::users-permissions.user").findOne({
+    where: { email: email },
+  });
+  
+  if (type === "signIn" && !user) {
+    return null; // Return null if signing in and user does not exist
+  }
+  
+  if (!user) {
+    return createUser(email, provider);
+  }
+  
+  console.log("Existing user:", user.id);
+  return user;
+  }
+  
+  async function createUser(email, provider) {
+  
+  // Initialize the createObj with common fields
+  const createObj = {
+    email: email,
+    blocked: false,
+    confirmed: true,
+    provider: provider,
+    role: 1,
+  };
+  
+  const createdUser = await strapi.db
+    .query("plugin::users-permissions.user")
+    .create({ data: createObj });
+  
+  return createdUser;
+  }
+  
+  
+  // JWT creation logic
+  async function createJWT(user) {
+  const jwt = strapi.plugins["users-permissions"].services.jwt;
+  const payload = {
+    id: user.id,
+    email: user.email,
+  };
+  return jwt.issue(payload, { expiresIn: "3600h" });
+  }
+  
+  async function verifyFacebookToken(token, provider, type) {
+  try {
+    const response = await axios.get(
+      `https://graph.facebook.com/me?access_token=${token}&fields=id,email`
+    );
+    const userData = response.data;
+  
+    const userId = userData.id;
+    const email = userData.email;
+  
+    if(!email){
+        return {
+            success: false,
+            message: 'Email is not linked with your facebook account. Please use different email address',
+            code:"0001"
+          }; 
+    }
+  
+    // Check if user already exists when type is 'signUp'
+    if (type === "signUp") {
+      const existingUser = await findUserByEmail(email);
+      if (existingUser) {
+        return {
+          success: false,
+          message: 'User already exists. Please use "signIn" to log in.',
+        };
+      }
+    }
+  
+    const user = await findOrCreateUser(email, provider, type);
+  
+    if (type === "signIn" && !user) {
+      return {
+        success: false,
+        message:
+          'Email does not exist. Please use "signUp" to create an account.',
+          code: "0002"
+      };
+    }
+  
+    const jwtToken = await createJWT(user);
+  
+    const responseObj = {
+      jwt: jwtToken,
+      user: {
+        id: user.id,
+        email: user.email,
+        provider: user.provider,
+        profileStatus:user.profileStatus,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    };
+  
+    return {
+      success: true,
+      message:
+        "Facebook token verified, user information stored, and JWT generated",
+      data: responseObj,
+    };
+  } catch (error) {
+    if (error.response) {
+      console.error("Facebook API error:", error.response.data);
+    } else if (error.request) {
+      console.error("No response from Facebook API");
+    } else {
+      console.error("Error during Facebook token verification:", error.message);
+    }
+  
+    return { success: false, message: "Failed to verify Facebook token" };
+  }
+  }
+  
+  async function findUserByEmail(email) {
+  return await strapi.db.query("plugin::users-permissions.user").findOne({
+    where: { email: email },
+  });
+  }

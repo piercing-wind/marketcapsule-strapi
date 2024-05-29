@@ -48,6 +48,11 @@ module.exports = {
       handler: 'authentication.facebookAuthCallback',
       
      },
+     {
+      method: 'POST',
+      path: '/authentication/socialLogin',
+      handler: 'authentication.loginWithFacebookAndGoogle',
+     }
   ],
 
 

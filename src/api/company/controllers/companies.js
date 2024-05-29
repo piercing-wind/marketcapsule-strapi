@@ -493,28 +493,61 @@ module.exports = {
 
             let searchQuery = {
                 companyId: companyId,
-                date:{
-                    $between:[
-                        todayDate,
-                        endDate
-                    ]
-                }
+                $and:[
+                    {
+                        date:{$gte:new Date(endDate)}
+                    },
+                    {
+                        date:{$lte:new Date(todayDate)}
+                    }
+                ]
             }
-
-            console.log("searchQuery", searchQuery)
+            
 
             let data = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                 where: searchQuery,
-                orderBy: { createdAt: 'desc', updatedAt: 'desc' }
+                orderBy: { date: 'desc' }
             })
+         
+
+            let volumes = await getData(data);
+            
+
             return ctx.send({
                 success: true,
                 message: "Data fetched",
-                data: data
+                data: volumes
             })
 
         } catch (error) {
             return ctx.badRequest(error)
         }
     }
+}
+
+async function getData(arr){
+    let map = new Map();
+    let res=[]
+    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    
+    for(let item of arr){
+      let date = new Date(item.date)
+      let monthName = month[date.getMonth()];
+      let year = date.getFullYear();
+      let str=`${monthName}-${year}`;
+      if(map.has(str)){
+        map.set(str, map.get(str)+item.volume) 
+      }
+      else{
+        
+      map.set(str,item.volume)
+      }
+    }
+    for(let [key,value] of map){
+        res.push({
+          [key]:value
+        })
+      }
+      return res
+    
 }
