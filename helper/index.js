@@ -10,3 +10,9 @@ exports.convertHtmlIntoPdf = async (html) => {
     return pdfBuffer
 
 }
+
+exports.addDaysToDate = (date, days) => {
+    const millisecondsInDay = 86400000; // 24 * 60 * 60 * 1000
+    const timestamp = date.getTime() + days * millisecondsInDay;
+    return new Date(timestamp);
+}

@@ -1,0 +1,60 @@
+const {addDaysToDate} = require("../../../../helper/index")
+
+module.exports = {
+    list:async(ctx)=>{
+        try {
+            
+            let {indexType="Sensex"} = ctx.request.query;
+
+            if(!["Sensex","Nifty"].includes(indexType)){
+                return ctx.badRequest("Invalid indexType!")
+            }
+
+            let todayDate = new Date();
+            let previousDate = addDaysToDate(new Date(),-10)
+
+            let findQuery={
+                indexType:indexType,
+                $and:[
+                    {
+                        date:{$gte:new Date(previousDate)}
+                    },
+                    {
+                        date:{$lte:new Date(todayDate)}
+                    }
+                ]
+            }
+            
+            let indexes = await strapi.db.query("api::index.index").findMany({
+                where:findQuery,
+                orderBy: { date: 'desc' }
+            })
+
+            let currentPrice = null;
+            let changeInprice = null;
+
+            if(indexes.length===1){
+                currentPrice = indexes[0].price;
+                changeInprice=0
+            }
+            if(indexes.length>=2){
+                currentPrice = indexes[0].price;
+                changeInprice = currentPrice - indexes[1].price
+            }
+
+            return ctx.response.send({
+                success:true,
+                message:"Data fetched!",
+                data:{
+                    currentPrice,
+                    changeInprice,
+                    indexes
+                }
+            })
+
+        } catch (error) {
+            console.log("error",error);
+            return ctx.badRequest(error)
+        }
+    }
+}
