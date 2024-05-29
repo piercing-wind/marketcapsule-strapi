@@ -430,7 +430,7 @@ module.exports = {
       let socialMediaUser;
 
       if (provider === "google") {
-        socialMediaUser = await verifyGoogleToken(token, provider, type,);
+        socialMediaUser = await verifyGoogleToken(token, provider);
       } else if (provider === "facebook") {
         socialMediaUser = await verifyFacebookToken(token, provider, type);
       } else {
@@ -459,7 +459,7 @@ module.exports = {
 
 };
 
-async function verifyGoogleToken(token, provider, type) {
+async function verifyGoogleToken(token, provider) {
   try {
 
     console.log("token", token);
@@ -468,6 +468,13 @@ async function verifyGoogleToken(token, provider, type) {
     const { data: profile } = await axios.get(process.env.GOOGLE_TOKEN_VERIFY_URL, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
+    console.log("profile",profile)
+
+    let userInfo = {
+      fullName:profile.name,
+      image:profile.picture
+    }
 
     if (!profile) {
       return { success: false, message: "Failed to verify Google token" };
@@ -482,21 +489,15 @@ async function verifyGoogleToken(token, provider, type) {
     }
 
 
-    const user = await findOrCreateUser(profile.email, provider);
+    const user = await findOrCreateUser(profile.email,userInfo, provider);
 
     const jwtToken = await createJWT(user);
 
+    let userData = await sanitizeUser(user);
+
     const responseObj = {
       token: jwtToken,
-      user: {
-        id: user.id,
-        email: user.email,
-        profileStatus: user.profileStatus,
-        provider: user.provider,
-        confirmed: user.confirmed,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
+      user:userData
     };
 
     return {
@@ -511,7 +512,7 @@ async function verifyGoogleToken(token, provider, type) {
   }
 }
 
-async function findOrCreateUser(email, provider) {
+async function findOrCreateUser(email,userInfo, provider) {
   const user = await strapi.db.query("plugin::users-permissions.user").findOne({
     where: { email: email },
   });
@@ -527,7 +528,9 @@ async function findOrCreateUser(email, provider) {
       role: 1,
       provider: provider,
       profileStatus:"pending",
-      confirmed: true
+      confirmed: true,
+      image:userInfo.image?userInfo.image:"",
+      fullName:userInfo.fullName?userInfo.fullName:""
     }
     const createUser = await strapi.db.query("plugin::users-permissions.user").create({ data: userObj })
 
@@ -565,21 +568,16 @@ async function verifyFacebookToken(token, provider, type) {
       };
     }
 
+    let userInfo={}
 
-    const user = await findOrCreateUser(email, provider);
+    const user = await findOrCreateUser(email,userInfo, provider);
 
     const jwtToken = await createJWT(user);
+    let userDetail = await sanitizeUser(user)
 
     const responseObj = {
       token: jwtToken,
-      user: {
-        id: user.id,
-        email: user.email,
-        provider: user.provider,
-        profileStatus: user.profileStatus,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
+      user: userDetail
     };
 
     return {

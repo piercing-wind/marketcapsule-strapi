@@ -25,7 +25,6 @@ exports.sanitizeUser = async (user) => {
     delete user.otp;
     delete user.createdAt;
     delete user.updatedAt;
-    delete user.provider;
     delete user.password;
     delete user.resetPasswordToken;
     delete user.confirmationToken;
