@@ -302,26 +302,26 @@ module.exports = {
         headers: { Authorization: `Bearer ${access_token}` },
       });
 
-      let findUser = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email:profile.email } });
+      let findUser = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email: profile.email } });
 
-      if(findUser){
+      if (findUser) {
 
         const payload = {
           id: findUser.id,
           email: findUser.email
         }
-  
+
         let jwtToken = strapi.plugin("users-permissions").services.jwt.issue(payload, { expiresIn: '3600h' })
 
         return ctx.response.redirect(`${process.env.GOOGLE_LOGIN_FRONTEND_REDIRECT}/accessToken=${jwtToken}&profileStatus=${findUser.profileStatus}`)
-        
+
       }
-      else{
+      else {
         let userObj = {
-          email:profile.email,
+          email: profile.email,
           role: 1,
           provider: "google",
-          confirmed:true
+          confirmed: true
         }
         const create = await strapi.db.query("plugin::users-permissions.user").create({ data: userObj })
 
@@ -329,7 +329,7 @@ module.exports = {
           id: create.id,
           email: create.email
         }
-  
+
         let jwtToken = strapi.plugin("users-permissions").services.jwt.issue(payload, { expiresIn: '3600h' })
 
         return ctx.response.redirect(`${process.env.GOOGLE_LOGIN_FRONTEND_REDIRECT}/accessToken=${jwtToken}&profileStatus=${create.profileStatus}`)
@@ -368,31 +368,31 @@ module.exports = {
       const { data } = await axios.get(`https://graph.facebook.com/v13.0/oauth/access_token?client_id=${APP_ID}&client_secret=${APP_SECRET}&code=${code}&redirect_uri=${REDIRECT_URI}`);
 
 
-    const { access_token } = data;
+      const { access_token } = data;
 
-    // Use access_token to fetch user profile
-    const { data: profile } = await axios.get(`https://graph.facebook.com/v13.0/me?fields=name,email&access_token=${access_token}`);
+      // Use access_token to fetch user profile
+      const { data: profile } = await axios.get(`https://graph.facebook.com/v13.0/me?fields=name,email&access_token=${access_token}`);
 
-      let findUser = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email:profile.email } });
+      let findUser = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email: profile.email } });
 
-      if(findUser){
+      if (findUser) {
 
         const payload = {
           id: findUser.id,
           email: findUser.email
         }
-  
+
         let jwtToken = strapi.plugin("users-permissions").services.jwt.issue(payload, { expiresIn: '3600h' })
 
         return ctx.response.redirect(`${process.env.GOOGLE_LOGIN_FRONTEND_REDIRECT}/accessToken=${jwtToken}&profileStatus=${findUser.profileStatus}`)
-        
+
       }
-      else{
+      else {
         let userObj = {
-          email:profile.email,
+          email: profile.email,
           role: 1,
           provider: "facebook",
-          confirmed:true
+          confirmed: true
         }
         const create = await strapi.db.query("plugin::users-permissions.user").create({ data: userObj })
 
@@ -400,7 +400,7 @@ module.exports = {
           id: create.id,
           email: create.email
         }
-  
+
         let jwtToken = strapi.plugin("users-permissions").services.jwt.issue(payload, { expiresIn: '3600h' })
 
         return ctx.response.redirect(`${process.env.GOOGLE_LOGIN_FRONTEND_REDIRECT}/accessToken=${jwtToken}&profileStatus=${create.profileStatus}`)
@@ -418,7 +418,6 @@ module.exports = {
       const token = ctx.request.body.token;
       const provider = ctx.request.body.provider;
       const type = ctx.request.body.type;
-      const deviceType = ctx.request.deviceType
 
       if (!token) {
         return ctx.badRequest("Token is missing");
@@ -466,60 +465,44 @@ module.exports = {
 
 async function verifyGoogleToken(token, provider, type) {
   try {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_API_KEY,
+
+    console.log("token", token);
+    console.log("google client id", process.env.GOOGLE_CLIENT_ID);
+
+    const { data: profile } = await axios.get(process.env.GOOGLE_TOKEN_VERIFY_URL, {
+      headers: { Authorization: `Bearer ${token}` },
     });
-  
-    const payload = ticket.getPayload();
-    const userId = payload["sub"];
-    const email = payload["email"];
-  
-    if(!email){
-        return {
-            success: false,
-            message: 'Email is not linked with your Google account. Please use different email address',
-            code:"0001"
-          }; 
+
+    if (!profile) {
+      return { success: false, message: "Failed to verify Google token" };
     }
-  
-    // Check if user already exists when type is 'signUp'
-    if (type === "signUp") {
-      const existingUser = await findUserByEmail(email);
-      if (existingUser) {
-        return {
-          success: false,
-          message: 'User already exists. Please use "signIn" to log in.',
-        };
-      }
-    }
-  
-    const user = await findOrCreateUser(email, provider, type);
-  
-    if (type === "signIn" && !user) {
+
+    if (!profile.email) {
       return {
         success: false,
-        message:
-          'Email does not exist. Please use "signUp" to create an account.',
-          code: "0002"
+        message: 'Email is not linked with your Google account. Please use different email address',
+        code: "0001"
       };
     }
-  
+
+
+    const user = await findOrCreateUser(profile.email, provider);
+
     const jwtToken = await createJWT(user);
-  
+
     const responseObj = {
-      jwt: jwtToken,
+      token: jwtToken,
       user: {
         id: user.id,
         email: user.email,
-        profileStatus:user.profileStatus,
+        profileStatus: user.profileStatus,
         provider: user.provider,
         confirmed: user.confirmed,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
     };
-  
+
     return {
       success: true,
       message:
@@ -530,108 +513,79 @@ async function verifyGoogleToken(token, provider, type) {
     console.error("Error verifying Google token:", error.message);
     return { success: false, message: "Failed to verify Google token" };
   }
-  }
-  
-  async function findOrCreateUser(email, provider, type, deviceType) {
+}
+
+async function findOrCreateUser(email, provider) {
   const user = await strapi.db.query("plugin::users-permissions.user").findOne({
     where: { email: email },
   });
-  
-  if (type === "signIn" && !user) {
-    return null; // Return null if signing in and user does not exist
+
+  if (user) {
+
+    return user
+
   }
-  
-  if (!user) {
-    return createUser(email, provider);
+  else {
+    let userObj = {
+      email: email,
+      role: 1,
+      provider: provider,
+      profileStatus:"pending",
+      confirmed: true
+    }
+    const createUser = await strapi.db.query("plugin::users-permissions.user").create({ data: userObj })
+
+    return createUser
   }
-  
-  console.log("Existing user:", user.id);
-  return user;
-  }
-  
-  async function createUser(email, provider) {
-  
-  // Initialize the createObj with common fields
-  const createObj = {
-    email: email,
-    blocked: false,
-    confirmed: true,
-    provider: provider,
-    role: 1,
-  };
-  
-  const createdUser = await strapi.db
-    .query("plugin::users-permissions.user")
-    .create({ data: createObj });
-  
-  return createdUser;
-  }
-  
-  
-  // JWT creation logic
-  async function createJWT(user) {
+
+}
+
+
+// JWT creation logic
+async function createJWT(user) {
   const jwt = strapi.plugins["users-permissions"].services.jwt;
   const payload = {
     id: user.id,
     email: user.email,
   };
   return jwt.issue(payload, { expiresIn: "3600h" });
-  }
-  
-  async function verifyFacebookToken(token, provider, type) {
+}
+
+async function verifyFacebookToken(token, provider, type) {
   try {
     const response = await axios.get(
       `https://graph.facebook.com/me?access_token=${token}&fields=id,email`
     );
     const userData = response.data;
-  
+
     const userId = userData.id;
     const email = userData.email;
-  
-    if(!email){
-        return {
-            success: false,
-            message: 'Email is not linked with your facebook account. Please use different email address',
-            code:"0001"
-          }; 
-    }
-  
-    // Check if user already exists when type is 'signUp'
-    if (type === "signUp") {
-      const existingUser = await findUserByEmail(email);
-      if (existingUser) {
-        return {
-          success: false,
-          message: 'User already exists. Please use "signIn" to log in.',
-        };
-      }
-    }
-  
-    const user = await findOrCreateUser(email, provider, type);
-  
-    if (type === "signIn" && !user) {
+
+    if (!email) {
       return {
         success: false,
-        message:
-          'Email does not exist. Please use "signUp" to create an account.',
-          code: "0002"
+        message: 'Email is not linked with your facebook account. Please use different email address',
+        code: "0001"
       };
     }
-  
+
+
+    const user = await findOrCreateUser(email, provider);
+
     const jwtToken = await createJWT(user);
-  
+
     const responseObj = {
-      jwt: jwtToken,
+      token: jwtToken,
       user: {
         id: user.id,
         email: user.email,
         provider: user.provider,
-        profileStatus:user.profileStatus,
+        profileStatus: user.profileStatus,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
     };
-  
+
     return {
       success: true,
       message:
@@ -646,13 +600,7 @@ async function verifyGoogleToken(token, provider, type) {
     } else {
       console.error("Error during Facebook token verification:", error.message);
     }
-  
+
     return { success: false, message: "Failed to verify Facebook token" };
   }
-  }
-  
-  async function findUserByEmail(email) {
-  return await strapi.db.query("plugin::users-permissions.user").findOne({
-    where: { email: email },
-  });
-  }
+}
