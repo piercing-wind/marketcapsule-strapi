@@ -32,20 +32,24 @@ module.exports = {
 
             let currentPrice = null;
             let changeInprice = null;
+            let lastUpdated = new Date();
 
             if(indexes.length===1){
                 currentPrice = indexes[0].price;
-                changeInprice=0
+                changeInprice=0;
+                lastUpdated = indexes[0].updatedAt
             }
             if(indexes.length>=2){
                 currentPrice = indexes[0].price;
-                changeInprice = currentPrice - indexes[1].price
+                changeInprice = currentPrice - indexes[1].price;
+                lastUpdated = indexes[0].updatedAt;
             }
 
             return ctx.response.send({
                 success:true,
                 message:"Data fetched!",
                 data:{
+                    lastUpdated,
                     currentPrice,
                     changeInprice,
                     indexes
