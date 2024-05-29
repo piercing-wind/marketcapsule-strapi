@@ -555,6 +555,7 @@ async function verifyFacebookToken(token, provider, type) {
     const response = await axios.get(
       `https://graph.facebook.com/me?access_token=${token}&fields=id,email`
     );
+    console.log("response",response)
     const userData = response.data;
 
     const userId = userData.id;

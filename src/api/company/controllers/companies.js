@@ -543,10 +543,14 @@ async function getData(arr){
       map.set(str,item.volume)
       }
     }
+    let count=1;
     for(let [key,value] of map){
         res.push({
-          [key]:value
+            id:count,
+            monthAndYear:key,
+            volume:value
         })
+        count++
       }
       return res
     
