@@ -1925,6 +1925,42 @@ export interface ApiSubscriptionSubscription extends Schema.CollectionType {
   };
 }
 
+export interface ApiSubscriptionButtonSubscriptionButton
+  extends Schema.SingleType {
+  collectionName: 'subscription_buttons';
+  info: {
+    singularName: 'subscription-button';
+    pluralName: 'subscription-buttons';
+    displayName: 'SubscriptionButton';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    plan: Attribute.Relation<
+      'api::subscription-button.subscription-button',
+      'oneToOne',
+      'api::plan.plan'
+    >;
+    title: Attribute.String & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::subscription-button.subscription-button',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::subscription-button.subscription-button',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTagTag extends Schema.CollectionType {
   collectionName: 'tags';
   info: {
@@ -2177,6 +2213,7 @@ declare module '@strapi/types' {
       'api::sector.sector': ApiSectorSector;
       'api::share-holding.share-holding': ApiShareHoldingShareHolding;
       'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::subscription-button.subscription-button': ApiSubscriptionButtonSubscriptionButton;
       'api::tag.tag': ApiTagTag;
       'api::top-gainer.top-gainer': ApiTopGainerTopGainer;
       'api::top-loser.top-loser': ApiTopLoserTopLoser;
