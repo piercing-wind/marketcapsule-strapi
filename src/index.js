@@ -1,6 +1,6 @@
 'use strict';
 
-const {socketIO} = require("../helper/scoket")
+const {socketIO} = require("../helper/socket")
 
 module.exports = {
   /**

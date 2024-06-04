@@ -13,6 +13,7 @@ module.exports = createCoreService('api::plan.plan',({strapi})=>({
             invoiceData.invoiceNo = invoiceNo
             let html = invoiceHtml(invoiceData);
             const pdfBuffer = await convertHtmlIntoPdf(html);
+            return pdfBuffer
             const url = await uploadFileToS3(process.env.AWS_BUCKET, invoiceNo, pdfBuffer);
             let invoiceurl = `${process.env.AWS_CLOUDFRONT_BASE_URL}/${url.split(".com/")[1]}`
             console.log("url", invoiceurl);
@@ -35,5 +36,5 @@ module.exports = createCoreService('api::plan.plan',({strapi})=>({
         } catch (error) {
             return false
         }
-    }
+    },
 }));

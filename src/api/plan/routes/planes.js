@@ -18,6 +18,12 @@ module.exports = {
         handler: 'planes.paymentVerify',
         
        },
+       {
+        method: 'POST',
+        path: '/plan/generateInvoice',
+        handler: 'planes.generateInvoice',
+        
+       },
 
     ],
   };

@@ -1687,6 +1687,35 @@ export interface ApiPlanPlan extends Schema.CollectionType {
   };
 }
 
+export interface ApiPrivacyPolicyPrivacyPolicy extends Schema.SingleType {
+  collectionName: 'privacy_policies';
+  info: {
+    singularName: 'privacy-policy';
+    pluralName: 'privacy-policies';
+    displayName: 'PrivacyPolicy';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    description: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::privacy-policy.privacy-policy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::privacy-policy.privacy-policy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProfessionProfession extends Schema.CollectionType {
   collectionName: 'professions';
   info: {
@@ -1992,6 +2021,35 @@ export interface ApiTagTag extends Schema.CollectionType {
   };
 }
 
+export interface ApiTermAndConditionTermAndCondition extends Schema.SingleType {
+  collectionName: 'term_and_conditions';
+  info: {
+    singularName: 'term-and-condition';
+    pluralName: 'term-and-conditions';
+    displayName: 'TermAndCondition';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    description: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::term-and-condition.term-and-condition',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::term-and-condition.term-and-condition',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTopGainerTopGainer extends Schema.CollectionType {
   collectionName: 'top_gainers';
   info: {
@@ -2207,6 +2265,7 @@ declare module '@strapi/types' {
       'api::notification.notification': ApiNotificationNotification;
       'api::operation-detail.operation-detail': ApiOperationDetailOperationDetail;
       'api::plan.plan': ApiPlanPlan;
+      'api::privacy-policy.privacy-policy': ApiPrivacyPolicyPrivacyPolicy;
       'api::profession.profession': ApiProfessionProfession;
       'api::promo-code.promo-code': ApiPromoCodePromoCode;
       'api::screener.screener': ApiScreenerScreener;
@@ -2215,6 +2274,7 @@ declare module '@strapi/types' {
       'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::subscription-button.subscription-button': ApiSubscriptionButtonSubscriptionButton;
       'api::tag.tag': ApiTagTag;
+      'api::term-and-condition.term-and-condition': ApiTermAndConditionTermAndCondition;
       'api::top-gainer.top-gainer': ApiTopGainerTopGainer;
       'api::top-loser.top-loser': ApiTopLoserTopLoser;
       'api::user-role.user-role': ApiUserRoleUserRole;
