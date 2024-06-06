@@ -186,11 +186,11 @@ module.exports = {
 
                 // generate invoice...
                 let invoiceData = {
-                    gstin: '644444444',
-                    address: 'Lorem Ipsum',
-                    phone: '4433334434',
-                    email: 'johndoe@mail.com',
-                    cin: " fd6564564546456",
+                    gstin: process.env.GSTIN,
+                    address: process.env.ADDRESS,
+                    phone: process.env.MOBILE,
+                    email: process.env.ADMIN_EMAIL,
+                    cin: process.env.CIN,
                     billTo: user.fullName?user.fullName:"-",
                     billToGstin: 'Not Applicable / Unregistered',
                     billToAddress: 'Online Services',
@@ -200,17 +200,19 @@ module.exports = {
     
                         { particulars: `${findSubscription.plan?.name}`, amount: `${findSubscription.plan?.price}` },
                     ],
+                    regularPrice:findSubscription.plan.price,
                     planName: findSubscription.plan?.name,
                     discount: 0,
                     totalCharges: findSubscription.amount,
+                    totalPayableAmount:findSubscription.amount,
                     totalPayableAmountInWords: "",
                     accountNumber: '-',
                     accountType: '-',
                     ifscCode: '-'
                 }
 
-                invoiceData.discount = invoiceData.totalAmount - invoiceData.totalPayableAmount
-                invoiceData.totalPayableAmountInWords = numberToWords.toWords(invoiceData.totalCharges)
+                invoiceData.discount = invoiceData.regularPrice - invoiceData.totalCharges
+                invoiceData.totalPayableAmountInWords = numberToWords.toWords(invoiceData.totalPayableAmount)
 
                 let invoiceUrl = await strapi.service("api::plan.plan").generateInvoice(invoiceData);
 

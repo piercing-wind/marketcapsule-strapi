@@ -4,10 +4,11 @@
   "info": {
     "singularName": "ipo",
     "pluralName": "ipos",
-    "displayName": "IPO"
+    "displayName": "IPO",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

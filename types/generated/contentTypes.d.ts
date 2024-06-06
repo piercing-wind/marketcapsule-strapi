@@ -806,7 +806,7 @@ export interface ApiBucketBucket extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String;
@@ -829,7 +829,6 @@ export interface ApiBucketBucket extends Schema.CollectionType {
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::bucket.bucket',
       'oneToOne',
@@ -855,7 +854,7 @@ export interface ApiBusinessSegmentBusinessSegment
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
@@ -870,7 +869,6 @@ export interface ApiBusinessSegmentBusinessSegment
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::business-segment.business-segment',
       'oneToOne',
@@ -895,7 +893,7 @@ export interface ApiCapsuleplusCapsuleplus extends Schema.SingleType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
@@ -904,7 +902,6 @@ export interface ApiCapsuleplusCapsuleplus extends Schema.SingleType {
     metaDescription: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::capsuleplus.capsuleplus',
       'oneToOne',
@@ -926,9 +923,10 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     singularName: 'category';
     pluralName: 'categories';
     displayName: 'Category';
+    description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
@@ -942,7 +940,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::category.category',
       'oneToOne',
@@ -967,7 +964,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
@@ -1047,7 +1044,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     whatsNewInCapsulePlusImage: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::company.company',
       'oneToOne',
@@ -1073,7 +1069,7 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     peRatio: Attribute.Float;
@@ -1105,7 +1101,6 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     ttpmPE: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::company-share-detail.company-share-detail',
       'oneToOne',
@@ -1131,7 +1126,7 @@ export interface ApiCompanySharePriceCompanySharePrice
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     companyId: Attribute.Relation<
@@ -1144,7 +1139,6 @@ export interface ApiCompanySharePriceCompanySharePrice
     volume: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::company-share-price.company-share-price',
       'oneToOne',
@@ -1168,7 +1162,7 @@ export interface ApiCompanyTypeCompanyType extends Schema.CollectionType {
     displayName: 'CompanyType';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
@@ -1177,7 +1171,6 @@ export interface ApiCompanyTypeCompanyType extends Schema.CollectionType {
     metaTitle: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::company-type.company-type',
       'oneToOne',
@@ -1241,7 +1234,7 @@ export interface ApiCompnayTimelineCompnayTimeline
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     date: Attribute.Date;
@@ -1253,7 +1246,6 @@ export interface ApiCompnayTimelineCompnayTimeline
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::compnay-timeline.compnay-timeline',
       'oneToOne',
@@ -1338,7 +1330,7 @@ export interface ApiFinancialHighlightFinancialHighlight
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String;
@@ -1351,7 +1343,6 @@ export interface ApiFinancialHighlightFinancialHighlight
     value: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::financial-highlight.financial-highlight',
       'oneToOne',
@@ -1373,16 +1364,16 @@ export interface ApiHomepageHomepage extends Schema.SingleType {
     singularName: 'homepage';
     pluralName: 'homepages';
     displayName: 'homepage';
+    description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::homepage.homepage',
       'oneToOne',
@@ -1487,9 +1478,10 @@ export interface ApiIpoIpo extends Schema.CollectionType {
     singularName: 'ipo';
     pluralName: 'ipos';
     displayName: 'IPO';
+    description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     openDate: Attribute.DateTime & Attribute.Required;
@@ -1508,7 +1500,6 @@ export interface ApiIpoIpo extends Schema.CollectionType {
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &
@@ -1525,7 +1516,7 @@ export interface ApiIpoZoneIpoZone extends Schema.SingleType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
@@ -1534,7 +1525,6 @@ export interface ApiIpoZoneIpoZone extends Schema.SingleType {
     metaTitle: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::ipo-zone.ipo-zone',
       'oneToOne',
@@ -1625,7 +1615,7 @@ export interface ApiOperationDetailOperationDetail
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     company: Attribute.Relation<
@@ -1640,7 +1630,6 @@ export interface ApiOperationDetailOperationDetail
     duration: Attribute.Enumeration<['yearly', 'quarterly']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::operation-detail.operation-detail',
       'oneToOne',
@@ -1755,7 +1744,7 @@ export interface ApiPromoCodePromoCode extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
@@ -1772,7 +1761,6 @@ export interface ApiPromoCodePromoCode extends Schema.CollectionType {
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::promo-code.promo-code',
       'oneToOne',
@@ -1797,7 +1785,7 @@ export interface ApiScreenerScreener extends Schema.SingleType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     Title: Attribute.String & Attribute.Required;
@@ -1806,7 +1794,6 @@ export interface ApiScreenerScreener extends Schema.SingleType {
     metaDescription: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::screener.screener',
       'oneToOne',
@@ -1870,7 +1857,7 @@ export interface ApiShareHoldingShareHolding extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String;
@@ -1883,7 +1870,6 @@ export interface ApiShareHoldingShareHolding extends Schema.CollectionType {
     value: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::share-holding.share-holding',
       'oneToOne',
@@ -1963,7 +1949,7 @@ export interface ApiSubscriptionButtonSubscriptionButton
     displayName: 'SubscriptionButton';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     plan: Attribute.Relation<
@@ -1974,7 +1960,6 @@ export interface ApiSubscriptionButtonSubscriptionButton
     title: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::subscription-button.subscription-button',
       'oneToOne',
@@ -1996,9 +1981,10 @@ export interface ApiTagTag extends Schema.CollectionType {
     singularName: 'tag';
     pluralName: 'tags';
     displayName: 'Tag';
+    description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
@@ -2013,7 +1999,6 @@ export interface ApiTagTag extends Schema.CollectionType {
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::tag.tag', 'oneToOne', 'admin::user'> &
@@ -2095,7 +2080,7 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     value: Attribute.Float;
@@ -2107,7 +2092,6 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
     exchangeType: Attribute.Enumeration<['NSE', 'BSE']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::top-loser.top-loser',
       'oneToOne',

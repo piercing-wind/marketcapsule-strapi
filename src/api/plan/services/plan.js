@@ -16,8 +16,8 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
             let doc = new pdf();
             invoiceData.invoiceNo = crypto.randomBytes(7).toString("hex");
 
-            const { gstin,cin, phone, email, billTo, billToGstin,
-                billToAddress, placeOfSupply, invoiceNo, invoiceDate, items, totalCharges, accountNumber, accountType, ifscCode, totalPayableAmountInWords } = invoiceData;
+            const { gstin, cin, phone, email, billTo, billToGstin, address,
+                billToAddress, placeOfSupply, invoiceNo, invoiceDate, items, totalCharges, accountNumber, accountType, ifscCode, totalPayableAmountInWords, totalPayableAmount } = invoiceData;
 
             // Set up fonts
 
@@ -45,7 +45,7 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
 
             doc
 
-                .text(`Address: Lorem Ipsum`, { align: 'center' })
+                .text(`Address: ${address}`, { align: 'center' })
 
                 .moveDown(0.5);
 
@@ -53,7 +53,7 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
 
                 .text(
 
-                    `GSTIN: ${gstin} | +91-${phone} | ${email}`,
+                    `GSTIN: ${gstin} | ${phone} | ${email}`,
 
                     { align: 'center' }
 
@@ -187,10 +187,9 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
 
                 .font(fontNormal)
 
+                .text(`-`, 450, 460)
                 .text(`-`, 450, 480)
                 .text(`-`, 450, 500)
-                .text(`-`, 450, 520)
-                .moveDown(0.5);
 
             // Total amount payable
 
@@ -200,6 +199,14 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
                 .fill('#040280')
                 .text(`Total Amount Payable`, 100, 530)
                 .fill('#000000');
+
+            doc
+
+                .font(fontBold)
+                .fill('#040280')
+                .text(`${totalPayableAmount}`, 450, 530)
+                .fill('#000000');
+
 
             doc
                 .font(fontBold)
@@ -260,7 +267,7 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
 
             doc.end();
             // const outputPath = path.join(__dirname, 'invoice.pdf');
- 
+
             // doc.pipe(fs.createWriteStream(outputPath));
 
             const url = await uploadFileToS3(process.env.AWS_BUCKET, invoiceNo, doc);

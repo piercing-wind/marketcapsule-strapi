@@ -9,7 +9,7 @@ module.exports = {
                 capsuleplusUser = ctx.state.user.capsuleplus;
             }
 
-            let { limit, page, bucketId, bucketSlug, companyTypeId, peLte, peGte, marketCapLte, marketCapGte, sectorId, industryId, companyName, sort, capsuleplus=false } = ctx.request.query;
+            let { limit, page, bucketId, bucketSlug, companyTypeId, peLte, peGte, marketCapLte, marketCapGte, sectorId, industryId, companyName, sort, capsuleplus = false } = ctx.request.query;
 
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -34,12 +34,12 @@ module.exports = {
                     id: bucketId
                 }
             }
-                if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
-                    whereQuery["company_type"] = {
-                        id: { $in: companyTypeId.map(i => parseInt(i)) }
-                    }
+            if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
+                whereQuery["company_type"] = {
+                    id: { $in: companyTypeId.map(i => parseInt(i)) }
                 }
-            
+            }
+
 
 
             if (peLte) {
@@ -62,7 +62,7 @@ module.exports = {
             }
 
             if (marketCapLte) {
-                 whereQuery["company_share_detail"] = {
+                whereQuery["company_share_detail"] = {
                     ...whereQuery["company_share_detail"], ...{
                         marketCap: { $lte: parseInt(marketCapLte) }
                     }
@@ -78,28 +78,28 @@ module.exports = {
 
             }
 
-                if (Array.isArray(sectorId) && sectorId.length > 0) {
-                    whereQuery["sector"] = {
-                        id: { $in: sectorId.map(i=>parseInt(i)) }
-                    }
+            if (Array.isArray(sectorId) && sectorId.length > 0) {
+                whereQuery["sector"] = {
+                    id: { $in: sectorId.map(i => parseInt(i)) }
                 }
-            
-                if (Array.isArray(industryId) && industryId.length > 0) {
-                    whereQuery["industry"] = {
-                        id: { $in: industryId.map(i=>parseInt(i)) }
-                    }
-                }
-            
+            }
 
-                if (Array.isArray(companyName) && companyName.length > 0) {
-                    whereQuery.name = { $in: companyName }
+            if (Array.isArray(industryId) && industryId.length > 0) {
+                whereQuery["industry"] = {
+                    id: { $in: industryId.map(i => parseInt(i)) }
                 }
+            }
+
+
+            if (Array.isArray(companyName) && companyName.length > 0) {
+                whereQuery.name = { $in: companyName }
+            }
 
             console.log("whereQuery", whereQuery);
 
             const companies = await strapi.db.query("api::company.company").findMany({
                 where: whereQuery,
-                select: ["name", "slug", "capsuleplus","metaTitle","metaDescription","createdAt","updatedAt"],
+                select: ["name", "slug", "capsuleplus", "metaTitle", "metaDescription", "createdAt", "updatedAt"],
                 populate: {
                     company_share_detail: {
                         select: ["marketCap", "ttpmPE"]
@@ -158,7 +158,7 @@ module.exports = {
                 success: true,
                 message: "success",
                 count,
-                capsuleplus: capsuleplus? !capsuleplusUser ? true : false : false,
+                capsuleplus: capsuleplus ? !capsuleplusUser ? true : false : false,
                 data: companies,
             })
 
@@ -179,7 +179,7 @@ module.exports = {
 
 
 
-            let { slug, name, id, pageName, capsuleplus=false } = ctx.request.query;
+            let { slug, name, id, pageName, capsuleplus = false } = ctx.request.query;
             console.log("capsuleplus", capsuleplus);
             console.log("capsuleplusUser", capsuleplusUser)
 
@@ -189,7 +189,7 @@ module.exports = {
                 ...(name && { name })
             }
 
-            let select = ["name", "websiteUrl", "productDetail", "capsuleplus","metaTitle","metaDescription"]
+            let select = ["name", "websiteUrl", "productDetail", "capsuleplus", "metaTitle", "metaDescription"]
             let populate = {}
             if (pageName === "bucket-company-detail") {
                 let obj = {
@@ -332,7 +332,7 @@ module.exports = {
                 populate: populate,
 
             })
-            capsuleplus = company?company.capsuleplus:false;
+            capsuleplus = company ? company.capsuleplus : false;
             company = !isPrice ? company : { ...company, ...{ prices: prices } }
 
             if (company && company.company_share_detail && company.sector?.name) {
@@ -469,18 +469,18 @@ module.exports = {
     },
     priceAndVolume: async (ctx) => {
         try {
-            const {companySlug} = ctx.request.query;
+            const { companySlug } = ctx.request.query;
 
             let companyId;
-            if(!companySlug){
+            if (!companySlug) {
                 return ctx.badRequest("CompanySlug is missing")
             }
 
-            if(companySlug){
+            if (companySlug) {
 
-                let company = await strapi.db.query("api::company.company").findOne({where:{slug:companySlug},select:["id"]});
+                let company = await strapi.db.query("api::company.company").findOne({ where: { slug: companySlug }, select: ["id"] });
 
-                if(!company){
+                if (!company) {
                     return ctx.badRequest("Invalid company slug!")
                 }
                 companyId = company.id;
@@ -493,25 +493,25 @@ module.exports = {
 
             let searchQuery = {
                 companyId: companyId,
-                $and:[
+                $and: [
                     {
-                        date:{$gte:new Date(endDate)}
+                        date: { $gte: new Date(endDate) }
                     },
                     {
-                        date:{$lte:new Date(todayDate)}
+                        date: { $lte: new Date(todayDate) }
                     }
                 ]
             }
-            
+
 
             let data = await strapi.db.query("api::company-share-price.company-share-price").findMany({
                 where: searchQuery,
                 orderBy: { date: 'desc' }
             })
-         
+
 
             let volumes = await getData(data);
-            
+
 
             return ctx.send({
                 success: true,
@@ -525,33 +525,33 @@ module.exports = {
     }
 }
 
-async function getData(arr){
+async function getData(arr) {
     let map = new Map();
-    let res=[]
-    const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-    
-    for(let item of arr){
-      let date = new Date(item.date)
-      let monthName = month[date.getMonth()];
-      let year = date.getFullYear();
-      let str=`${monthName}-${year}`;
-      if(map.has(str)){
-        map.set(str, map.get(str)+item.volume) 
-      }
-      else{
-        
-      map.set(str,item.volume)
-      }
+    let res = []
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    for (let item of arr) {
+        let date = new Date(item.date)
+        let monthName = month[date.getMonth()];
+        let year = date.getFullYear();
+        let str = `${monthName}-${year}`;
+        if (map.has(str)) {
+            map.set(str, map.get(str) + item.volume)
+        }
+        else {
+
+            map.set(str, item.volume)
+        }
     }
-    let count=1;
-    for(let [key,value] of map){
+    let count = 1;
+    for (let [key, value] of map) {
         res.push({
-            id:count,
-            monthAndYear:key,
-            volume:value
+            id: count,
+            monthAndYear: key,
+            volume: value
         })
         count++
-      }
-      return res
-    
+    }
+    return res
+
 }
