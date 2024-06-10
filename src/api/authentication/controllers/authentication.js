@@ -415,6 +415,7 @@ module.exports = {
   },
   async loginWithFacebookAndGoogle(ctx) {
     try {
+      console.log("hello from google auth------")
       const token = ctx.request.body.token;
       const provider = ctx.request.body.provider;
       const type = ctx.request.body.type;
