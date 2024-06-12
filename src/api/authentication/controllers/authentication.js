@@ -420,6 +420,8 @@ module.exports = {
       const provider = ctx.request.body.provider;
       const type = ctx.request.body.type;
 
+      console.log("request query",ctx.request.body)
+
       if (!token) {
         return ctx.badRequest("Token is missing");
       }
@@ -432,8 +434,10 @@ module.exports = {
 
       if (provider === "google") {
         socialMediaUser = await verifyGoogleToken(token, provider);
+        console.log("socialMediaUser",socialMediaUser);
       } else if (provider === "facebook") {
         socialMediaUser = await verifyFacebookToken(token, provider, type);
+        console.log("socialMediaUser",socialMediaUser)
       } else {
         return ctx.badRequest("Invalid provider");
       }
@@ -464,7 +468,7 @@ async function verifyGoogleToken(token, provider) {
   try {
 
     console.log("token", token);
-    console.log("google client id", process.env.GOOGLE_CLIENT_ID);
+    console.log("GOOGLE_TOKEN_VERIFY_URL", process.env.GOOGLE_TOKEN_VERIFY_URL);
 
     const { data: profile } = await axios.get(process.env.GOOGLE_TOKEN_VERIFY_URL, {
       headers: { Authorization: `Bearer ${token}` },
@@ -489,8 +493,10 @@ async function verifyGoogleToken(token, provider) {
       };
     }
 
+    console.log("after getting profile data")
 
     const user = await findOrCreateUser(profile.email,userInfo, provider);
+    console.log("user",user)
 
     const jwtToken = await createJWT(user);
 
@@ -500,6 +506,8 @@ async function verifyGoogleToken(token, provider) {
       token: jwtToken,
       user:userData
     };
+
+    console.log("responseObj",responseObj)
 
     return {
       success: true,
@@ -553,14 +561,15 @@ async function createJWT(user) {
 
 async function verifyFacebookToken(token, provider, type) {
   try {
+    console.log("in facebook veirfy fnn")
     const response = await axios.get(
       `https://graph.facebook.com/me?access_token=${token}&fields=id,email`
     );
-    console.log("response",response)
     const userData = response.data;
 
-    const userId = userData.id;
     const email = userData.email;
+
+    console.log("email",email)
 
     if (!email) {
       return {
@@ -570,9 +579,13 @@ async function verifyFacebookToken(token, provider, type) {
       };
     }
 
-    let userInfo={}
+    let userInfo = {
+      fullName:userData.name?userData.name:"",
+      image:userData.image?userData.image:"https://d1gg24sxbl1rgc.cloudfront.net/user_868f677d6f.png"
+    }
 
     const user = await findOrCreateUser(email,userInfo, provider);
+    console.log("user",user)
 
     const jwtToken = await createJWT(user);
     let userDetail = await sanitizeUser(user)
