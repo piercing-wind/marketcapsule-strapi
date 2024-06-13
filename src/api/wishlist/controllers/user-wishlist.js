@@ -11,7 +11,8 @@ module.exports ={
                 return ctx.badRequest("CompanyId missing!")
             }
 
-            let companyExist = await strapi.db.query("api::wishlist.wishlist").findOne({where:{companyId}});
+            let companyExist = await strapi.db.query("api::wishlist.wishlist").findOne({where:{companyId,userId:userId}});
+
             if(companyExist){
                 return ctx.badRequest("Already in wishlist!")
             }

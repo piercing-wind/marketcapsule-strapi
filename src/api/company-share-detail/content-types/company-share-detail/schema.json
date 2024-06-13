@@ -78,9 +78,6 @@
     "change": {
       "type": "float"
     },
-    "companyName": {
-      "type": "string"
-    },
     "ttpmPE": {
       "type": "float"
     }

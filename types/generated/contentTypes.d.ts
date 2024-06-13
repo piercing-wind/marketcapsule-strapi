@@ -1097,7 +1097,6 @@ export interface ApiCompanyShareDetailCompanyShareDetail
     >;
     marketCap: Attribute.Float;
     change: Attribute.Float;
-    companyName: Attribute.String;
     ttpmPE: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
