@@ -48,12 +48,15 @@ module.exports = {
         return ctx.badRequest('Faild to send otp!')
       }
       if (process.env.MODE === "development") {
+        console.log("dev mode....")
         let testEmails = testUserCheck();
         if (testEmails.includes(email)) {
+          console.log("email",email)
           await sendEmailNormal(email, { otp: verifyToken.otp })
         }
-        await sendEmailNormal(email, { otp: verifyToken.otp })
+  
       } else {
+        console.log("else")
         await sendEmailNormal(email, { otp: verifyToken.otp })
       }
 
@@ -179,6 +182,7 @@ module.exports = {
       if (process.env.MODE === "development") {
         let testEmails = testUserCheck();
         if (testEmails.includes(email)) {
+          console.log("email",email);
           await sendEmailNormal(email, { otp: verifyToken.otp })
         }
         await sendEmailNormal(email, { otp: verifyToken.otp })

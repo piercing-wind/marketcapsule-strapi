@@ -14,6 +14,7 @@ module.exports = {
 
   async sendEmailNormal(email,data) {
  
+    console.log("sending email")
     const params = {
       Source:`${process.env.EMAIL_DEFAULT_FROM}`,
       Destination: {
