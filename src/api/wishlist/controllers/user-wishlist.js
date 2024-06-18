@@ -14,7 +14,7 @@ module.exports ={
             let companyExist = await strapi.db.query("api::wishlist.wishlist").findOne({where:{companyId,userId:userId}});
 
             if(companyExist){
-                return ctx.badRequest("Already in wishlist!")
+                return ctx.badRequest("Already in Watchlist!")
             }
 
             let addToWishlist = await strapi.db.query("api::wishlist.wishlist").create({data:{companyId:companyId,userId:userId}})

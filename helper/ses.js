@@ -14,7 +14,7 @@ module.exports = {
 
   async sendEmailNormal(email,data) {
  
-    console.log("sending email")
+    console.log("sending email",email)
     const params = {
       Source:`${process.env.EMAIL_DEFAULT_FROM}`,
       Destination: {
@@ -23,6 +23,7 @@ module.exports = {
       ReplyToAddresses: [process.env.EMAIL_DEFAULT_FROM],
       Message: {
         Subject: {
+          Charset: 'UTF-8',
           Data: 'Market capsule OTP',
         },
         Body: {
