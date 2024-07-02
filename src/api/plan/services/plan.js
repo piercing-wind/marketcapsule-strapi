@@ -17,7 +17,7 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
             invoiceData.invoiceNo = crypto.randomBytes(7).toString("hex");
 
             const { gstin, cin, phone, email, billTo, billToGstin, address,
-                billToAddress, placeOfSupply, invoiceNo, invoiceDate, items, totalCharges, accountNumber, accountType, ifscCode, totalPayableAmountInWords, totalPayableAmount } = invoiceData;
+                billToAddress, placeOfSupply, invoiceNo, invoiceDate, items, totalCharges, accountNumber, accountType, ifscCode, totalPayableAmountInWords, totalPayableAmount,discount } = invoiceData;
 
             // Set up fonts
 
@@ -161,7 +161,7 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
             doc
                 .font(fontBold)
                 .text("Discount", 100, 380)
-                .text("0", 450, 380)
+                .text(discount, 450, 380)
 
             // Total charges
 

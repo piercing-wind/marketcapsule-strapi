@@ -172,7 +172,6 @@ module.exports = {
 
             if (razorpay_signature === generated_signature) {
                 let paymentDetails = await getPaymentDetails(paymentId);
-                console.log("paymentDetails", paymentDetails);
 
                 let user = await strapi.db.query("plugin::users-permissions.user").findOne({
                     where: { id: findSubscription.userId.id },
@@ -212,7 +211,10 @@ module.exports = {
                 }
 
                 invoiceData.discount = invoiceData.regularPrice - invoiceData.totalCharges
-                invoiceData.totalPayableAmountInWords = numberToWords.toWords(invoiceData.totalPayableAmount)
+                let amountInWords = numberToWords.toWords(invoiceData.totalPayableAmount);
+
+                invoiceData.totalPayableAmountInWords = amountInWords[0].toUpperCase()+amountInWords.slice(1,amountInWords.length)
+
 
                 let invoiceUrl = await strapi.service("api::plan.plan").generateInvoice(invoiceData);
 

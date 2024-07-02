@@ -31,12 +31,12 @@ module.exports = createCoreService('api::promo-code.promo-code',({strapi})=>({
         }
 
         let dt = new Date();
-        if(dt>findPromoCode.expiryDate){
+        if(findPromoCode.expiryDate && dt>new Date(findPromoCode.expiryDate)){
             return {error:'PromoCode expired!',discountAmount:0}
         }
 
         if(promoCode.maxUsage>0 && promoCode.maxUsage===promoCode.availedCount){
-            return {error:'"PromoCode usage limit reached!',discountAmount:0}
+            return {error:'PromoCode usage limit reached!',discountAmount:0}
         }
         return {error:null,discountAmount:findPromoCode.discountAmount,promoCodeId:findPromoCode.id}
     } catch (error) {

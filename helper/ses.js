@@ -29,7 +29,7 @@ module.exports = {
         Body: {
           Html: {
             Charset: "UTF-8",
-            Data: `<h3>Use this otp ${data.otp} to login market capsule.</h3>`
+            Data: `<h3>Use this otp ${data.otp} to login on market capsule.</h3>`
           },
           
         },
