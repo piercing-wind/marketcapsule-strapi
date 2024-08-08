@@ -21,7 +21,8 @@
       "required": true
     },
     "lastYearSalesGrowth": {
-      "type": "float"
+      "type": "float",
+      "required": true
     },
     "company": {
       "type": "relation",

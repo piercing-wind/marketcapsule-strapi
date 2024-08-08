@@ -4,7 +4,8 @@
   "info": {
     "singularName": "feed",
     "pluralName": "feeds",
-    "displayName": "Feed"
+    "displayName": "Feed",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -15,35 +16,52 @@
       "type": "string",
       "required": true
     },
-    "type": {
-      "type": "enumeration",
-      "enum": [
-        "SCREENER",
-        "CAPSULE+",
-        "IPO"
-      ]
-    },
     "tag": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::tag.tag"
     },
     "featuredImage": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "url": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "industry": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::industry.industry"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
     }
   }
 }

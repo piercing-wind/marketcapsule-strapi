@@ -271,6 +271,7 @@ module.exports = createCoreService('api::plan.plan', ({ strapi }) => ({
             // doc.pipe(fs.createWriteStream(outputPath));
 
             const url = await uploadFileToS3(process.env.AWS_BUCKET, invoiceNo, doc);
+            console.log("url",url)
             let invoiceurl = `${process.env.AWS_CLOUDFRONT_BASE_URL}/${url.split(".com/")[1]}`
             console.log("url", invoiceurl);
             return invoiceurl;

@@ -17,15 +17,18 @@
       "enum": [
         "Sensex",
         "Nifty"
-      ]
+      ],
+      "required": true
     },
     "date": {
-      "type": "date"
+      "type": "date",
+      "required": true
     },
     "price": {
-      "type": "float"
+      "type": "float",
+      "required": true
     },
-    "volume": {
+    "FIICash": {
       "type": "float"
     }
   }

@@ -39,13 +39,15 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
     },
     "currency": {
       "type": "string"
     },
     "regularPrice": {
-      "type": "float"
+      "type": "float",
+      "required": true
     }
   }
 }

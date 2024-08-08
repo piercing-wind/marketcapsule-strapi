@@ -33,16 +33,19 @@ module.exports = {
             let currentPrice = null;
             let changeInprice = null;
             let lastUpdated = new Date();
+            let currentFIICash = null;
 
             if(indexes.length===1){
                 currentPrice = indexes[0].price;
                 changeInprice=0;
-                lastUpdated = indexes[0].updatedAt
+                lastUpdated = indexes[0].updatedAt;
+                currentFIICash = indexes[0].FIICash
             }
             if(indexes.length>=2){
                 currentPrice = indexes[0].price;
                 changeInprice = currentPrice - indexes[1].price;
                 lastUpdated = indexes[0].updatedAt;
+                currentFIICash = indexes[0].FIICash
             }
 
             return ctx.response.send({
@@ -52,6 +55,7 @@ module.exports = {
                     lastUpdated,
                     currentPrice,
                     changeInprice,
+                    currentFIICash,
                     indexes
                 }
             })

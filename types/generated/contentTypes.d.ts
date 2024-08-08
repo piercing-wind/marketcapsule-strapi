@@ -770,11 +770,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::subscription.subscription'
     >;
-    user_roles: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToMany',
-      'api::user-role.user-role'
-    >;
     capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     socketId: Attribute.String;
     newslettersSubscribed: Attribute.Boolean & Attribute.DefaultTo<false>;
@@ -809,8 +804,8 @@ export interface ApiBucketBucket extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    name: Attribute.String;
-    slug: Attribute.UID<'api::bucket.bucket', 'name'>;
+    name: Attribute.String & Attribute.Required;
+    slug: Attribute.UID<'api::bucket.bucket', 'name'> & Attribute.Required;
     image: Attribute.Media;
     capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     metaTitle: Attribute.String;
@@ -994,7 +989,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'manyToMany',
       'api::bucket.bucket'
     >;
-    slug: Attribute.UID<'api::company.company', 'name'>;
+    slug: Attribute.UID<'api::company.company', 'name'> & Attribute.Required;
     capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
@@ -1159,13 +1154,15 @@ export interface ApiCompanyTypeCompanyType extends Schema.CollectionType {
     singularName: 'company-type';
     pluralName: 'company-types';
     displayName: 'CompanyType';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    slug: Attribute.UID<'api::company-type.company-type', 'name'>;
+    slug: Attribute.UID<'api::company-type.company-type', 'name'> &
+      Attribute.Required;
     description: Attribute.Text;
     metaTitle: Attribute.Text;
     createdAt: Attribute.DateTime;
@@ -1198,7 +1195,7 @@ export interface ApiCompanyTypeDetailCompanyTypeDetail
     draftAndPublish: false;
   };
   attributes: {
-    title: Attribute.String;
+    title: Attribute.String & Attribute.Required;
     value: Attribute.String;
     remark: Attribute.String;
     company: Attribute.Relation<
@@ -1295,21 +1292,26 @@ export interface ApiFeedFeed extends Schema.CollectionType {
     singularName: 'feed';
     pluralName: 'feeds';
     displayName: 'Feed';
+    description: '';
   };
   options: {
     draftAndPublish: false;
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
-    type: Attribute.Enumeration<['SCREENER', 'CAPSULE+', 'IPO']>;
     tag: Attribute.Relation<'api::feed.feed', 'oneToOne', 'api::tag.tag'>;
     featuredImage: Attribute.Media & Attribute.Required;
-    url: Attribute.String & Attribute.Required;
+    url: Attribute.String;
     industry: Attribute.Relation<
       'api::feed.feed',
       'oneToOne',
       'api::industry.industry'
     >;
+    description: Attribute.Blocks;
+    slug: Attribute.UID<'api::feed.feed', 'title'> & Attribute.Required;
+    image: Attribute.Media;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::feed.feed', 'oneToOne', 'admin::user'> &
@@ -1332,7 +1334,7 @@ export interface ApiFinancialHighlightFinancialHighlight
     draftAndPublish: false;
   };
   attributes: {
-    title: Attribute.String;
+    title: Attribute.String & Attribute.Required;
     company: Attribute.Relation<
       'api::financial-highlight.financial-highlight',
       'manyToOne',
@@ -1400,10 +1402,10 @@ export interface ApiIndexIndex extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    indexType: Attribute.Enumeration<['Sensex', 'Nifty']>;
-    date: Attribute.Date;
-    price: Attribute.Float;
-    volume: Attribute.Float;
+    indexType: Attribute.Enumeration<['Sensex', 'Nifty']> & Attribute.Required;
+    date: Attribute.Date & Attribute.Required;
+    price: Attribute.Float & Attribute.Required;
+    FIICash: Attribute.Float;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1437,8 +1439,8 @@ export interface ApiIndustryIndustry extends Schema.CollectionType {
     description: Attribute.Text;
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
-    industrialOutlook: Attribute.Blocks;
-    slug: Attribute.UID<'api::industry.industry', 'name'>;
+    industrialOutlook: Attribute.Blocks & Attribute.Required;
+    slug: Attribute.UID<'api::industry.industry', 'name'> & Attribute.Required;
     companies: Attribute.Relation<
       'api::industry.industry',
       'oneToMany',
@@ -1485,7 +1487,7 @@ export interface ApiIpoIpo extends Schema.CollectionType {
   attributes: {
     openDate: Attribute.DateTime & Attribute.Required;
     offerPricePe: Attribute.String & Attribute.Required;
-    lastYearSalesGrowth: Attribute.Float;
+    lastYearSalesGrowth: Attribute.Float & Attribute.Required;
     company: Attribute.Relation<
       'api::ipo.ipo',
       'oneToOne',
@@ -1557,7 +1559,7 @@ export interface ApiNewNew extends Schema.CollectionType {
     url: Attribute.String & Attribute.Required;
     metaTitle: Attribute.String;
     metaDescription: Attribute.String;
-    image: Attribute.Media;
+    image: Attribute.Media & Attribute.Required;
     slug: Attribute.UID<'api::new.new', 'title'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1622,11 +1624,12 @@ export interface ApiOperationDetailOperationDetail
       'manyToOne',
       'api::company.company'
     >;
-    title: Attribute.String;
+    title: Attribute.String & Attribute.Required;
     value: Attribute.String;
     year: Attribute.Integer;
     month: Attribute.String;
-    duration: Attribute.Enumeration<['yearly', 'quarterly']>;
+    duration: Attribute.Enumeration<['yearly', 'quarterly']> &
+      Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1663,9 +1666,9 @@ export interface ApiPlanPlan extends Schema.CollectionType {
     active: Attribute.Boolean & Attribute.DefaultTo<true>;
     planType: Attribute.String;
     durationInDays: Attribute.Integer & Attribute.Required;
-    slug: Attribute.UID<'api::plan.plan', 'name'>;
+    slug: Attribute.UID<'api::plan.plan', 'name'> & Attribute.Required;
     currency: Attribute.String;
-    regularPrice: Attribute.Float;
+    regularPrice: Attribute.Float & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::plan.plan', 'oneToOne', 'admin::user'> &
@@ -1821,7 +1824,7 @@ export interface ApiSectorSector extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    slug: Attribute.UID<'api::sector.sector', 'name'>;
+    slug: Attribute.UID<'api::sector.sector', 'name'> & Attribute.Required;
     description: Attribute.Text;
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
@@ -1859,7 +1862,7 @@ export interface ApiShareHoldingShareHolding extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    title: Attribute.String;
+    title: Attribute.String & Attribute.Required;
     company: Attribute.Relation<
       'api::share-holding.share-holding',
       'manyToOne',
@@ -1987,7 +1990,7 @@ export interface ApiTagTag extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
-    slug: Attribute.UID<'api::tag.tag', 'name'>;
+    slug: Attribute.UID<'api::tag.tag', 'name'> & Attribute.Required;
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
     colorHash: Attribute.String & Attribute.Required;
@@ -2046,13 +2049,13 @@ export interface ApiTopGainerTopGainer extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    value: Attribute.Float;
+    value: Attribute.Float & Attribute.Required;
     company: Attribute.Relation<
       'api::top-gainer.top-gainer',
       'oneToOne',
       'api::company.company'
     >;
-    exchangeType: Attribute.Enumeration<['NSE', 'BSE']>;
+    exchangeType: Attribute.Enumeration<['NSE', 'BSE']> & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2082,13 +2085,13 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
     draftAndPublish: false;
   };
   attributes: {
-    value: Attribute.Float;
+    value: Attribute.Float & Attribute.Required;
     company: Attribute.Relation<
       'api::top-loser.top-loser',
       'oneToOne',
       'api::company.company'
     >;
-    exchangeType: Attribute.Enumeration<['NSE', 'BSE']>;
+    exchangeType: Attribute.Enumeration<['NSE', 'BSE']> & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -2099,36 +2102,6 @@ export interface ApiTopLoserTopLoser extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::top-loser.top-loser',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiUserRoleUserRole extends Schema.CollectionType {
-  collectionName: 'user_roles';
-  info: {
-    singularName: 'user-role';
-    pluralName: 'user-roles';
-    displayName: 'UserRole';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    name: Attribute.String & Attribute.Required & Attribute.Unique;
-    description: Attribute.Text & Attribute.Required;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::user-role.user-role',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::user-role.user-role',
       'oneToOne',
       'admin::user'
     > &
@@ -2260,7 +2233,6 @@ declare module '@strapi/types' {
       'api::term-and-condition.term-and-condition': ApiTermAndConditionTermAndCondition;
       'api::top-gainer.top-gainer': ApiTopGainerTopGainer;
       'api::top-loser.top-loser': ApiTopLoserTopLoser;
-      'api::user-role.user-role': ApiUserRoleUserRole;
       'api::wachlist.wachlist': ApiWachlistWachlist;
       'api::wishlist.wishlist': ApiWishlistWishlist;
     }

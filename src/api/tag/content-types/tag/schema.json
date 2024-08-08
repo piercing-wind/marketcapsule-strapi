@@ -18,7 +18,8 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
     },
     "metaTitle": {
       "type": "string"

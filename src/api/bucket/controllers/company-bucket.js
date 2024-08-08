@@ -2,6 +2,7 @@ const company = require("../../company/controllers/company");
 
 module.exports = {
     list:async(ctx)=>{
+       
         try {
             
             let {page,limit} = ctx.request.query;
@@ -111,6 +112,9 @@ module.exports = {
         //     data.companies = bucket.companies.slice(offset,limit+offset)
         //    }
 
+        if(bucket.capsuleplus && !capsuleplusUser){
+            return ctx.badRequest("Please buy subscription first!")
+        }
            
      
 

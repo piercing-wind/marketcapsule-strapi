@@ -38,6 +38,9 @@ module.exports={
                     featuredImage:{
                         select:["alternativeText","url"]
                     },
+                    image:{
+                        select:["alternativeText","url"]
+                    },
                     tag:{
                         select:["colorHash"]
                     }

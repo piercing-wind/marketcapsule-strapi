@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "value": {
-      "type": "float"
+      "type": "float",
+      "required": true
     },
     "company": {
       "type": "relation",
@@ -25,7 +26,8 @@
       "enum": [
         "NSE",
         "BSE"
-      ]
+      ],
+      "required": true
     }
   }
 }

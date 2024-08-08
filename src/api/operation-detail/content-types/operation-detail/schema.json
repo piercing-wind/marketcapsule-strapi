@@ -19,7 +19,8 @@
       "inversedBy": "operation_details"
     },
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "value": {
       "type": "string"
@@ -35,7 +36,8 @@
       "enum": [
         "yearly",
         "quarterly"
-      ]
+      ],
+      "required": true
     }
   }
 }

@@ -26,11 +26,13 @@
       "type": "text"
     },
     "industrialOutlook": {
-      "type": "blocks"
+      "type": "blocks",
+      "required": true
     },
     "slug": {
       "type": "uid",
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
     },
     "companies": {
       "type": "relation",

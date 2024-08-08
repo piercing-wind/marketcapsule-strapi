@@ -2,8 +2,9 @@
 
 const { generateOtpToken, sanitizeUser } = require("../utils/index");
 const { decode } = require('../utils/hash');
-const { sendEmailNormal } = require('../../../../helper/ses');
+const { sendEmail } = require('../../../../helper/ses');
 const { testUserCheck } = require('../utils/test');
+const {emailTemplate} = require("../../../../config/constant")
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 
@@ -13,14 +14,16 @@ module.exports = {
   register: async (ctx, next) => {
     try {
 
-      console.log("123456789");
+
       const { email, newslettersSubscribed = false, isTermAndConditionAccept = false } = ctx.request.body;
+
       if (!email) {
         return ctx.badRequest('Email required!');
       }
       let user;
 
       let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });
+      
       if (userExists) {
         return ctx.badRequest("Email already exist!")
       }
@@ -33,7 +36,9 @@ module.exports = {
         newslettersSubscribed,
         isTermAndConditionAccept
       }
+
       const create = await strapi.db.query("plugin::users-permissions.user").create({ data: userObj })
+
       if (!create) {
         return ctx.badRequest('Failed to create user!')
       }
@@ -44,20 +49,21 @@ module.exports = {
 
 
       let verifyToken = await generateOtpToken(user)
+
       if (!verifyToken) {
         return ctx.badRequest('Faild to send otp!')
       }
       if (process.env.MODE === "development") {
-        console.log("dev mode....")
+
         let testEmails = testUserCheck();
         if (testEmails.includes(email)) {
-          console.log("email",email)
-          await sendEmailNormal(email, { otp: verifyToken.otp })
+
+          await sendEmail(email, emailTemplate.sendOtp,JSON.stringify({name:email,otp:verifyToken.otp}))
         }
   
       } else {
         console.log("else")
-        await sendEmailNormal(email, { otp: verifyToken.otp })
+        await sendEmail(email, emailTemplate.sendOtp,JSON.stringify({name:email,otp:verifyToken.otp}))
       }
 
       if (verifyToken && verifyToken.token) {
@@ -162,6 +168,7 @@ module.exports = {
       }
 
       let userExists = await strapi.db.query("plugin::users-permissions.user").findOne({ where: { email } });
+
       if (!userExists) {
         return ctx.badRequest('User not found!');
       }
@@ -183,11 +190,11 @@ module.exports = {
         let testEmails = testUserCheck();
         if (testEmails.includes(email)) {
           console.log("email",email);
-          await sendEmailNormal(email, { otp: verifyToken.otp })
+          await sendEmail(email, emailTemplate.sendOtp,JSON.stringify({name:userExists.name?userExists.name:email,otp:verifyToken.otp}))
         }
-        await sendEmailNormal(email, { otp: verifyToken.otp })
+
       } else {
-        await sendEmailNormal(email, { otp: verifyToken.otp })
+        await sendEmail(email, emailTemplate.sendOtp,JSON.stringify({name:userExists.name?userExists.name:email,otp:verifyToken.otp}))
       }
 
 
@@ -218,7 +225,6 @@ module.exports = {
 
   resendOtp: async (ctx, next) => {
     try {
-      console.log("123456789");
       const { email } = ctx.request.body;
       if (!email) {
         return ctx.badRequest('Email required!');
@@ -235,12 +241,15 @@ module.exports = {
       }
       if (process.env.MODE === "development") {
         let testEmails = testUserCheck();
+
         if (testEmails.includes(email)) {
-          await sendEmailNormal(email, { otp: verifyToken.otp })
+          await sendEmail(email, emailTemplate.sendOtp,JSON.stringify({name:userExists.name?userExists.name:email,otp:verifyToken.otp}))
         }
-        await sendEmailNormal(email, { otp: verifyToken.otp })
+
+        await sendEmail(email, { otp: verifyToken.otp })
       } else {
-        await sendEmailNormal(email, { otp: verifyToken.otp })
+        
+        await sendEmail(email, emailTemplate.sendOtp,JSON.stringify({name:userExists.name?userExists.name:email,otp:verifyToken.otp}))
       }
 
 
@@ -300,6 +309,9 @@ module.exports = {
       });
 
       const { access_token } = data;
+
+      console.log("access_token",access_token);
+      return ctx.send("google api")
 
       // Use access_token or id_token to fetch user profile
       const { data: profile } = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo', {
