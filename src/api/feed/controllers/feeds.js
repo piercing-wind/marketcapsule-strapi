@@ -72,5 +72,31 @@ module.exports={
         } catch (error) {
             ctx.badRequest(error)
         }
+    },
+    getBySlug:async(ctx)=>{
+        try {
+            const {slug} = ctx.request.params
+            if(!slug){
+                return ctx.badRequest("Slug is missing!")
+            }
+
+            const feed = await strapi.db.query("api::feed.feed").findOne({
+                where:{slug:slug},
+                populate:{
+                    image:{
+                        select:["alternativeText","url"]
+                    }
+                }
+            })
+
+            return ctx.response.send({
+                success:true,
+                message:"Success",
+                data:feed
+            })
+            
+        } catch (error) {
+            console.log("error",error)
+        }
     }
 }

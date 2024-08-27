@@ -400,6 +400,7 @@ module.exports = {
 
         let jwtToken = strapi.plugin("users-permissions").services.jwt.issue(payload, { expiresIn: '3600h' })
 
+
         return ctx.response.redirect(`${process.env.GOOGLE_LOGIN_FRONTEND_REDIRECT}/accessToken=${jwtToken}&profileStatus=${findUser.profileStatus}`)
 
       }
