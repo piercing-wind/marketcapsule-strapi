@@ -39,6 +39,29 @@
       "relation": "manyToOne",
       "target": "api::industry.industry",
       "inversedBy": "ipos"
+    },
+    "companyName": {
+      "type": "string",
+      "required": true
+    },
+    "aboutTheCompany": {
+      "type": "blocks",
+      "required": true
+    },
+    "capsuleView": {
+      "type": "blocks",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "companyName",
+      "required": true
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
     }
   }
 }

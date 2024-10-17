@@ -69,6 +69,7 @@ module.exports = {
                 limit: limit,
                 orderBy: { createdAt: 'desc', updatedAt: 'desc' }
             })
+            console.log("ipos",ipos)
             // return ctx.send(ipos)
             let count = await strapi.db.query("api::ipo.ipo").count({ where: whereQuery });
 
@@ -78,14 +79,13 @@ module.exports = {
 
                 for (const item of ipos) {
                     let obj={
-                        companyId:item.company?.id,
-                        companyName:item.company?.name,
-                        slug:item.company?.slug,
+                        // companyId:item.company?.id,
+                        companyName:item.companyName,
+                        slug:item.slug,
                         openDate:moment(item.openDate).format("MMM Do YYYY"),
                         offerPricePe:item.offerPricePe,
                         lastYearSaleGrowth:item.lastYearSalesGrowth,
-                        industry:item.company?.industry?.name,
-                        capsuleplus:item.company?.capsuleplus
+                        industry:item.industry?.name,
                     }
                     data.push(obj)
                 }
@@ -103,6 +103,36 @@ module.exports = {
         } catch (err) {
             console.log(err);
             return ctx.badRequest(err)
+        }
+    },
+    detail:async(ctx)=>{
+        try {
+            const {slug} = ctx.request.params;
+
+            const ipoDetail = await strapi.db.query("api::ipo.ipo").findOne({
+                where:{slug:slug},
+                populate:{
+                    company:{
+                        select:["id","slug","name"]
+                    },
+                    Industry:{
+                        select:["id","industrialOutlook"]
+                    }
+                }
+            })
+            if(!ipoDetail){
+                return ctx.badRequest("Detail not found!")
+            }
+
+            return ctx.response.send({
+                success:true,
+                message:"Data Fetched!",
+                data:ipoDetail
+            })
+            
+        } catch (error) {
+            console.log("error",error);
+            return ctx.badRequest(error)
         }
     },
     filter: async (ctx) => {

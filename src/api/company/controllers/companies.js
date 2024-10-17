@@ -272,8 +272,16 @@ module.exports = {
                 if ((capsuleplus !== "true") || (capsuleplus === "true" && capsuleplusUser)) {
                     isPrice = true;
                     let obj = {
+                        business_segments: {
+                            select: ["title", "description"],
+                            populate: {
+                                image: {
+                                    select: ["alternativeText", "url"]
+                                }
+                            }
+                        },
                         company_share_detail: {
-                            select: ["marketCap", "BSE", "ttpmPE", "prevClosePrice", "sectoralPERange", "peRemark"]
+                            select: ["marketCap", "BSE", "ttpmPE", "prevClosePrice", "sectoralPERange", "peRemark","peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio", "rocePercent"]
                         },
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -285,13 +293,15 @@ module.exports = {
                             select: ["name"]
                         },
                         industry: {
-                            select: ["name", "slug"]
+                            select: ["name", "slug","industrialOutlook"]
                         },
                         operation_details: true,
-                        companyTypeDetails: true
+                        companyTypeDetails: true,
+                        share_holdings: true,
+                        financial_highlights: true
                     }
                     populate = { ...populate, ...obj }
-                    select.push("businessOverview", "financialReport", "shareCapitalAndEmployees", "capsuleHighlights");
+                    select.push("businessOverview", "financialReport", "shareCapitalAndEmployees","aboutTheCompany", "keyHighlights", "capsuleView");
 
                     // load share pricess of company...
                     console.log("whereQuery", whereQuery);
@@ -305,6 +315,10 @@ module.exports = {
                 }
                 else {
                     let obj = {
+                        business_segments: true,
+                        company_share_detail: {
+                            select: ["marketCap", "peRatio", "roicPercent", "roePercent", "roePercent", "currentPrice", "deRatio", "cwip", "cashConversionCycle", "pegRatio", "rocePercent"]
+                        },
 
                         featuredImage: {
                             select: ["alternativeText", "url"]
@@ -320,7 +334,7 @@ module.exports = {
                         },
                     }
                     populate = { ...populate, ...obj }
-                    select.push("businessOverview");
+                    select.push("businessOverview","aboutTheCompany", "capsuleView");
                 }
             }
 

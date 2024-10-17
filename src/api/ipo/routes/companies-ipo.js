@@ -7,6 +7,11 @@ module.exports = {
       },
       {
         method: 'GET',
+        path: '/ipo/detail/:slug', 
+        handler: 'companies-ipo.detail',
+      },
+      {
+        method: 'GET',
         path: '/ipo/filter', 
         handler: 'companies-ipo.filter',
 

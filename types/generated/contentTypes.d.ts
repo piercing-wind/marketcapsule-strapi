@@ -1025,7 +1025,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     >;
     financialReport: Attribute.Blocks;
     shareCapitalAndEmployees: Attribute.Blocks;
-    capsuleHighlights: Attribute.Blocks;
     companyTypeDetails: Attribute.Relation<
       'api::company.company',
       'oneToMany',
@@ -1499,6 +1498,12 @@ export interface ApiIpoIpo extends Schema.CollectionType {
       'manyToOne',
       'api::industry.industry'
     >;
+    companyName: Attribute.String & Attribute.Required;
+    aboutTheCompany: Attribute.Blocks & Attribute.Required;
+    capsuleView: Attribute.Blocks & Attribute.Required;
+    slug: Attribute.UID<'api::ipo.ipo', 'companyName'> & Attribute.Required;
+    metaTitle: Attribute.String;
+    metaDescription: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &

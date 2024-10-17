@@ -133,9 +133,6 @@
     "shareCapitalAndEmployees": {
       "type": "blocks"
     },
-    "capsuleHighlights": {
-      "type": "blocks"
-    },
     "companyTypeDetails": {
       "type": "relation",
       "relation": "oneToMany",
