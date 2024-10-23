@@ -287,7 +287,7 @@ module.exports = {
                             select: ["alternativeText", "url"]
                         },
                         logo: {
-                            select: ["alternativeText", "url"]
+                            // select: ["alternativeText", "url"]
                         },
                         sector: {
                             select: ["name"]
