@@ -72,10 +72,6 @@
       "targetField": "name",
       "required": true
     },
-    "capsuleplus": {
-      "type": "boolean",
-      "default": false
-    },
     "metaTitle": {
       "type": "string"
     },
@@ -155,6 +151,10 @@
         "videos",
         "audios"
       ]
+    },
+    "capsuleplus": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

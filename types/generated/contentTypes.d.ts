@@ -990,7 +990,6 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'api::bucket.bucket'
     >;
     slug: Attribute.UID<'api::company.company', 'name'> & Attribute.Required;
-    capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
     business_segments: Attribute.Relation<
@@ -1036,6 +1035,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'api::operation-detail.operation-detail'
     >;
     whatsNewInCapsulePlusImage: Attribute.Media;
+    capsuleplus: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
