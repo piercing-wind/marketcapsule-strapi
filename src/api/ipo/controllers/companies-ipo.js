@@ -115,8 +115,11 @@ module.exports = {
                     company:{
                         select:["id","slug","name"]
                     },
-                    Industry:{
-                        select:["id","industrialOutlook"]
+                    industry:{
+                        select:["id","industrialOutlook","name"]
+                    },
+                    logo:{
+                        select: ["alternativeText", "url"]
                     }
                 }
             })

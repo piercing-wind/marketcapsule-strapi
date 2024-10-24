@@ -1504,6 +1504,8 @@ export interface ApiIpoIpo extends Schema.CollectionType {
     slug: Attribute.UID<'api::ipo.ipo', 'companyName'> & Attribute.Required;
     metaTitle: Attribute.String;
     metaDescription: Attribute.Text;
+    websiteUrl: Attribute.String;
+    logo: Attribute.Media & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &

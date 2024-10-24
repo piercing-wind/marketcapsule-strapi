@@ -62,6 +62,17 @@
     },
     "metaDescription": {
       "type": "text"
+    },
+    "websiteUrl": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     }
   }
 }
