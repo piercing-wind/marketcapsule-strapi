@@ -3,10 +3,11 @@ const moment = require('moment');
 module.exports = {
     list: async (ctx) => {
         try {
+            
 
-            let { page, limit, companyTypeId, sectorId, industryId,companyName } = ctx.request.query;
+            let { page, limit, companyTypeId, sectorId, industryId, companyName } = ctx.request.query;
 
-            console.log("payload",ctx.request.query)
+            console.log("payload", ctx.request.query)
 
             limit = parseInt(limit) || 10;
             page = parseInt(page) || 1;
@@ -16,43 +17,31 @@ module.exports = {
             let whereQuery = {}
 
 
-                if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
-                    whereQuery["company"] = {...whereQuery["company"],...{
-                        company_type: {
-                            id: { $in: companyTypeId.map(i => parseInt(i)) }
-                        }
-                    }}
-                }
+            if (Array.isArray(companyTypeId) && companyTypeId.length > 0) {
+                whereQuery["companyType"] = {id: { $in: companyTypeId.map(i => parseInt(i))}}
+            }
 
-                
-            
 
-                if (Array.isArray(sectorId) && sectorId.length > 0) {
-                    whereQuery["company"] ={...whereQuery["company"],... {
-                        sector: {
-                            id: {$in:sectorId.map(i=>parseInt(i))}
-                        }
-                    }}
-                }
-            
 
-                if (Array.isArray(industryId) && industryId.length > 0) {
-                    whereQuery["company"] = {...whereQuery["company"],...{
-                        industry: {
-                            id: {$in:industryId.map(i=>parseInt(i))}
-                        }
-                    }}
-                }
-            
 
-                if (Array.isArray(companyName) && companyName.length > 0) {
-                    whereQuery["company"] = {...whereQuery["company"],...{
-                        name:{$in:companyName}
-                    }}
-                    
-                }
+            if (Array.isArray(sectorId) && sectorId.length > 0) {
+                whereQuery["sector"] = {id: { $in: sectorId.map(i => parseInt(i))}}
+            }
 
-            console.log("whereQuery",whereQuery)
+
+            if (Array.isArray(industryId) && industryId.length > 0) {
+                whereQuery["industry"] = {id: { $in: industryId.map(i => parseInt(i))}}
+                             
+            }
+
+
+
+            if (Array.isArray(companyName) && companyName.length > 0) {
+                whereQuery['companyName'] = {$in:companyName}
+
+            }
+
+            console.log("whereQuery", whereQuery)
             let ipos = await strapi.db.query("api::ipo.ipo").findMany({
                 where: whereQuery,
                 populate: {
@@ -60,7 +49,7 @@ module.exports = {
                         populate: {
                             sector: true,
                             company_type: true,
-                            industry:true,
+                            industry: true,
                         }
                     },
                     industry: true
@@ -69,23 +58,22 @@ module.exports = {
                 limit: limit,
                 orderBy: { createdAt: 'desc', updatedAt: 'desc' }
             })
-            console.log("ipos",ipos)
-            // return ctx.send(ipos)
+            
             let count = await strapi.db.query("api::ipo.ipo").count({ where: whereQuery });
 
-            let data=[];
+            let data = [];
 
-            if(ipos.length>0){
+            if (ipos.length > 0) {
 
                 for (const item of ipos) {
-                    let obj={
-                        // companyId:item.company?.id,
-                        companyName:item.companyName,
-                        slug:item.slug,
-                        openDate:moment(item.openDate).format("MMM Do YYYY"),
-                        offerPricePe:item.offerPricePe,
-                        lastYearSaleGrowth:item.lastYearSalesGrowth,
-                        industry:item.industry?.name,
+                    let obj = {
+                        id:item.id,
+                        companyName: item.companyName,
+                        slug: item.slug,
+                        openDate: moment(item.openDate).format("MMM Do YYYY"),
+                        offerPricePe: item.offerPricePe,
+                        lastYearSaleGrowth: item.lastYearSalesGrowth,
+                        industry: item.industry?.name,
                     }
                     data.push(obj)
                 }
@@ -95,7 +83,7 @@ module.exports = {
 
             return ctx.response.send({
                 success: true,
-                message:"Success",
+                message: "Success",
                 count: count,
                 data: data
             })
@@ -105,36 +93,36 @@ module.exports = {
             return ctx.badRequest(err)
         }
     },
-    detail:async(ctx)=>{
+    detail: async (ctx) => {
         try {
-            const {slug} = ctx.request.params;
+            const { slug } = ctx.request.params;
 
             const ipoDetail = await strapi.db.query("api::ipo.ipo").findOne({
-                where:{slug:slug},
-                populate:{
-                    company:{
-                        select:["id","slug","name"]
+                where: { slug: slug },
+                populate: {
+                    company: {
+                        select: ["id", "slug", "name"]
                     },
-                    industry:{
-                        select:["id","industrialOutlook","name"]
+                    industry: {
+                        select: ["id", "industrialOutlook", "name"]
                     },
-                    logo:{
+                    logo: {
                         select: ["alternativeText", "url"]
                     }
                 }
             })
-            if(!ipoDetail){
+            if (!ipoDetail) {
                 return ctx.badRequest("Detail not found!")
             }
 
             return ctx.response.send({
-                success:true,
-                message:"Data Fetched!",
-                data:ipoDetail
+                success: true,
+                message: "Data Fetched!",
+                data: ipoDetail
             })
-            
+
         } catch (error) {
-            console.log("error",error);
+            console.log("error", error);
             return ctx.badRequest(error)
         }
     },
@@ -178,11 +166,17 @@ module.exports = {
             let industries = await strapi.db.query("api::industry.industry").findMany({ select: ["id", "name", "slug"] });
             filters[2]["detail"] = industries;
 
-            let companies = await strapi.db.query("api::company.company").findMany({select:["id","name","slug"]})
+            let companies = await strapi.db.query("api::ipo.ipo").findMany({ select: ["id", "companyName", "slug"] })
 
-         
-                filters[3]["detail"] = companies
-            
+
+            filters[3]["detail"] = companies.map((company)=>{
+                return {
+                    id:company.id,
+                    name:company.companyName,
+                    slug:company.slug
+                }
+            }).filter(i=> i.name);
+
 
             return ctx.response.send({
                 success: true,

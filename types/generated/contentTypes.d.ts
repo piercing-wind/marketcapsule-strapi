@@ -1506,6 +1506,16 @@ export interface ApiIpoIpo extends Schema.CollectionType {
     metaDescription: Attribute.Text;
     websiteUrl: Attribute.String;
     logo: Attribute.Media & Attribute.Required;
+    companyType: Attribute.Relation<
+      'api::ipo.ipo',
+      'oneToOne',
+      'api::company-type.company-type'
+    >;
+    sector: Attribute.Relation<
+      'api::ipo.ipo',
+      'oneToOne',
+      'api::sector.sector'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<'api::ipo.ipo', 'oneToOne', 'admin::user'> &

@@ -73,6 +73,16 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "companyType": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company-type.company-type"
+    },
+    "sector": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sector.sector"
     }
   }
 }
