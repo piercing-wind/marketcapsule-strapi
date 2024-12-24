@@ -580,7 +580,7 @@ async function verifyFacebookToken(token, provider, type) {
   try {
     console.log("in facebook veirfy fnn")
     const response = await axios.get(
-      `https://graph.facebook.com/me?access_token=${token}&fields=id,email`
+      `https://graph.facebook.com/me?access_token=${token}&fields=id,email,public_profile`
     );
     const userData = response.data;
 
