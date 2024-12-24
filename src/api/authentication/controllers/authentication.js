@@ -584,6 +584,8 @@ async function verifyFacebookToken(token, provider, type) {
     );
     const userData = response.data;
 
+    console.log("userData from facebook====",userData)
+
     const email = userData.email;
 
     console.log("email",email)
