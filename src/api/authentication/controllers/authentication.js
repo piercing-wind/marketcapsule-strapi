@@ -14,7 +14,6 @@ module.exports = {
   register: async (ctx, next) => {
     try {
 
-
       const { email, newslettersSubscribed = false, isTermAndConditionAccept = false } = ctx.request.body;
 
       if (!email) {
@@ -42,19 +41,15 @@ module.exports = {
       if (!create) {
         return ctx.badRequest('Failed to create user!')
       }
-      user = create
-
-
-
-
+      user = create;
 
       let verifyToken = await generateOtpToken(user)
-
+      console.log("verifyToken",verifyToken)
       if (!verifyToken) {
         return ctx.badRequest('Faild to send otp!')
       }
-      if (process.env.MODE === "development") {
 
+      if (process.env.MODE === "development") {
         let testEmails = testUserCheck();
         if (testEmails.includes(email)) {
 

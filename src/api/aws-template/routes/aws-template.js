@@ -14,6 +14,7 @@ module.exports = {
       method: 'DELETE',
       path: '/aws-template/delete/:name',
       handler: 'aws-template.deleteTemplate',
-     }
+     },
+     
   ],
 };
