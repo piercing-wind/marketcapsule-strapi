@@ -23,6 +23,7 @@
     "google-auth-library": "^9.10.0",
     "html-pdf-node": "^1.0.8",
     "i": "^0.3.7",
+    "knex": "^3.1.0",
     "moment": "^2.30.1",
     "mysql": "2.18.1",
     "npm": "^11.0.0",
