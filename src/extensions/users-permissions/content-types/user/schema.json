@@ -98,6 +98,12 @@
         "pending",
         "complete"
       ]
+    },
+    "summits": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::summit.summit",
+      "mappedBy": "users_permissions_users"
     }
   }
 }

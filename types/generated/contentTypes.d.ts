@@ -775,6 +775,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     newslettersSubscribed: Attribute.Boolean & Attribute.DefaultTo<false>;
     isTermAndConditionAccept: Attribute.Boolean & Attribute.DefaultTo<false>;
     profileStatus: Attribute.Enumeration<['pending', 'complete']>;
+    summits: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::summit.summit'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1994,6 +1999,92 @@ export interface ApiSubscriptionButtonSubscriptionButton
   };
 }
 
+export interface ApiSummitSummit extends Schema.CollectionType {
+  collectionName: 'summits';
+  info: {
+    singularName: 'summit';
+    pluralName: 'summits';
+    displayName: 'Summit';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.Text;
+    thumbnail: Attribute.Media;
+    organized_on: Attribute.DateTime &
+      Attribute.DefaultTo<'2025-01-23T18:30:00.000Z'>;
+    users_permissions_users: Attribute.Relation<
+      'api::summit.summit',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    summit_videos: Attribute.Relation<
+      'api::summit.summit',
+      'oneToMany',
+      'api::summit-video.summit-video'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::summit.summit',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::summit.summit',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSummitVideoSummitVideo extends Schema.CollectionType {
+  collectionName: 'summit_videos';
+  info: {
+    singularName: 'summit-video';
+    pluralName: 'summit-videos';
+    displayName: 'Summit Video';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    document: Attribute.Media;
+    video: Attribute.Media;
+    summit: Attribute.Relation<
+      'api::summit-video.summit-video',
+      'manyToOne',
+      'api::summit.summit'
+    >;
+    thumbnail: Attribute.Media & Attribute.Required;
+    order: Attribute.Integer;
+    description: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::summit-video.summit-video',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::summit-video.summit-video',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTagTag extends Schema.CollectionType {
   collectionName: 'tags';
   info: {
@@ -2246,6 +2337,8 @@ declare module '@strapi/types' {
       'api::share-holding.share-holding': ApiShareHoldingShareHolding;
       'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::subscription-button.subscription-button': ApiSubscriptionButtonSubscriptionButton;
+      'api::summit.summit': ApiSummitSummit;
+      'api::summit-video.summit-video': ApiSummitVideoSummitVideo;
       'api::tag.tag': ApiTagTag;
       'api::term-and-condition.term-and-condition': ApiTermAndConditionTermAndCondition;
       'api::top-gainer.top-gainer': ApiTopGainerTopGainer;

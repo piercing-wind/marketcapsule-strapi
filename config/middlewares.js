@@ -44,6 +44,12 @@ module.exports = [
     name: 'strapi::body',
     config: {
       parsedMethods: ['GET', 'POST', 'PUT', 'PATCH'],
+      formLimit: "5120mb", // 2GB
+      jsonLimit: "5120mb", // 2GB
+      textLimit: "5120mb", // 2GB
+      formidable: {
+        maxFileSize: 1024 * 1024 * 1024 * 5, //  5GB
+      },
     },
   },
   'strapi::session',

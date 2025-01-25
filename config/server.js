@@ -7,6 +7,11 @@ module.exports = ({ env }) => ({
   app: {
     keys: env.array('APP_KEYS'),
   },
+  http: {
+    serverOptions: {
+      requestTimeout: 1800000, // 5 minutes in milliseconds
+    },
+  },
   cron:{
     enabled:true,
     tasks:cronJobs

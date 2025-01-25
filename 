@@ -1,0 +1,413 @@
+[33mcommit bab5e5196233af8ddb444ddbb6ae6de1adfc5314[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: piercing-wind <sourabhsharma5677@gmail.com>
+Date:   Sat Jan 25 11:43:06 2025 +0530
+
+    New Summit Collections
+
+[33mcommit 3f557104019ed9b832c72f8d00bcd7350ca6f3d2[m
+Author: piercing-wind <sourabhsharma5677@gmail.com>
+Date:   Sat Jan 25 11:37:34 2025 +0530
+
+    New Summit Collections
+
+[33mcommit f404fb07cc4d43c0728ea5654e3334e226504c08[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mrahul_dve[m[33m)[m
+Author: piercing-wind <sourabhsharma5677@gmail.com>
+Date:   Sun Jan 19 21:07:36 2025 +0530
+
+    Aws Email Changes
+
+[33mcommit ec2b59e605bff5a8e7d9dc0d0282891deba4004d[m[33m ([m[1;31morigin/rahul_dve[m[33m)[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Dec 24 13:29:01 2024 +0530
+
+    commit changes
+
+[33mcommit 18d4c3fb7364c5a1decc6a54a8324da3d330dae2[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Dec 24 13:26:29 2024 +0530
+
+    commit changes
+
+[33mcommit d6035c2cfe6e2d1e4bae9c30150fdfaefa745cc3[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Dec 24 13:23:38 2024 +0530
+
+    commit changes
+
+[33mcommit e26d76557b7cb159ccfdd4b83abd558eb84a759b[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Mon Nov 4 16:31:42 2024 +0530
+
+    changes in query of list apo api
+
+[33mcommit 2bf1cba6abf53eeecda2f7abd9f1a7e1dcaf53a5[m[33m ([m[1;31morigin/testing[m[33m)[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu Oct 24 10:28:35 2024 +0530
+
+    add new fields in ipo table
+
+[33mcommit 0ab099393bfbb4d94d31c1cfcd050ec43be56ed8[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed Oct 23 18:11:51 2024 +0530
+
+    change field in company schema
+
+[33mcommit 5e41b5f4c4c8f6b79a1fa72d2ec50f6ef433a5f7[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed Oct 23 17:36:49 2024 +0530
+
+    commit changes
+
+[33mcommit 62578b716b296f643e6a852325dedacc03b9018d[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu Oct 17 17:22:13 2024 +0530
+
+    created ipo detail api
+
+[33mcommit 058940527a9c5afe7ce2a1859bbd3d553d4e57bd[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Aug 27 11:16:17 2024 +0530
+
+    created getFeed by slug
+
+[33mcommit 0f8025ab67f9e453c200b10c50a343552c9614e9[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu Aug 8 12:17:14 2024 +0530
+
+    add check only premium user can access capsuleplus bucket
+
+[33mcommit 0bd9baba93bce90c2e8052a2e2399dec43c08b74[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Jul 2 12:38:54 2024 +0530
+
+    changes in invoice detail
+
+[33mcommit 4cc2c06ab71f5b944f9764a7ceb031b23c1014ad[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Jun 18 11:43:48 2024 +0530
+
+    changes
+
+[33mcommit c6b3f39d7b2e11337cc0f9b4e2e51ff0af47faf0[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Jun 18 10:19:37 2024 +0530
+
+    changes
+
+[33mcommit 1448aabe805f0d0bfcdc02a307bed2bc1c9ce94b[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu Jun 13 22:12:53 2024 +0530
+
+    resolve wishlist issue
+
+[33mcommit 390c3c3921c3fedf16cb45053f63611a90423157[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed Jun 12 16:16:14 2024 +0530
+
+    changes
+
+[33mcommit d3edddd0938349b994c177a115b444b8e08ff2a8[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Mon Jun 10 18:26:31 2024 +0530
+
+    add console
+
+[33mcommit f7487e7a2b0de024f8fa35fcb2f0f4f822d538ea[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu Jun 6 20:26:48 2024 +0530
+
+    changes
+
+[33mcommit 94e53190348a48075a0582939cd6c9eda7c06ee0[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed Jun 5 09:19:55 2024 +0530
+
+    changes
+
+[33mcommit fc2e35cdc0f22e50ecdb0026f412a331d6cf46ae[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue Jun 4 12:03:17 2024 +0530
+
+    changes
+
+[33mcommit 046862de4380f84026a0f155cbcecd3d865ea138[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 31 23:33:15 2024 +0530
+
+    changes
+
+[33mcommit 2e62b4704f5af0008311d3bd1ed6b93e9dc9c049[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 23:24:26 2024 +0530
+
+    created index api
+
+[33mcommit 2fcec5920d676531b93de7304f1783ab1f0171b6[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 23:19:48 2024 +0530
+
+    created index api
+
+[33mcommit 298e11e8e8f20210a096be9ed783183b983d165e[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 19:25:09 2024 +0530
+
+    changes
+
+[33mcommit e3547d6fe563628b3cd32500ba233e37137b63da[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 15:56:45 2024 +0530
+
+    changes
+
+[33mcommit b252d5c239c6af371a47ce55d41a487a6749460a[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 14:57:23 2024 +0530
+
+    changes
+
+[33mcommit 4f0c0803af88d56545619b6b24091b7ffa866eef[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 13:20:12 2024 +0530
+
+    changes
+
+[33mcommit 4c075a254abf96ff706ff96d11cdca4dfef8df0d[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 29 10:29:13 2024 +0530
+
+    created social login api
+
+[33mcommit 06dfd13efdd8fc327e2fcdf6be7872fa4d2fecf9[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 28 11:25:10 2024 +0530
+
+    changes
+
+[33mcommit 7d46569780d3dbcc91a0929decf6e6e4f3688f9a[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Mon May 27 10:19:03 2024 +0530
+
+    changes
+
+[33mcommit fd0bd1db7e45100f8c0f002951324cf3b116bf18[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 24 16:00:38 2024 +0530
+
+    changes
+
+[33mcommit 19991aec902a76aa22744e64c9b91e9fa5810ded[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 24 15:51:05 2024 +0530
+
+    changes
+
+[33mcommit 49fbef05ea230bf2a993e2c556d6dca61ab9dcfa[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu May 23 14:14:40 2024 +0530
+
+    changes
+
+[33mcommit e66ae4401c04cca455cc91d0f252603d9f08caa6[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu May 23 11:04:31 2024 +0530
+
+    changes
+
+[33mcommit ee0d5e1ba1d274302377cf0de405a131a77dbe5f[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu May 23 09:32:31 2024 +0530
+
+    changes
+
+[33mcommit 38c54ac285398d5fcff575d82d2b293b2638a5b9[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu May 23 09:20:29 2024 +0530
+
+    changes
+
+[33mcommit ea3865ea5f4d61ce8620caa3ca12ebc6859865f9[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 22 21:58:51 2024 +0530
+
+    changes
+
+[33mcommit 91fa43a64d78cc0d4c777dac84977c7cf30809a9[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 22 21:45:55 2024 +0530
+
+    changes
+
+[33mcommit 59aff6e3dbaec687a2d962726ac2288b85c6a387[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 22 21:31:23 2024 +0530
+
+    changes
+
+[33mcommit 71ee4c33d1e464373fc75b7def0013d324b16bc5[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 22 17:13:55 2024 +0530
+
+    changes
+
+[33mcommit a054f1c894e731aa4c8e33e519ac0fa5e8e30455[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 22 13:06:37 2024 +0530
+
+    changes
+
+[33mcommit 4b7aaa3fbc4c63737c948698d27bc8dcddac0e0a[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 22 10:35:14 2024 +0530
+
+    changes
+
+[33mcommit 6c1bedf97825efba4fc49d58e288eec75cb22234[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 21 18:13:35 2024 +0530
+
+    changes
+
+[33mcommit 3bb6959fb4831704ccace399fa3cfabf758194d5[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 21 16:43:57 2024 +0530
+
+    changes
+
+[33mcommit f94c71974045ed763890d78a9f17bd92a83672c9[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 21 11:59:29 2024 +0530
+
+    changes
+
+[33mcommit 6d9f7e3f29fa1b22b95ca395cd11fc565afcabc4[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Mon May 20 10:08:06 2024 +0530
+
+    changes
+
+[33mcommit 2f4a1bed6c6d13b5d50c08068b082929d62b1fc1[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Mon May 20 09:26:08 2024 +0530
+
+    change
+
+[33mcommit 40a8693b645a2219d6c7e49bd9c68fdd4aea2a34[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 17 17:02:20 2024 +0530
+
+    add pagination in populated data
+
+[33mcommit 73a4f654d7819d7173e63d48136fd6d5af508908[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Thu May 16 15:15:36 2024 +0530
+
+    add isPremium key in feed list api
+
+[33mcommit b13c03c1150dc3a900ba31789ee0aa2a1e73ef08[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 14 16:45:59 2024 +0530
+
+    created resend otp api
+
+[33mcommit 508167ba2e928ac5a7348f7c08784eba0d775955[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 14 12:36:16 2024 +0530
+
+    created resend otp api
+
+[33mcommit e0b9692669355ecc3749fc5d7943434beed8d3c7[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 10 12:44:54 2024 +0530
+
+    create seperate register api
+
+[33mcommit 1c77f1d82f67aa03b32ee3ad8d280d7d226b12dd[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 10 12:42:28 2024 +0530
+
+    create seperate register api
+
+[33mcommit aab357547714c9cbb8bef38c6f6890dec6c0f42f[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 10 10:42:38 2024 +0530
+
+    implemented payment gateway
+
+[33mcommit 4ff2e18836f2d66b37531272572ea66f8157797b[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Tue May 7 11:45:25 2024 +0530
+
+    create new api for operation detail list
+
+[33mcommit 1c8461de56d7f5ae03c14df55b7018b7332365be[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Mon May 6 16:18:20 2024 +0530
+
+    create company prices list api
+
+[33mcommit 781bfc99be86bc70377d4a0b5a97a76ea85245ab[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri May 3 14:11:13 2024 +0530
+
+    changes
+
+[33mcommit 85e18c5e04e6024350b9304e092bca7ad6b5437b[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 1 11:01:39 2024 +0530
+
+    working on promo code
+
+[33mcommit 8ec22c1e7438983595df9409d66516f878c843a8[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed May 1 09:49:30 2024 +0530
+
+    working on promo code
+
+[33mcommit 850e4db5f3abf2a8a1f39b11bbce2c99b0241c60[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Fri Apr 26 10:29:15 2024 +0530
+
+    changes
+
+[33mcommit d857922e1ad9a789f5bd491f7e208b338c6a143f[m
+Author: Rahul kumar <rahul.kumar@valuecreatives.com>
+Date:   Wed Apr 24 20:31:56 2024 +0530
+
+    changes
+
+[33mcommit 510e3b6bf10a622eb944c8a517772dc1f1ed1349[m
+Author: rahulvaluecreativedev <rahul@valuecreatives.com>
+Date:   Tue Apr 23 11:14:34 2024 +0530
+
+    changes
+
+[33mcommit e90bed2dc6a2f686e71e8d12dbfb3e3f5af28786[m
+Author: rahulvaluecreativedev <rahul@valuecreatives.com>
+Date:   Fri Apr 19 17:13:59 2024 +0530
+
+    created ipos apis
+
+[33mcommit cbe559bac3eadc20a5637b75189e80962356f2c7[m
+Author: rahulvaluecreativedev <rahul@valuecreatives.com>
+Date:   Thu Apr 18 18:34:11 2024 +0530
+
+    created bucket apis
+
+[33mcommit 1c23bba9616d2055e4a73523e7f1253ec17f1ece[m
+Author: rahulvaluecreativedev <rahul@valuecreatives.com>
+Date:   Wed Apr 17 18:20:57 2024 +0530
+
+    creating bucket list api
+
+[33mcommit 354c50c209b33e1b08535535848ecdace1b70ef3[m
+Author: rahulvaluecreativedev <rahul@valuecreatives.com>
+Date:   Tue Apr 16 14:35:34 2024 +0530
+
+    created register and login api
+
+[33mcommit 3c7e5c45cfe5517545532a3ef23006126643b68d[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Amandeep Singh <amandeepsingh@Amandeeps-MacBook-Pro.local>
+Date:   Thu Apr 11 18:23:51 2024 +0530
+
+    first-commit-strapi-s3
