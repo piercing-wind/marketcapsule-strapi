@@ -1,13 +1,9 @@
-module.exports = {
-  routes: [
-    {
-     method: 'POST',
-     path: '/summit-payment',
-     handler: 'summit-payment.processPayment',
-     config: {
-       policies: [],
-       middlewares: [],
-     },
-    },
-  ],
-};
+'use strict';
+
+/**
+ * summit-payment router
+ */
+
+const { createCoreRouter } = require('@strapi/strapi').factories;
+
+module.exports = createCoreRouter('api::summit-payment.summit-payment');

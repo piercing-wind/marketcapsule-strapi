@@ -99,11 +99,11 @@
         "complete"
       ]
     },
-    "summits": {
+    "summit_payments": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::summit.summit",
-      "mappedBy": "users_permissions_users"
+      "relation": "oneToMany",
+      "target": "api::summit-payment.summit-payment",
+      "mappedBy": "users_permissions_user"
     }
   }
 }

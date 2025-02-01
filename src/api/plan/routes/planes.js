@@ -1,11 +1,11 @@
 module.exports = {
     routes: [
         {
-            method: 'POST',
-            path: '/plan/checkout',
-            handler: 'planes.checkout',
+       method: 'POST',
+       path: '/plan/checkout',
+       handler: 'planes.checkout',
             
-           },
+      },
       {
        method: 'POST',
        path: '/plan/buy',

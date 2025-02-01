@@ -30,7 +30,7 @@ module.exports = {
 
             }
 
-            let res = {
+            let res = { 
                 planName: plan.name,
                 amount: plan.price,
                 discount: 0,
@@ -75,7 +75,7 @@ module.exports = {
             }
 
             const { amount, planId, currency, receipt, promoCode } = ctx.request.body;
-
+                
             if (!planId) {
                 return ctx.badRequest("PlanId is missing!")
             }
@@ -95,7 +95,6 @@ module.exports = {
 
             }
 
-            console.log("1111");
 
             //create razopay order..
             const response = await razorpay.orders.create({

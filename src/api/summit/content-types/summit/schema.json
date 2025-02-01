@@ -33,17 +33,20 @@
       "type": "datetime",
       "default": "2025-01-23T18:30:00.000Z"
     },
-    "users_permissions_users": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "summits"
-    },
     "summit_videos": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::summit-video.summit-video",
       "mappedBy": "summit"
+    },
+    "summit_payment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::summit-payment.summit-payment",
+      "mappedBy": "summit"
+    },
+    "price": {
+      "type": "integer"
     }
   }
 }

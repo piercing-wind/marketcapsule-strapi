@@ -775,10 +775,10 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     newslettersSubscribed: Attribute.Boolean & Attribute.DefaultTo<false>;
     isTermAndConditionAccept: Attribute.Boolean & Attribute.DefaultTo<false>;
     profileStatus: Attribute.Enumeration<['pending', 'complete']>;
-    summits: Attribute.Relation<
+    summit_payments: Attribute.Relation<
       'plugin::users-permissions.user',
-      'manyToMany',
-      'api::summit.summit'
+      'oneToMany',
+      'api::summit-payment.summit-payment'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -2016,16 +2016,17 @@ export interface ApiSummitSummit extends Schema.CollectionType {
     thumbnail: Attribute.Media;
     organized_on: Attribute.DateTime &
       Attribute.DefaultTo<'2025-01-23T18:30:00.000Z'>;
-    users_permissions_users: Attribute.Relation<
-      'api::summit.summit',
-      'manyToMany',
-      'plugin::users-permissions.user'
-    >;
     summit_videos: Attribute.Relation<
       'api::summit.summit',
       'oneToMany',
       'api::summit-video.summit-video'
     >;
+    summit_payment: Attribute.Relation<
+      'api::summit.summit',
+      'oneToOne',
+      'api::summit-payment.summit-payment'
+    >;
+    price: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -2037,6 +2038,48 @@ export interface ApiSummitSummit extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::summit.summit',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiSummitPaymentSummitPayment extends Schema.CollectionType {
+  collectionName: 'summit_payments';
+  info: {
+    singularName: 'summit-payment';
+    pluralName: 'summit-payments';
+    displayName: 'Summit payment';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    users_permissions_user: Attribute.Relation<
+      'api::summit-payment.summit-payment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    summit: Attribute.Relation<
+      'api::summit-payment.summit-payment',
+      'oneToOne',
+      'api::summit.summit'
+    >;
+    razorpayResponse: Attribute.JSON;
+    mail: Attribute.Email;
+    name: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::summit-payment.summit-payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::summit-payment.summit-payment',
       'oneToOne',
       'admin::user'
     > &
@@ -2338,6 +2381,7 @@ declare module '@strapi/types' {
       'api::subscription.subscription': ApiSubscriptionSubscription;
       'api::subscription-button.subscription-button': ApiSubscriptionButtonSubscriptionButton;
       'api::summit.summit': ApiSummitSummit;
+      'api::summit-payment.summit-payment': ApiSummitPaymentSummitPayment;
       'api::summit-video.summit-video': ApiSummitVideoSummitVideo;
       'api::tag.tag': ApiTagTag;
       'api::term-and-condition.term-and-condition': ApiTermAndConditionTermAndCondition;
