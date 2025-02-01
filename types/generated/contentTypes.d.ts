@@ -2064,7 +2064,7 @@ export interface ApiSummitPaymentSummitPayment extends Schema.CollectionType {
     >;
     summit: Attribute.Relation<
       'api::summit-payment.summit-payment',
-      'oneToOne',
+      'manyToOne',
       'api::summit.summit'
     >;
     razorpayResponse: Attribute.JSON;
