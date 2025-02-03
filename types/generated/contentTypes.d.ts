@@ -1800,6 +1800,36 @@ export interface ApiPromoCodePromoCode extends Schema.CollectionType {
   };
 }
 
+export interface ApiRefundPolicyRefundPolicy extends Schema.SingleType {
+  collectionName: 'refund_policies';
+  info: {
+    singularName: 'refund-policy';
+    pluralName: 'refund-policies';
+    displayName: 'Refund Policy';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    description: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::refund-policy.refund-policy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::refund-policy.refund-policy',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiScreenerScreener extends Schema.SingleType {
   collectionName: 'screeners';
   info: {
@@ -2375,6 +2405,7 @@ declare module '@strapi/types' {
       'api::privacy-policy.privacy-policy': ApiPrivacyPolicyPrivacyPolicy;
       'api::profession.profession': ApiProfessionProfession;
       'api::promo-code.promo-code': ApiPromoCodePromoCode;
+      'api::refund-policy.refund-policy': ApiRefundPolicyRefundPolicy;
       'api::screener.screener': ApiScreenerScreener;
       'api::sector.sector': ApiSectorSector;
       'api::share-holding.share-holding': ApiShareHoldingShareHolding;

@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "refund_policies",
+  "info": {
+    "singularName": "refund-policy",
+    "pluralName": "refund-policies",
+    "displayName": "Refund Policy"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "description": {
+      "type": "blocks"
+    }
+  }
+}
