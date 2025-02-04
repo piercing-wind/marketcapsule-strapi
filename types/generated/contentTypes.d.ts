@@ -797,6 +797,36 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiAboutUsAboutUs extends Schema.SingleType {
+  collectionName: 'about_uses';
+  info: {
+    singularName: 'about-us';
+    pluralName: 'about-uses';
+    displayName: 'About Us';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    description: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::about-us.about-us',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::about-us.about-us',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiBucketBucket extends Schema.CollectionType {
   collectionName: 'buckets';
   info: {
@@ -1254,6 +1284,36 @@ export interface ApiCompnayTimelineCompnayTimeline
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::compnay-timeline.compnay-timeline',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiContactUsContactUs extends Schema.SingleType {
+  collectionName: 'contact_uses';
+  info: {
+    singularName: 'contact-us';
+    pluralName: 'contact-uses';
+    displayName: 'Contact-us';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    description: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::contact-us.contact-us',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::contact-us.contact-us',
       'oneToOne',
       'admin::user'
     > &
@@ -2380,6 +2440,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::about-us.about-us': ApiAboutUsAboutUs;
       'api::bucket.bucket': ApiBucketBucket;
       'api::business-segment.business-segment': ApiBusinessSegmentBusinessSegment;
       'api::capsuleplus.capsuleplus': ApiCapsuleplusCapsuleplus;
@@ -2390,6 +2451,7 @@ declare module '@strapi/types' {
       'api::company-type.company-type': ApiCompanyTypeCompanyType;
       'api::company-type-detail.company-type-detail': ApiCompanyTypeDetailCompanyTypeDetail;
       'api::compnay-timeline.compnay-timeline': ApiCompnayTimelineCompnayTimeline;
+      'api::contact-us.contact-us': ApiContactUsContactUs;
       'api::disclaimer.disclaimer': ApiDisclaimerDisclaimer;
       'api::feed.feed': ApiFeedFeed;
       'api::financial-highlight.financial-highlight': ApiFinancialHighlightFinancialHighlight;
