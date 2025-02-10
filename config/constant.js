@@ -1,7 +1,8 @@
 const emailTemplate = {
     sendOtp:"sendOtp",
     subscriptionExpire:"subscriptionExpire",
-    beforeSubscriptionExpire:"beforeSubscriptionExpire"
+    beforeSubscriptionExpire:"beforeSubscriptionExpire",
+    summitPurchase:"summitPurchase",
 }
 
 

@@ -22,8 +22,6 @@
         margin: 0;
         padding: 0;
         display: flex;
-        justify-content: center;
-        align-items: center;
         height: 100vh;
       }
 
@@ -48,11 +46,11 @@
       }
       .sub-body {
         padding: 0px 20px;
+        margin-bottom: 20px;
       }
 
       .email-body p {
         font-size: 16px;
-        text-align: center;
         color: #000000;
       }
       .email-body .best-regards {
@@ -67,14 +65,23 @@
         font-size: 28px;
         font-weight: bold;
         margin: 12px 0px;
-        text-align: center;
         color: #000000;
       }
 
       .otp-code {
+        background-color: #e6f7f6;
+        font-size: 36px;
+        text-align: center;
+        padding: 10px;
+        margin: 20px 0;
+        max-width: 300px;
         margin: auto;
         margin-top: 24px;
         margin-bottom: 24px;
+        background: #dafff6;
+        font-size: 29px;
+        font-weight: 800;
+        color: #000000;
       }
 
       .email-footer {
@@ -95,6 +102,7 @@
       .hr {
         border: 1px dashed #a9a9a9;
         margin-bottom: 24px;
+        margin-top: 12px;
       }
       .queries {
         margin-top: 30px;
@@ -122,24 +130,23 @@
       </div>
       <div class="email-body">
         <div class="sub-body">
-          <p class="mt30">Hi {{name}}</p>
-          <h1>Your Subscription Has Expired</h1>
-          <p>
-            We hope you enjoyed your time with Market Capsule+. We wanted to
-            inform you that your {{planName}} subscription expired on {{expiredDate}}.
-          </p>
-          <p style="margin-top: 30px">
-            To continue enjoying our services without interruption, please renew
-            your subscription at your earliest convenience. Simply log into your
-            account and follow the renewal instructions.
-          </p>
-          <div class="otp-code"></div>
-        </div>
-        <hr class="hr" />
+          <h1 class="mt30">Dear {{name}},</h1>
+          <p>Thank you for registering to the {{summit_name}}! We’re thrilled to have you join us for this exciting event. </p>
+          <div class="hr"></div>
+          <h2 style="font-size: 1rem; margin-bottom: 20px; margin-top: 20px;">Event Details</h2>  
+          <ul style="list-style-type: none; margin-left: 20px;">
+            <li style="margin-bottom: 10px;">Event Date: {{event_date}}</li>
+            <li style="margin-bottom: 10px;">Event Time: {{event_time}}</li>
+            <li style="margin-bottom: 10px;">Event Format: {{event_format}}</li>
+            <li style="margin-bottom: 10px;">About Event : {{event_description}}</li>
+          </ul>
+
+          <div class="hr"></div>
+          <p>We’re bringing together top industry experts to share their strategies and stock ideas, making this a valuable session for investors like you. Stay tuned for more updates!</p>
+         </div>
         <div class="sub-body">
           <p>
-            If you did not subscribed to the service, Please ignore this email
-            and contact our support team immediately.
+            If you have any questions, feel free to reach out. We look forward to seeing you at the summit!
           </p>
           <p class="best-regards">Best regards,<br />The Market Capsule Team</p>
           <p class="queries">

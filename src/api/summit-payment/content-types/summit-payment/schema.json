@@ -20,7 +20,7 @@
     },
     "summit": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToOne",
       "target": "api::summit.summit",
       "inversedBy": "summit_payment"
     },

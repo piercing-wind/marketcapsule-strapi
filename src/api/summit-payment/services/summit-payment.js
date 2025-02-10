@@ -1,6 +1,7 @@
 'use strict';
 const Razorpay = require('razorpay');
 const crypto = require("crypto");
+const { sendSummitPurchaseEmail } = require('../../../../helper/ses');
 /**
  * summit-payment service
  */
@@ -47,8 +48,7 @@ module.exports = createCoreService('api::summit-payment.summit-payment', ({strap
       },
     
     grantAccessToSummit : async (ctx) => {
-        // Custom business logic for generating a payment intent
-        // For example, creating a payment intent with a payment gateway
+
         const {userId, summitId, razorpay_order_id, razorpay_payment_id, razorpay_signature} = ctx.request.body;
         if(!userId) throw new Error('User Id is required'); 
         if(!summitId) throw new Error('Summit Id is required');
@@ -63,15 +63,35 @@ module.exports = createCoreService('api::summit-payment.summit-payment', ({strap
         if(generated_signature !== razorpay_signature) throw new Error('Invalid signature');
         
         const paymentDetails = await getPaymentDetails(razorpay_payment_id);
+
         const response =  await strapi.db.query('api::summit-payment.summit-payment').create({
-         data:{ 
-          users_permissions_user : userId,
-          summit : parseInt(summitId),
-          mail : ctx.state.user.email,
-          name : ctx.state.user.fullName,
-          razorpayResponse : paymentDetails
-         }});
+                          data:{ 
+                           users_permissions_user : userId,
+                           summit : parseInt(summitId),
+                           mail : ctx.state.user.email,
+                           name : ctx.state.user.fullName,
+                           razorpayResponse : paymentDetails
+                          }});
+
+        const summit = await strapi.db.query('api::summit.summit').findOne({
+            where: { id: parseInt(summitId) },
+        });
+
         if(!response || !response.id) throw new Error('Something went wrong while granting access to summit');
+        
+        await sendSummitPurchaseEmail(
+            ctx.state.user.email,
+            "summitPurchase",
+            JSON.stringify({
+               name: ctx.state.user.fullName, 
+               summit_name: summit?.title,
+               event_date : new Date(summit?.organized_on).toLocaleDateString(),
+               event_time : summit?.maildata.event_time,
+               event_format : summit?.maildata.event_format,
+               event_description : summit?.maildata.event_description,
+            })
+         )
+       
         return { success: true, message: 'Payment successfull! Access Granted', data : response };
       },
       getUserAccess : async (ctx) =>{

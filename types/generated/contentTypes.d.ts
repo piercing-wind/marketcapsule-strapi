@@ -2117,6 +2117,7 @@ export interface ApiSummitSummit extends Schema.CollectionType {
       'api::summit-payment.summit-payment'
     >;
     price: Attribute.Integer;
+    maildata: Attribute.JSON;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -2154,7 +2155,7 @@ export interface ApiSummitPaymentSummitPayment extends Schema.CollectionType {
     >;
     summit: Attribute.Relation<
       'api::summit-payment.summit-payment',
-      'manyToOne',
+      'oneToOne',
       'api::summit.summit'
     >;
     razorpayResponse: Attribute.JSON;

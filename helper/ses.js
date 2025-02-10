@@ -9,8 +9,7 @@ const sesClient = new SESClient({
     secretAccessKey: "H+jk2wvedKdaAiexxgRilf877T2ZqwVPQBxs2DUh", //process.env.AWS_ACCESS_SECRET,
   },
 });
-// AKIA4MTWKGIBFXNSFBKQ
-// H+jk2wvedKdaAiexxgRilf877T2ZqwVPQBxs2DUh
+
 
 const sendEmailNormal = async (email, data) => {
   console.log("sending email", email);
@@ -45,7 +44,6 @@ const sendEmailNormal = async (email, data) => {
   }
 };
 const createTemplate = async (data) => {
-  console.log("data", data);
 
   const params = {
     Template: {
@@ -107,27 +105,50 @@ const deleteTemplate = async (templateName) => {
 };
 
 const sendEmail = async (email, template, templateData) => {
-  console.log("data===========", template, templateData);
-  const params = {
-    Destination: {
-      ToAddresses: [email],
-    },
-    Source: process.env.EMAIL_DEFAULT_FROM,
-    Template: template,
-    TemplateData: templateData,
-    ReplyToAddresses: [process.env.EMAIL_DEFAULT_FROM],
-  };
+   const params = {
+     Destination: {
+       ToAddresses: [email],
+     },
+     Source: process.env.EMAIL_DEFAULT_FROM,
+     Template: template,
+     TemplateData: templateData,
+     ReplyToAddresses: [process.env.EMAIL_DEFAULT_FROM],
+   };
+ 
+   try {
+     const command = new SendTemplatedEmailCommand(params);
+     const response = await sesClient.send(command);
+     console.log("response", response);
+     return response;
+   } catch (err) {
+     console.log("err", err);
+     return err;
+   }
+ };
 
-  try {
-    const command = new SendTemplatedEmailCommand(params);
-    const response = await sesClient.send(command);
-    console.log("response", response);
-    return response;
-  } catch (err) {
-    console.log("err", err);
-    return err;
-  }
-};
+ const sendSummitPurchaseEmail = async (email, template, templateData) => {
+   const params = {
+     Destination: {
+       ToAddresses: [email],
+     },
+     Source: process.env.EMAIL_DEFAULT_FROM,
+     Template: template,
+     TemplateData: templateData,
+     ReplyToAddresses: [process.env.EMAIL_DEFAULT_FROM],
+   };
+ 
+   try {
+     const command = new SendTemplatedEmailCommand(params);
+     const response = await sesClient.send(command);
+     console.log("response", response);
+     return response;
+   } catch (err) {
+     console.log("err", err);
+     return err;
+   }
+ };
+
+
 
 
 
@@ -287,7 +308,7 @@ const sendEmail = async (email, template, templateData) => {
 //   });
 // }
 
-module.exports = { sendEmailNormal,sendEmail,createTemplate,deleteTemplate,updateTemplate }
+module.exports = { sendEmailNormal,sendEmail,createTemplate,deleteTemplate,updateTemplate,sendSummitPurchaseEmail }
 
 
 

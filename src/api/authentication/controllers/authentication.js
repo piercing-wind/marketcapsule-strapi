@@ -156,7 +156,7 @@ module.exports = {
 
   login: async (ctx, next) => {
     try {
-      console.log("123456789");
+
       const { email } = ctx.request.body;
       if (!email) {
         return ctx.badRequest('Email required!');

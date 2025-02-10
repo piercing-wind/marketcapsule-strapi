@@ -33,6 +33,6 @@ const getTemplateDetails = async (templateName) => {
     }
   };
 
-    getTemplateDetails("sendOtp").then((res) => {
-        console.log(res)
-    });
+   //  getTemplateDetails("sendOtp").then((res) => {
+   //      console.log(res)
+   //  });
