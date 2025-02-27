@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "summit_payments",
+  "info": {
+    "singularName": "summit-payment",
+    "pluralName": "summit-payments",
+    "displayName": "Summit payment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "users_permissions_user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "summit_payments"
+    },
+    "summit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::summit.summit",
+      "inversedBy": "summit_payments"
+    },
+    "razorpayResponse": {
+      "type": "json"
+    },
+    "mail": {
+      "type": "email"
+    },
+    "name": {
+      "type": "string"
+    }
+  }
+}

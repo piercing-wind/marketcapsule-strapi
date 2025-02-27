@@ -1,0 +1,115 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "image": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ]
+    },
+    "fullName": {
+      "type": "string"
+    },
+    "dob": {
+      "type": "date"
+    },
+    "profession": {
+      "type": "string"
+    },
+    "googleId": {
+      "type": "string"
+    },
+    "facebookId": {
+      "type": "string"
+    },
+    "subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subscription.subscription",
+      "mappedBy": "userId"
+    },
+    "capsuleplus": {
+      "type": "boolean",
+      "default": false
+    },
+    "socketId": {
+      "type": "string"
+    },
+    "newslettersSubscribed": {
+      "type": "boolean",
+      "default": false
+    },
+    "isTermAndConditionAccept": {
+      "type": "boolean",
+      "default": false
+    },
+    "profileStatus": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "complete"
+      ]
+    },
+    "summit_payments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::summit-payment.summit-payment",
+      "mappedBy": "users_permissions_user"
+    },
+    "password": {
+      "type": "password"
+    },
+    "username": {
+      "type": "string"
+    }
+  }
+}

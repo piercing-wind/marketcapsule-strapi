@@ -1,0 +1,88 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ipos",
+  "info": {
+    "singularName": "ipo",
+    "pluralName": "ipos",
+    "displayName": "IPO",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "openDate": {
+      "type": "datetime",
+      "required": true
+    },
+    "offerPricePe": {
+      "type": "string",
+      "required": true
+    },
+    "lastYearSalesGrowth": {
+      "type": "float",
+      "required": true
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    },
+    "tag": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tag.tag"
+    },
+    "industry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::industry.industry",
+      "inversedBy": "ipos"
+    },
+    "companyName": {
+      "type": "string",
+      "required": true
+    },
+    "aboutTheCompany": {
+      "type": "blocks",
+      "required": true
+    },
+    "capsuleView": {
+      "type": "blocks",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "companyName",
+      "required": true
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "websiteUrl": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "companyType": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company-type.company-type"
+    },
+    "sector": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::sector.sector"
+    }
+  }
+}

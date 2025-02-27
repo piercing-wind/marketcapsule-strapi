@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "summits",
+  "info": {
+    "singularName": "summit",
+    "pluralName": "summits",
+    "displayName": "Summit",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "organized_on": {
+      "type": "datetime",
+      "default": "2025-01-23T18:30:00.000Z"
+    },
+    "summit_videos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::summit-video.summit-video",
+      "mappedBy": "summit"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "maildata": {
+      "type": "json"
+    },
+    "detailposter": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "summit_payments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::summit-payment.summit-payment",
+      "mappedBy": "summit"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_share_prices",
+  "info": {
+    "singularName": "company-share-price",
+    "pluralName": "company-share-prices",
+    "displayName": "companySharePrice",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "companyId": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    },
+    "date": {
+      "type": "date"
+    },
+    "price": {
+      "type": "float",
+      "required": true
+    },
+    "volume": {
+      "type": "float"
+    }
+  }
+}

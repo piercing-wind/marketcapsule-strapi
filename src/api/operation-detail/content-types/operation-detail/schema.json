@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "operation_details",
+  "info": {
+    "singularName": "operation-detail",
+    "pluralName": "operation-details",
+    "displayName": "operationDetail",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "operation_details"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "month": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "enumeration",
+      "enum": [
+        "yearly",
+        "quarterly"
+      ],
+      "required": true
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "subscription_buttons",
+  "info": {
+    "singularName": "subscription-button",
+    "pluralName": "subscription-buttons",
+    "displayName": "SubscriptionButton"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "plan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::plan.plan"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

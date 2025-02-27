@@ -1,0 +1,85 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_share_details",
+  "info": {
+    "singularName": "company-share-detail",
+    "pluralName": "company-share-details",
+    "displayName": "companyShareDetail",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "peRatio": {
+      "type": "float"
+    },
+    "rocePercent": {
+      "type": "float"
+    },
+    "roicPercent": {
+      "type": "float"
+    },
+    "roePercent": {
+      "type": "float"
+    },
+    "currentPrice": {
+      "type": "float"
+    },
+    "deRatio": {
+      "type": "float"
+    },
+    "cwip": {
+      "type": "string"
+    },
+    "cashConversionCycle": {
+      "type": "string"
+    },
+    "pegRatio": {
+      "type": "float"
+    },
+    "ltp": {
+      "type": "float"
+    },
+    "prevClosePrice": {
+      "type": "float"
+    },
+    "changeInPercent": {
+      "type": "float"
+    },
+    "dayHigh": {
+      "type": "float"
+    },
+    "dayLow": {
+      "type": "float"
+    },
+    "sectoralPERange": {
+      "type": "string"
+    },
+    "BSE": {
+      "type": "integer"
+    },
+    "NSE": {
+      "type": "integer"
+    },
+    "peRemark": {
+      "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company",
+      "inversedBy": "company_share_detail"
+    },
+    "marketCap": {
+      "type": "float"
+    },
+    "change": {
+      "type": "float"
+    },
+    "ttpmPE": {
+      "type": "float"
+    }
+  }
+}

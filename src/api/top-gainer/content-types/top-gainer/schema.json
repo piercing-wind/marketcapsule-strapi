@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "top_gainers",
+  "info": {
+    "singularName": "top-gainer",
+    "pluralName": "top-gainers",
+    "displayName": "topGainer",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "value": {
+      "type": "float",
+      "required": true
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    },
+    "exchangeType": {
+      "type": "enumeration",
+      "enum": [
+        "NSE",
+        "BSE"
+      ],
+      "required": true
+    }
+  }
+}

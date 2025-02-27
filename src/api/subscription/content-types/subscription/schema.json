@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscriptions",
+  "info": {
+    "singularName": "subscription",
+    "pluralName": "subscriptions",
+    "displayName": "Subscription",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "expiryDate": {
+      "type": "datetime"
+    },
+    "isCancel": {
+      "type": "boolean",
+      "default": false
+    },
+    "userId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "subscriptions"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::plan.plan"
+    },
+    "paymentDetails": {
+      "type": "json"
+    },
+    "paymentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "PENDING",
+        "COMPLETED",
+        "FAILED"
+      ]
+    },
+    "transactionID": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "float"
+    },
+    "invoiceUrl": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean",
+      "default": false
+    },
+    "orderId": {
+      "type": "string"
+    },
+    "paymentOrderJson": {
+      "type": "json"
+    },
+    "paymentVerifyJson": {
+      "type": "json"
+    },
+    "promoCodeId": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::promo-code.promo-code"
+    }
+  }
+}

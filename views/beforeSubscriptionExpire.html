@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0px;
+        padding: 0px;
+        box-sizing: border-box;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        background-color: #e4e4e4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .email-container {
+        background-color: #ffffff;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .email-header {
+        padding: 24px;
+        text-align: center;
+        background: #f8f8f8 0% 0% no-repeat padding-box;
+      }
+
+      .logo {
+        height: 40px;
+      }
+
+      .email-body {
+        padding: 20px 40px;
+      }
+      .sub-body {
+        padding: 0px 20px;
+      }
+
+      .email-body p {
+        font-size: 16px;
+        text-align: center;
+        color: #000000;
+      }
+      .email-body .best-regards {
+        margin-top: 24px;
+        font-size: 14px;
+      }
+      .email-body .mt30 {
+        margin-top: 30px;
+      }
+
+      .email-body h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 12px 0px;
+        text-align: center;
+        color: #000000;
+      }
+
+      .otp-code {
+        margin: auto;
+        margin-top: 24px;
+        margin-bottom: 24px;
+      }
+
+      .email-footer {
+        background-color: #f7f7f7;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .email-footer a {
+        font-size: 16px;
+        color: #000000;
+        font-weight: 500;
+        text-decoration: none;
+      }
+      .email-footer a:hover {
+        text-decoration: underline;
+      }
+      .hr {
+        border: 1px dashed #a9a9a9;
+        margin-bottom: 24px;
+      }
+      .queries {
+        margin-top: 30px;
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+      .queries a {
+        text-decoration: none;
+        color: #3e63ff;
+        font-weight: 500;
+      }
+      .queries a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="email-header">
+        <img
+          src="https://d1gg24sxbl1rgc.cloudfront.net/Group_2_61251dfcdc.png"
+          alt="Market Capsule Logo"
+          class="logo"
+        />
+      </div>
+      <div class="email-body">
+        <div class="sub-body">
+          <p class="mt30">Hi {{name}}</p>
+          <h1>Your Subscription Will Expire in {{day}} Days</h1>
+          <p>
+            This is a friendly reminder that your {{planName}} subscription of Market
+            Capsule+ will expire in {{day}} days.
+          </p>
+          <p style="margin-top: 30px">
+            To continue enjoying our services without interruption, please renew
+            your subscription at your earliest convenience. Simply log into your
+            account and follow the renewal instructions.
+          </p>
+          <div class="otp-code"></div>
+        </div>
+        <hr class="hr" />
+        <div class="sub-body">
+          <p>
+            If you did not subscribed to the service, Please ignore this email
+            and contact our support team immediately.
+          </p>
+          <p class="best-regards">Best regards,<br />The Market Capsule Team</p>
+          <p class="queries">
+            For any queries,<br />please email us at
+            <a href="mailto:misummit@marketcapsule.in"
+              >misummit@marketcapsule.in</a
+            >
+          </p>
+        </div>
+      </div>
+      <div class="email-footer">
+        <p><a href="https://www.marketcapsule.in">www.marketcapsule.in</a></p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "promo_codes",
+  "info": {
+    "singularName": "promo-code",
+    "pluralName": "promo-codes",
+    "displayName": "PromoCode",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "code": {
+      "type": "string",
+      "required": true
+    },
+    "expiryDate": {
+      "type": "datetime",
+      "required": true
+    },
+    "maxUsage": {
+      "type": "integer"
+    },
+    "discountAmount": {
+      "required": true,
+      "type": "float"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "availedCount": {
+      "default": 0,
+      "type": "integer"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::plan.plan"
+    }
+  }
+}

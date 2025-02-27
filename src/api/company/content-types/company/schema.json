@@ -1,0 +1,160 @@
+{
+  "kind": "collectionType",
+  "collectionName": "companies",
+  "info": {
+    "singularName": "company",
+    "pluralName": "companies",
+    "displayName": "Company",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "about": {
+      "type": "text"
+    },
+    "sector": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::sector.sector",
+      "inversedBy": "companies"
+    },
+    "industry": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::industry.industry",
+      "inversedBy": "companies"
+    },
+    "company_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company-type.company-type"
+    },
+    "featuredImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "productDetail": {
+      "type": "text"
+    },
+    "websiteUrl": {
+      "type": "string"
+    },
+    "buckets": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::bucket.bucket",
+      "inversedBy": "companies"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "metaTitle": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "business_segments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::business-segment.business-segment",
+      "mappedBy": "company"
+    },
+    "keyHighlights": {
+      "type": "blocks"
+    },
+    "company_share_detail": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company-share-detail.company-share-detail",
+      "mappedBy": "company"
+    },
+    "capsuleView": {
+      "type": "blocks"
+    },
+    "aboutTheCompany": {
+      "type": "blocks"
+    },
+    "businessDetail": {
+      "type": "blocks"
+    },
+    "businessOverview": {
+      "type": "blocks"
+    },
+    "compnay_timelines": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::compnay-timeline.compnay-timeline",
+      "mappedBy": "company"
+    },
+    "financial_highlights": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::financial-highlight.financial-highlight",
+      "mappedBy": "company"
+    },
+    "share_holdings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::share-holding.share-holding",
+      "mappedBy": "company"
+    },
+    "financialReport": {
+      "type": "blocks"
+    },
+    "shareCapitalAndEmployees": {
+      "type": "blocks"
+    },
+    "companyTypeDetails": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::company-type-detail.company-type-detail",
+      "mappedBy": "company"
+    },
+    "operation_details": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::operation-detail.operation-detail",
+      "mappedBy": "company"
+    },
+    "whatsNewInCapsulePlusImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "capsuleplus": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

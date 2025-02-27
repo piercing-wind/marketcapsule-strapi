@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "financial_highlights",
+  "info": {
+    "singularName": "financial-highlight",
+    "pluralName": "financial-highlights",
+    "displayName": "FinancialHighlight",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "financial_highlights"
+    },
+    "year": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    }
+  }
+}

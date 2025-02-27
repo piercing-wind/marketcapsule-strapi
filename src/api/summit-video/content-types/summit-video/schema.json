@@ -1,0 +1,62 @@
+{
+  "kind": "collectionType",
+  "collectionName": "summit_videos",
+  "info": {
+    "singularName": "summit-video",
+    "pluralName": "summit-videos",
+    "displayName": "Summit Video",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "document": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "summit": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::summit.summit",
+      "inversedBy": "summit_videos"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "order": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

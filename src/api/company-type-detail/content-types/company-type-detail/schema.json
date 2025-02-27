@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "company_type_details",
+  "info": {
+    "singularName": "company-type-detail",
+    "pluralName": "company-type-details",
+    "displayName": "CompanyTypeDetail",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string"
+    },
+    "remark": {
+      "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "companyTypeDetails"
+    }
+  }
+}

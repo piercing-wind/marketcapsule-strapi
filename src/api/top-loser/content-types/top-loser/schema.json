@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "top_losers",
+  "info": {
+    "singularName": "top-loser",
+    "pluralName": "top-losers",
+    "displayName": "TopLoser",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "value": {
+      "type": "float",
+      "required": true
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    },
+    "exchangeType": {
+      "type": "enumeration",
+      "enum": [
+        "NSE",
+        "BSE"
+      ],
+      "required": true
+    }
+  }
+}
