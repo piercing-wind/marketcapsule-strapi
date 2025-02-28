@@ -55,14 +55,13 @@ module.exports = createCoreService('api::summit-payment.summit-payment', ({strap
         if(!razorpay_payment_id) throw new Error('Razorpay Payment Id is required');
         if(!razorpay_signature) throw new Error('Razorpay Signature is required');
 
-        const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
-        hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
-        const generated_signature = hmac.digest('hex');
+        // const hmac = crypto.createHmac('sha256', process.env.RAZORPAY_SECRET_KEY);
+        // hmac.update(razorpay_order_id + "|" + razorpay_payment_id);
+        // const generated_signature = hmac.digest('hex');
 
-        if(generated_signature !== razorpay_signature) throw new Error('Invalid signature');
-        
         const paymentDetails = await getPaymentDetails(razorpay_payment_id);
-
+        if((paymentDetails?.captured) !== "captured") throw new Error('Payment failed');
+        
         const response =  await strapi.db.query('api::summit-payment.summit-payment').create({
                           data:{ 
                            users_permissions_user : userId,
