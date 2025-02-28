@@ -99,7 +99,7 @@ module.exports = createCoreService('api::summit-payment.summit-payment', ({strap
         const response = await strapi.db.query('api::summit-payment.summit-payment').findMany({
           where: { users_permissions_user: userId },
           select: ['id'],
-          populate: ['summit']
+          populate: ['summit', 'users_permissions_user']
         });
         return { success: true, message: 'Payment details fetched successfully', data : response };
       }
