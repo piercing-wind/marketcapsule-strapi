@@ -60,7 +60,7 @@ module.exports = createCoreService('api::summit-payment.summit-payment', ({strap
         // const generated_signature = hmac.digest('hex');
 
         const paymentDetails = await getPaymentDetails(razorpay_payment_id);
-        if((paymentDetails?.captured) !== "captured") throw new Error('Payment failed');
+        if(paymentDetails.status !== 'captured') throw new Error('Payment failed');
         
         const response =  await strapi.db.query('api::summit-payment.summit-payment').create({
                           data:{ 
